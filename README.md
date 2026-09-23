@@ -101,18 +101,21 @@ findings from 16 to 5. Numbers are from one machine and one task; re-run `bench/
 Requirements: Python 3.11+, [Ollama](https://ollama.com), and at least one
 model pulled (e.g. `ollama pull gemma4:12b-it-qat`).
 
-**As a Claude Code plugin** (from a local clone):
+**As a Claude Code plugin**, straight from GitHub:
 
-    /plugin marketplace add /path/to/quotegate
+    /plugin marketplace add LuhOnCoffee/quotegate
     /plugin install quotegate@quotegate
+
+(or from a local clone: `/plugin marketplace add /path/to/quotegate`).
 
 The skill `quotegate:quotegate` then loads when a task fits. Optional nudge on
 large whole-file reads: set `QUOTEGATE_NUDGE=1` (and `QUOTEGATE_NUDGE_LINES`,
 default 400) in the environment Claude Code runs in. It never blocks a read.
 
-**As a CLI**, nothing to install:
+**As a CLI**, nothing to install beyond a clone:
 
-    export PYTHONPATH=/path/to/quotegate/src
+    git clone https://github.com/LuhOnCoffee/quotegate && cd quotegate
+    export PYTHONPATH=$PWD/src
     python3 -m quotegate doctor --model gemma4:12b-it-qat     # checks two silent Ollama traps
     python3 -m quotegate run --model gemma4:12b-it-qat --items items.jsonl \
         --prompt careful.txt --think off --out raw.jsonl
