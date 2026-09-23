@@ -1,0 +1,183 @@
+.. _plugins:
+.. _`writing-plugins`:
+
+Writing plugins
+===============
+
+It is easy to implement `local conftest plugins`_ for your own project
+or `pip-installable plugins`_ that can be used throughout many projects,
+including third party projects.  Please refer to :ref:`using plugins` if you
+only want to use but not write plugins.
+
+A plugin contains one or multiple hook functions. :ref:`Writing hooks <writinghooks>`
+explains the basics and details of how you can write a hook function yourself.
+``pytest`` implements all aspects of configuration, collection, running and
+reporting by calling :ref:`well specified hooks <hook-reference>` of the following plugins:
+
+* builtin plugins: loaded from pytest's internal ``_pytest`` directory.
+
+* :ref:`external plugins <extplugins>`: installed third-party modules discovered
+  through :ref:`entry points <pip-installable plugins>` in their packaging metadata
+
+* `conftest.py plugins`_: modules auto-discovered in test directories
+
+In principle, each hook call is a ``1:N`` Python function call where ``N`` is the
+number of registered implementation functions for a given specification.
+All specifications and implementations follow the ``pytest_`` prefix
+naming convention, making them easy to distinguish and find.
+
+.. _`pluginorder`:
+
+Plugin discovery order at tool startup
+--------------------------------------
+
+``pytest`` loads plugin modules at tool startup in the following way:
+
+1. by scanning the command line for the ``-p no:name`` option
+   and *blocking* that plugin from being loaded (even builtin plugins can
+   be blocked this way). This happens before normal command-line parsing.
+
+2. by loading all builtin plugins.
+
+3. by scanning the command line for the ``-p name`` option
+   and loading the specified plugin. This happens before normal command-line parsing.
+
+4. by loading all plugins registered through installed third-party package
+   :ref:`entry points <pip-installable plugins>`, unless the
+   :envvar:`PYTEST_DISABLE_PLUGIN_AUTOLOAD` environment variable is set.
+
+5. by loading all plugins specified through the :envvar:`PYTEST_PLUGINS` environment variable.
+
+6. by loading all "initial" :file:`conftest.py` files:
+
+   - determine the test paths: specified on the command line, otherwise in
+     :confval:`testpaths` if defined and running from the rootdir, otherwise the
+     current dir
+   - for each test path, load ``conftest.py`` and ``test*/conftest.py`` relative
+     to the directory part of the test path, if they exist. Before a ``conftest.py``
+     file is loaded, load ``conftest.py`` files in its parent directories up to
+     the :option:`--confcutdir` limit. When ``--confcutdir`` is not provided,
+     the cutoff defaults to the directory containing the config file, or to the
+     :ref:`rootdir <rootdir>` if no config file is found.
+     After a ``conftest.py`` file is loaded, recursively load all plugins specified
+     in its :globalvar:`pytest_plugins` variable if present.
+
+
+.. _`conftest.py plugins`:
+.. _`localplugin`:
+.. _`local conftest plugins`:
+
+conftest.py: local per-directory plugins
+----------------------------------------
+
+Local ``conftest.py`` plugins contain directory-specific hook
+implementations.  Hook Session and test running activities will
+invoke all hooks defined in ``conftest.py`` files closer to the
+root of the filesystem.  Example of implementing the
+``pytest_runtest_setup`` hook so that is called for tests in the ``a``
+sub directory but not for other directories::
+
+    a/conftest.py:
+        def pytest_runtest_setup(item):
+            # called for running each test in 'a' directory
+            print("setting up", item)
+
+    a/test_sub.py:
+        def test_sub():
+            pass
+
+    test_flat.py:
+        def test_flat():
+            pass
+
+Here is how you might run it::
+
+     pytest test_flat.py --capture=no  # will not show "setting up"
+     pytest a/test_sub.py --capture=no  # will show "setting up"
+
+.. note::
+    If you have ``conftest.py`` files which do not reside in a
+    python package directory (i.e. one containing an ``__init__.py``) then
+    "import conftest" can be ambiguous because there might be other
+    ``conftest.py`` files as well on your ``PYTHONPATH`` or ``sys.path``.
+    It is thus good practice for projects to either put ``conftest.py``
+    under a package scope or to never import anything from a
+    ``conftest.py`` file.
+
+    See also: :ref:`pythonpath`.
+
+.. note::
+    Some hooks cannot be implemented in conftest.py files which are not
+    :ref:`initial <pluginorder>` due to how pytest discovers plugins during
+    startup. See the documentation of each hook for details.
+
+Writing your own plugin
+-----------------------
+
+If you want to write a plugin, there are many real-life examples
+you can copy from:
+
+* a custom collection example plugin: :ref:`yaml plugin`
+* builtin plugins which provide pytest's own functionality
+* many :ref:`external plugins <plugin-list>` providing additional features
+
+All of these plugins implement :ref:`hooks <hook-reference>` and/or :ref:`fixtures <fixture>`
+to extend and add functionality.
+
+.. note::
+    Make sure to check out the excellent
+    `cookiecutter-pytest-plugin <https://github.com/pytest-dev/cookiecutter-pytest-plugin>`_
+    project, which is a `cookiecutter template <https://github.com/audreyr/cookiecutter>`_
+    for authoring plugins.
+
+    The template provides an excellent starting point with a working plugin,
+    tests running with tox, a comprehensive README file as well as a
+    pre-configured entry-point.
+
+Also consider :ref:`contributing your plugin to pytest-dev<submitplugin>`
+once it has some happy users other than yourself.
+
+
+.. _`setuptools entry points`:
+.. _`pip-installable plugins`:
+
+Making your plugin installable by others
+----------------------------------------
+
+If you want to make your plugin externally available, you
+may define a so-called entry point for your distribution so
+that ``pytest`` finds your plugin module. Entry points are
+a feature that is provided by :std:doc:`packaging tools
+<packaging:specifications/entry-points>`.
+
+pytest looks up the ``pytest11`` entrypoint to discover its
+plugins, thus you can make your plugin available by defining
+it in your ``pyproject.toml`` file.
+
+.. sourcecode:: toml
+
+    # sample ./pyproject.toml file
+    [build-system]
+    requires = ["hatchling"]
+    build-backend = "hatchling.build"
+
+    [project]
+    name = "myproject"
+    requires-python = ">=3.9"
+    dependencies = ["pytest"]
+    classifiers = [
+        "Framework :: Pytest",
+    ]
+
+    [project.entry-points.pytest11]
+    myproject = "myproject.pluginmodule"
+
+If a package is installed this way, ``pytest`` will load
+``myproject.pluginmodule`` as a plugin which can define
+:ref:`hooks <hook-reference>`. Confirm registration with ``pytest --trace-config``
+
+.. note::
+
+    Make sure to include ``Framework :: Pytest`` in your list of
+    `PyPI classifiers <https://pypi.org/classifiers/>`_
+    to make it easy for users to find your plugin.

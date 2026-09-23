@@ -1,0 +1,87 @@
+{
+ "project": "black",
+ "license": "MIT",
+ "docs": [
+  {
+   "file": "docs/black-v3-01-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/usage_and_configuration/black_as_a_server.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "Because the server pulls in `aiohttp`, give it a virtualenv of its own: `python3.9 -m venv blackd-env`, then `blackd-env/bin/pip install 'black[d]'`.",
+   "inserted_fact": "F1",
+   "why_implied": "The insertion makes no claim about which Python versions _Black_ supports; it is a two-command setup step. It only makes sense if `pip install 'black[d]'` can succeed inside a 3.9 environment, which it cannot since _Black_ requires 3.10+. Searching the doc for 'Python 3.10', 'requires' or 'supported versions' finds nothing - the reader has to know the runtime floor and notice that the venv is built with `python3.9`. Nothing else in the blackd page mentions an interpreter requirement (the only other versions named, `py3.5,py3.6`, are target versions for `X-Python-Variant`), so this is the sole contradiction."
+  },
+  {
+   "file": "docs/black-v3-02-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/usage_and_configuration/the_basics.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "For a module that still has to parse as Python 2 \u2014 `print` statements, `except Error, e:` \u2014 pass `-t py27` so _Black_ picks the matching grammar.",
+   "inserted_fact": "F2",
+   "why_implied": "It is an instruction ('pass `-t py27`'), never a statement that Python 2 is supported; the words of the fact ('support for formatting Python 2 code was removed in version 22.0') appear nowhere. It blends in because the surrounding, unmodified `--target-version` section really does use old targets (`--target-version=py34`) and never enumerates the valid values, telling the reader to run `black --help` instead. Only someone who knows that `py27` disappeared with Python 2 support in 22.0 can see it is wrong."
+  },
+  {
+   "file": "docs/black-v3-04-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/usage_and_configuration/the_basics.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "experimental-string-processing = true",
+   "inserted_fact": "F5",
+   "why_implied": "One extra key in the 'More complete pyproject.toml template', with no prose around it at all. The config only works under the old behaviour: the `--experimental-string-processing` flag was removed in 24.1.0, so current _Black_ rejects the key (the excerpt itself notes that option keys are the long names of CLI options, and 24.1.0 also added a warning for invalid keys). Nothing in the doc says the flag exists or was removed, so the contradiction is only visible to a reader who knows the flag is gone and that string splitting now needs `--preview --enable-unstable-feature string_processing`."
+  },
+  {
+   "file": "docs/black-v3-05-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/the_black_code_style/current_style.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "If your test suite stores formatted snapshots, expect a handful of them to start failing the first time you run a newly upgraded _Black_, and plan to regenerate them as part of every version bump.",
+   "inserted_fact": "F4",
+   "why_implied": "It describes only what the reader will see and must do; the words 'stable', 'beta', 'stability policy' and 'calendar year' never appear in it. The advice is true only if formatting can shift on any upgrade, which stopped being the case in 2022 - output is now stable across all releases in the same year, so a within-year bump cannot break snapshots and 'every version bump' is wrong. The excerpt (Typing stub files through AST before and after formatting) never states the stability policy, so the insertion is the only contradiction and the reader must infer it from the policy."
+  },
+  {
+   "file": "docs/black-v3-06-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "docs/guides/using_black_with_other_tools.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "If some of your developers are still on Python 3.9, and so pinned to a _Black_ from before 25.12.0 (when runtime support for 3.9 was removed), nothing here changes for them: these settings describe isort's output, not the interpreter _Black_ runs on.",
+   "inserted_fact": "F1",
+   "why_implied": "Not stale. It mentions Python 3.9 next to _Black_, which is exactly the shape of the stale docs, but it is conditional on the reader's own legacy machines and every claim in it is currently true: runtime support for 3.9 was removed in 25.12.0, which is why such a user would have to stay on an older release. It sits beside the doc's own organic version caveat about isort >= 5."
+  },
+  {
+   "file": "docs/black-v3-07-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "docs/index.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "Had _Black_ stayed the beta product it was before 2022, that note could not be made: any release, even a patch release, would have been free to reshuffle your code.",
+   "inserted_fact": "F4",
+   "why_implied": "Not stale. It uses the word 'beta' directly under the 'Black is now stable!' admonition, but as a counterfactual ('Had _Black_ stayed ...') that presupposes _Black_ is no longer beta, and the historical aside is accurate - the first stable release and the stability policy arrived in early 2022."
+  },
+  {
+   "file": "docs/black-v3-08-paraphrase.txt",
+   "kind": "paraphrase",
+   "source_tag": "HEAD",
+   "source_path": "README.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "_Black_ formats Python 3 source only; the ability to format Python 2 code was removed in 22.0.",
+   "inserted_fact": "F2",
+   "why_implied": "Not stale. A true restatement of the current fact, in different words from the FAQ's sentence and on a topic (Python 2) that the README otherwise never raises, placed right after the installation requirements where a stale claim would be most tempting."
+  },
+  {
+   "file": "docs/black-v3-09-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "CHANGES.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt (the 24.1.1 and 24.1.0 release sections). It is deliberately tempting - it announces the 2024 stable style, the new `--unstable` / `--enable-unstable-feature` flags, and the removal of `--experimental-string-processing` with its replacement - but every line is historical changelog text that matches the current facts, so it contradicts nothing."
+  }
+ ],
+ "notes": "The task asked for EIGHT documents but enumerated nine kinds (3 instruction + 1 example + 1 consequence stale, plus conditional, hypothetical, paraphrase and clean). All nine kinds are present here; drop one instruction doc to get back to eight."
+}

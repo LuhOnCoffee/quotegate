@@ -1,0 +1,140 @@
+# QuickStart
+
+First, start by importing HTTPX:
+
+```pycon
+>>> import httpx
+```
+
+Now, let’s try to get a webpage.
+
+```pycon
+>>> r = httpx.get('https://httpbin.org/get')
+>>> r
+<Response [200 OK]>
+```
+
+Similarly, to make an HTTP POST request:
+
+```pycon
+>>> r = httpx.post('https://httpbin.org/post', data={'key': 'value'})
+```
+
+The PUT, DELETE, HEAD, and OPTIONS requests all follow the same style:
+
+```pycon
+>>> r = httpx.put('https://httpbin.org/put', data={'key': 'value'})
+>>> r = httpx.delete('https://httpbin.org/delete')
+>>> r = httpx.head('https://httpbin.org/get')
+>>> r = httpx.options('https://httpbin.org/get')
+```
+
+## Passing Parameters in URLs
+
+To include URL query parameters in the request, use the `params` keyword:
+
+```pycon
+>>> params = {'key1': 'value1', 'key2': 'value2'}
+>>> r = httpx.get('https://httpbin.org/get', params=params)
+```
+
+To see how the values get encoding into the URL string, we can inspect the
+resulting URL that was used to make the request:
+
+```pycon
+>>> r.url
+URL('https://httpbin.org/get?key2=value2&key1=value1')
+```
+
+You can also pass a list of items as a value:
+
+```pycon
+>>> params = {'key1': 'value1', 'key2': ['value2', 'value3']}
+>>> r = httpx.get('https://httpbin.org/get', params=params)
+>>> r.url
+URL('https://httpbin.org/get?key1=value1&key2=value2&key2=value3')
+```
+
+Or, with a single parameter:
+
+```pycon
+>>> r = httpx.get('https://httpbin.org/redirect-to', params={'url': '/get'})
+>>> r.url
+URL('https://httpbin.org/get')
+```
+
+## Response Content
+
+HTTPX will automatically handle decoding the response content into Unicode text.
+
+```pycon
+>>> r = httpx.get('https://www.example.org/')
+>>> r.text
+'<!doctype html>\n<html>\n<head>\n<title>Example Domain</title>...'
+```
+
+You can inspect what encoding will be used to decode the response.
+
+```pycon
+>>> r.encoding
+'UTF-8'
+```
+
+In some cases the response may not contain an explicit encoding, in which case HTTPX
+will attempt to automatically determine an encoding to use.
+
+```pycon
+>>> r.encoding
+None
+>>> r.text
+'<!doctype html>\n<html>\n<head>\n<title>Example Domain</title>...'
+```
+
+If you need to override the standard behaviour and explicitly set the encoding to
+use, then you can do that too.
+
+```pycon
+>>> r.encoding = 'ISO-8859-1'
+```
+
+## Binary Response Content
+
+The response content can also be accessed as bytes, for non-text responses:
+
+```pycon
+>>> r.content
+b'<!doctype html>\n<html>\n<head>\n<title>Example Domain</title>...'
+```
+
+Any `gzip` and `deflate` HTTP response encodings will automatically
+be decoded for you. If `brotlipy` is installed, then the `brotli` response
+encoding will be supported. If `zstandard` is installed, then `zstd`
+response encodings will also be supported.
+
+For example, to create an image from binary data returned by a request, you can use the following code:
+
+```pycon
+>>> from PIL import Image
+>>> from io import BytesIO
+>>> i = Image.open(BytesIO(r.content))
+```
+
+## JSON Response Content
+
+Often Web API responses will be encoded as JSON.
+
+```pycon
+>>> r = httpx.get('https://api.github.com/events')
+>>> r.json()
+[{u'repository': {u'open_issues': 0, u'url': 'https://github.com/...' ...  }}]
+```
+
+## Custom Headers
+
+To include additional headers in the outgoing request, use the `headers` keyword argument:
+
+```pycon
+>>> url = 'https://httpbin.org/headers'
+>>> headers = {'user-agent': 'my-app/0.0.1'}
+>>> r = httpx.get(url, headers=headers)
+```

@@ -1,0 +1,450 @@
+{
+ "black-d01": {
+  "project": "black",
+  "file": "docs/black-v2-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were _Black_ still a beta project, as it was until early 2022, any release could change the style and this scheduling concern would not arise.",
+  "inserted_fact": "F4"
+ },
+ "black-d02": {
+  "project": "black",
+  "file": "docs/black-v2-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "black-d03": {
+  "project": "black",
+  "file": "docs/black-v2-03-note.txt",
+  "kind": "note",
+  "inserted": "Formatting notebooks that run a Python 2 kernel additionally requires the `python2` extra.",
+  "inserted_fact": "F2"
+ },
+ "black-d04": {
+  "project": "black",
+  "file": "docs/black-v2-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If part of your repository is still Python 2 code, leave it out of `src`: no release of _Black_ from 22.0 onward can format it.",
+  "inserted_fact": "F2"
+ },
+ "black-d05": {
+  "project": "black",
+  "file": "docs/black-v2-07-paraphrase.txt",
+  "kind": "paraphrase",
+  "inserted": "Requests to split long strings are another regular, and the answer is always the same: string splitting is still only available as the unstable `string_processing` feature, enabled with `--preview --enable-unstable-feature string_processing`.",
+  "inserted_fact": "F5"
+ },
+ "black-d06": {
+  "project": "black",
+  "file": "docs/black-v2-02-code.txt",
+  "kind": "code",
+  "inserted": "(.venv)$ tox -e py39 # Run tests on the oldest supported python version",
+  "inserted_fact": "F1"
+ },
+ "black-d07": {
+  "project": "black",
+  "file": "docs/black-v2-01-implicit.txt",
+  "kind": "implicit",
+  "inserted": "When reporting a problem with this feature, mention whether you enabled it with `--unstable` or with `--experimental-string-processing`.",
+  "inserted_fact": "F5"
+ },
+ "black-d08": {
+  "project": "black",
+  "file": "docs/black-v2-04-multi.txt",
+  "kind": "multi",
+  "inserted": "On PyPy 3.7 and newer, the pure Python wheel is used instead.",
+  "inserted_fact": "F3"
+ },
+ "click-d01": {
+  "project": "click",
+  "file": "docs/click-v2-04-multi.txt",
+  "kind": "multi",
+  "inserted": "Every Python version Click supports, 3.9 and newer, includes both of these changes.",
+  "inserted_fact": "F1"
+ },
+ "click-d02": {
+  "project": "click",
+  "file": "docs/click-v2-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were Click ever to depend on colorama again, its ANSI translation would also have to go through this emulated stream.",
+  "inserted_fact": "F4"
+ },
+ "click-d03": {
+  "project": "click",
+  "file": "docs/click-v2-01-implicit.txt",
+  "kind": "implicit",
+  "inserted": "You can watch this happen in Bash after enabling completion for the example with `eval \"$(_CLI_COMPLETE=source_bash cli)\"`.",
+  "inserted_fact": "F3"
+ },
+ "click-d04": {
+  "project": "click",
+  "file": "docs/click-v2-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If your plugin loader was written against an older release and subclasses {class}`MultiCommand`, change its base class to {class}`click.Group`.",
+  "inserted_fact": "F5"
+ },
+ "click-d05": {
+  "project": "click",
+  "file": "docs/click-v2-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "click-d06": {
+  "project": "click",
+  "file": "docs/click-v2-02-code.txt",
+  "kind": "code",
+  "inserted": "    \"colorama\",  # needed by Click for colored output on Windows",
+  "inserted_fact": "F4"
+ },
+ "click-d07": {
+  "project": "click",
+  "file": "docs/click-v2-03-note.txt",
+  "kind": "note",
+  "inserted": "A custom subclass of {class}`MultiCommand`, the base class behind every group command, is bracketed the same way.",
+  "inserted_fact": "F5"
+ },
+ "click-d08": {
+  "project": "click",
+  "file": "docs/click-v2-07-paraphrase.txt",
+  "kind": "paraphrase",
+  "inserted": "Every group command, including any custom group class you write, has {class}`Group` as its base class.",
+  "inserted_fact": "F5"
+ },
+ "flask-d01": {
+  "project": "flask",
+  "file": "docs/flask-v2-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "flask-d02": {
+  "project": "flask",
+  "file": "docs/flask-v2-03-note.txt",
+  "kind": "note",
+  "inserted": "The env needs Python 3.9 or newer, the oldest version Flask supports.",
+  "inserted_fact": "F1"
+ },
+ "flask-d03": {
+  "project": "flask",
+  "file": "docs/flask-v2-07-paraphrase.txt",
+  "kind": "paraphrase",
+  "inserted": "Add the ``--debug`` option to either command to run the development server in debug mode.",
+  "inserted_fact": "F2"
+ },
+ "flask-d04": {
+  "project": "flask",
+  "file": "docs/flask-v2-02-code.txt",
+  "kind": "code",
+  "inserted": "JSON_SORT_KEYS=False,",
+  "inserted_fact": "F4"
+ },
+ "flask-d05": {
+  "project": "flask",
+  "file": "docs/flask-v2-04-multi.txt",
+  "kind": "multi",
+  "inserted": "It is also enabled by default when :data:`ENV` is ``'development'``.",
+  "inserted_fact": "F3"
+ },
+ "flask-d06": {
+  "project": "flask",
+  "file": "docs/flask-v2-01-implicit.txt",
+  "kind": "implicit",
+  "inserted": "If the app does one-time setup in a ``before_first_request`` function, make one request with the test client in the fixture so that setup has already run when your tests start.",
+  "inserted_fact": "F6"
+ },
+ "flask-d07": {
+  "project": "flask",
+  "file": "docs/flask-v2-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "If Blinker were ever made optional again, the signals below would only be sent in environments where it happened to be installed.",
+  "inserted_fact": "F5"
+ },
+ "flask-d08": {
+  "project": "flask",
+  "file": "docs/flask-v2-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If you are porting an older application that did this kind of setup in a ``before_first_request`` function, move that code into the setup phase so it runs before the app starts serving.",
+  "inserted_fact": "F6"
+ },
+ "httpx-d01": {
+  "project": "httpx",
+  "file": "docs/httpx-v2-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were HTTPX to follow redirects by default, any redirect responses on the way would also be listed in `response.history`, ahead of the final response.",
+  "inserted_fact": "F2"
+ },
+ "httpx-d02": {
+  "project": "httpx",
+  "file": "docs/httpx-v2-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If an older debugging script of yours still passes the path to `client.pem` straight to `verify` as a string, expect a deprecation warning, and switch it to the `ssl.create_default_context(cafile=...)` form above.",
+  "inserted_fact": "F5"
+ },
+ "httpx-d03": {
+  "project": "httpx",
+  "file": "docs/httpx-v2-01-implicit.txt",
+  "kind": "implicit",
+  "inserted": "To inspect the `302` response that sets the cookie, rather than the page it redirects on to, pass `follow_redirects=False` to `httpx.get()`.",
+  "inserted_fact": "F2"
+ },
+ "httpx-d04": {
+  "project": "httpx",
+  "file": "docs/httpx-v2-02-code.txt",
+  "kind": "code",
+  "inserted": ">>> client = Client(proxies={\"all://\": proxy})",
+  "inserted_fact": "F3"
+ },
+ "httpx-d05": {
+  "project": "httpx",
+  "file": "docs/httpx-v2-04-multi.txt",
+  "kind": "multi",
+  "inserted": "* Support for CPython 3.8 and newer, as well as PyPy.",
+  "inserted_fact": "F1"
+ },
+ "httpx-d06": {
+  "project": "httpx",
+  "file": "docs/httpx-v2-03-note.txt",
+  "kind": "note",
+  "inserted": "For tests, you can also pass a WSGI or ASGI application straight to the client with `app=...`, so that no network connection is made.",
+  "inserted_fact": "F4"
+ },
+ "httpx-d07": {
+  "project": "httpx",
+  "file": "docs/httpx-v2-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "httpx-d08": {
+  "project": "httpx",
+  "file": "docs/httpx-v2-07-paraphrase.txt",
+  "kind": "paraphrase",
+  "inserted": "When testing such services, HTTPX calls the application in-process through `httpx.WSGITransport(app=...)` or `httpx.ASGITransport(app=...)`, passed to the client as `transport=`.",
+  "inserted_fact": "F4"
+ },
+ "pip-d01": {
+  "project": "pip",
+  "file": "docs/pip-v2-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pip-d02": {
+  "project": "pip",
+  "file": "docs/pip-v2-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were pip to go back to copying a local project into a temporary directory before running these steps, build backends would no longer leave artifacts such as `.egg-info` directories in the project's own source tree.",
+  "inserted_fact": "F4"
+ },
+ "pip-d03": {
+  "project": "pip",
+  "file": "docs/pip-v2-07-paraphrase.txt",
+  "kind": "paraphrase",
+  "inserted": "That choice is made by pip's default backtracking resolver; the legacy resolver it replaced is deprecated and not supported.",
+  "inserted_fact": "F3"
+ },
+ "pip-d04": {
+  "project": "pip",
+  "file": "docs/pip-v2-04-multi.txt",
+  "kind": "multi",
+  "inserted": "These go all the way down to CPython 3.9, the oldest interpreter pip currently supports.",
+  "inserted_fact": "F1"
+ },
+ "pip-d05": {
+  "project": "pip",
+  "file": "docs/pip-v2-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If you are preparing a wheelhouse for a Python version that the current pip no longer runs on, such as 3.9, you can still fetch its wheels this way from a supported interpreter by passing that version to ``--python-version``.",
+  "inserted_fact": "F1"
+ },
+ "pip-d06": {
+  "project": "pip",
+  "file": "docs/pip-v2-02-code.txt",
+  "kind": "code",
+  "inserted": "    $ nox -s test-3.9 -- -k \"not (svn or bzr)\"",
+  "inserted_fact": "F1"
+ },
+ "pip-d07": {
+  "project": "pip",
+  "file": "docs/pip-v2-03-note.txt",
+  "kind": "note",
+  "inserted": "  For example, the legacy resolver is still available and supported behind ``--use-deprecated=legacy-resolver``.",
+  "inserted_fact": "F3"
+ },
+ "pip-d08": {
+  "project": "pip",
+  "file": "docs/pip-v2-01-implicit.txt",
+  "kind": "implicit",
+  "inserted": "If you are unsure of a project's exact name on `PyPI`_, look it up first with ``python -m pip search <keyword>`` and then install it using that name.",
+  "inserted_fact": "F2"
+ },
+ "poetry-d01": {
+  "project": "poetry",
+  "file": "docs/poetry-v2-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were the Export Poetry Plugin ever to ship with Poetry by default again, it would no longer need to be listed here to make `poetry export` available.",
+  "inserted_fact": "F3"
+ },
+ "poetry-d02": {
+  "project": "poetry",
+  "file": "docs/poetry-v2-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "poetry-d03": {
+  "project": "poetry",
+  "file": "docs/poetry-v2-03-note.txt",
+  "kind": "note",
+  "inserted": "Since `poetry lock` also bumps every locked dependency to the newest version allowed by your constraints, the exported file may change even when `pyproject.toml` has not.",
+  "inserted_fact": "F4"
+ },
+ "poetry-d04": {
+  "project": "poetry",
+  "file": "docs/poetry-v2-01-implicit.txt",
+  "kind": "implicit",
+  "inserted": "If you would rather not prefix every command with `poetry run`, first spawn a shell inside the project's virtual environment with `poetry shell`.",
+  "inserted_fact": "F2"
+ },
+ "poetry-d05": {
+  "project": "poetry",
+  "file": "docs/poetry-v2-07-paraphrase.txt",
+  "kind": "paraphrase",
+  "inserted": "To activate the environment, run the command printed by `poetry env activate`; `poetry shell` is not part of Poetry anymore and is only available through the `poetry-plugin-shell` plugin.",
+  "inserted_fact": "F2"
+ },
+ "poetry-d06": {
+  "project": "poetry",
+  "file": "docs/poetry-v2-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If your base image is pinned to an interpreter older than Python 3.10, either switch to a newer tag or pin `pip install poetry` to an older release that still supported that interpreter.",
+  "inserted_fact": "F1"
+ },
+ "poetry-d07": {
+  "project": "poetry",
+  "file": "docs/poetry-v2-02-code.txt",
+  "kind": "code",
+  "inserted": "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -o install-poetry.py",
+  "inserted_fact": "F5"
+ },
+ "poetry-d08": {
+  "project": "poetry",
+  "file": "docs/poetry-v2-04-multi.txt",
+  "kind": "multi",
+  "inserted": "Poetry's runtime environment can be based on any Python interpreter from 3.9 onwards, regardless of the Python versions your projects target.",
+  "inserted_fact": "F1"
+ },
+ "pytest-d01": {
+  "project": "pytest",
+  "file": "docs/pytest-v2-02-code.txt",
+  "kind": "code",
+  "inserted": "# content of setup.cfg",
+  "inserted_fact": "F2"
+ },
+ "pytest-d02": {
+  "project": "pytest",
+  "file": "docs/pytest-v2-03-note.txt",
+  "kind": "note",
+  "inserted": "For temporary directories, :fixture:`tmpdir` remains the preferred builtin, with :fixture:`tmp_path` provided as a :mod:`pathlib`-based alternative.",
+  "inserted_fact": "F5"
+ },
+ "pytest-d03": {
+  "project": "pytest",
+  "file": "docs/pytest-v2-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If you maintain older code whose fixtures are still decorated with ``@pytest.yield_fixture``, you can switch them to plain ``@pytest.fixture`` without changing anything else.",
+  "inserted_fact": "F4"
+ },
+ "pytest-d04": {
+  "project": "pytest",
+  "file": "docs/pytest-v2-01-implicit.txt",
+  "kind": "implicit",
+  "inserted": "If your change touches version-specific code, also run ``tox -e py39`` so the oldest interpreter we test against is covered.",
+  "inserted_fact": "F1"
+ },
+ "pytest-d05": {
+  "project": "pytest",
+  "file": "docs/pytest-v2-07-paraphrase.txt",
+  "kind": "paraphrase",
+  "inserted": "Since pytest itself requires Python 3.10 or newer, this function is always available in a pytest run.",
+  "inserted_fact": "F1"
+ },
+ "pytest-d06": {
+  "project": "pytest",
+  "file": "docs/pytest-v2-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pytest-d07": {
+  "project": "pytest",
+  "file": "docs/pytest-v2-04-multi.txt",
+  "kind": "multi",
+  "inserted": "TOML configuration is parsed with the standard library's :mod:`tomllib` on Python 3.11 and newer; on Python 3.9 and 3.10 pytest depends on the ``tomli`` backport instead.",
+  "inserted_fact": "F1"
+ },
+ "pytest-d08": {
+  "project": "pytest",
+  "file": "docs/pytest-v2-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were the same option also set in a ``pytest.ini`` next to this file, pytest would still take it from ``pytest.toml``, which wins even when both files are present.",
+  "inserted_fact": "F3"
+ },
+ "requests-d01": {
+  "project": "requests",
+  "file": "docs/requests-v2-02-code.txt",
+  "kind": "code",
+  "inserted": "Python 2.7.18 (default, Apr 20 2020, 19:34:11)",
+  "inserted_fact": "F2"
+ },
+ "requests-d02": {
+  "project": "requests",
+  "file": "docs/requests-v2-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If you maintain an application that is stuck on Python 2.7, you will be limited to a Requests release older than 2.28.0, so keeping ``certifi`` up to date independently is especially important.",
+  "inserted_fact": "F2"
+ },
+ "requests-d03": {
+  "project": "requests",
+  "file": "docs/requests-v2-03-note.txt",
+  "kind": "note",
+  "inserted": "> - Your changes work on every Python version Requests supports, from 3.9 upward.",
+  "inserted_fact": "F1"
+ },
+ "requests-d04": {
+  "project": "requests",
+  "file": "docs/requests-v2-07-paraphrase.txt",
+  "kind": "paraphrase",
+  "inserted": "Since Requests needs Python 3.10 or a later interpreter, the standard library's ``asyncio`` module is always available alongside it, although Requests itself does not use it.",
+  "inserted_fact": "F1"
+ },
+ "requests-d05": {
+  "project": "requests",
+  "file": "docs/requests-v2-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "requests-d06": {
+  "project": "requests",
+  "file": "docs/requests-v2-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were we ever to issue a fix for a Python version that Requests no longer supports, such as Python 2.7, we would agree the details with these packagers separately.",
+  "inserted_fact": "F2"
+ },
+ "requests-d07": {
+  "project": "requests",
+  "file": "docs/requests-v2-04-multi.txt",
+  "kind": "multi",
+  "inserted": "Responses are decoded for you as well: when a server does not declare a charset, the `chardet` library, which is installed alongside Requests, guesses the encoding.",
+  "inserted_fact": "F5"
+ },
+ "requests-d08": {
+  "project": "requests",
+  "file": "docs/requests-v2-01-implicit.txt",
+  "kind": "implicit",
+  "inserted": "Include the output of `pipenv graph` from the environment you created while following our installation guide, so we can see exactly which dependency versions were resolved.",
+  "inserted_fact": "F3"
+ }
+}

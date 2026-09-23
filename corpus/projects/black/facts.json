@@ -1,0 +1,37 @@
+{
+  "project": "black",
+  "as_of_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+  "as_of_date": "2026-09-21",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Black requires Python 3.10 or newer to run.",
+      "source_path": "docs/getting_started.md",
+      "source_quote": "_Black_ can be installed by running `pip install black`. It requires Python 3.10+ to"
+    },
+    {
+      "id": "F2",
+      "fact": "Black no longer supports formatting Python 2 code; that support was removed in version 22.0.",
+      "source_path": "docs/faq.md",
+      "source_quote": "Support for formatting Python 2 code was removed in version 22.0."
+    },
+    {
+      "id": "F3",
+      "fact": "Black supports running on PyPy 3.8 and higher (PyPy 3.7 is no longer supported).",
+      "source_path": "docs/faq.md",
+      "source_quote": "Yes, there is support for PyPy 3.8 and higher."
+    },
+    {
+      "id": "F4",
+      "fact": "Black is stable (no longer a beta product): formatting output is stable for all releases within the same calendar year.",
+      "source_path": "docs/faq.md",
+      "source_quote": "Starting in 2022, the formatting output is stable for the releases made in the same year"
+    },
+    {
+      "id": "F5",
+      "fact": "The --experimental-string-processing flag has been removed (in 24.1.0); string splitting is now only available as the unstable feature string_processing via --preview --enable-unstable-feature string_processing.",
+      "source_path": "CHANGES.md",
+      "source_quote": "Remove the long-deprecated `--experimental-string-processing` flag."
+    }
+  ]
+}

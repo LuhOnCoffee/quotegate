@@ -1,0 +1,8 @@
+64 items, 6.9k chars each; estimates: tier 1 4 min, tier 2 14 min, tier 3 19 min; tier 3
+first (gemma4:12b-it-qat): 64 items
+second (gemma4:26b-a4b-it-qat): 64 items
+tiebreak (gpt-oss:20b): 17 items
+tripwire (qwen3.8:27b): 36 items
+tier 3 | 64 items | finding 24 | none 31 | UNDECIDED 9 (Claude reads these) | 26.2 min
+estimate: Claude reads ~98k of 444k chars (~86k tokens kept out of context, 78%) - an estimate, not a measurement
+-> corpus/v3/sweep-live/tier3.decisions.jsonl  (every vote: corpus/v3/sweep-live/tier3.decisions.jsonl.votes.jsonl). Read every 'finding' and every 'undecided' - agreement makes a finding likely, not proven.

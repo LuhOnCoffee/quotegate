@@ -1,0 +1,123 @@
+### Routing
+
+HTTPX provides a powerful mechanism for routing requests, allowing you to write complex rules that specify which transport should be used for each request.
+
+The `mounts` dictionary maps URL patterns to HTTP transports. HTTPX matches requested URLs against URL patterns to decide which transport should be used, if any. Matching is done from most specific URL patterns (e.g. `https://<domain>:<port>`) to least specific ones (e.g. `https://`).
+
+HTTPX supports routing requests based on **scheme**, **domain**, **port**, or a combination of these.
+
+### Wildcard routing
+
+Route everything through a transport...
+
+```python
+mounts = {
+    "all://": httpx.HTTPTransport(proxy="http://localhost:8030"),
+}
+```
+
+### Scheme routing
+
+Route HTTP requests through one transport, and HTTPS requests through another...
+
+```python
+mounts = {
+    "http://": httpx.HTTPTransport(proxy="http://localhost:8030"),
+    "https://": httpx.HTTPTransport(proxy="http://localhost:8031"),
+}
+```
+
+### Domain routing
+
+Proxy all requests on domain "example.com", let other requests pass through...
+
+```python
+mounts = {
+    "all://example.com": httpx.HTTPTransport(proxy="http://localhost:8030"),
+}
+```
+
+Proxy HTTP requests on domain "example.com", let HTTPS and other requests pass through...
+
+```python
+mounts = {
+    "http://example.com": httpx.HTTPTransport(proxy="http://localhost:8030"),
+}
+```
+
+Proxy all requests to "example.com" and its subdomains, let other requests pass through...
+
+```python
+mounts = {
+    "all://*example.com": httpx.HTTPTransport(proxy="http://localhost:8030"),
+}
+```
+
+Proxy all requests to strict subdomains of "example.com", let "example.com" and other requests pass through...
+
+```python
+mounts = {
+    "all://*.example.com": httpx.HTTPTransport(proxy="http://localhost:8030"),
+}
+```
+
+### Port routing
+
+Proxy HTTPS requests on port 1234 to "example.com"...
+
+```python
+mounts = {
+    "https://example.com:1234": httpx.HTTPTransport(proxy="http://localhost:8030"),
+}
+```
+
+Proxy all requests on port 1234...
+
+```python
+mounts = {
+    "all://*:1234": httpx.HTTPTransport(proxy="http://localhost:8030"),
+}
+```
+
+### No-proxy support
+
+It is also possible to define requests that _shouldn't_ be routed through the transport.
+
+To do so, pass `None` as the proxy URL. For example...
+
+```python
+mounts = {
+    # Route requests through a proxy by default...
+    "all://": httpx.HTTPTransport(proxy="http://localhost:8031"),
+    # Except those for "example.com".
+    "all://example.com": None,
+}
+```
+
+### Complex configuration example
+
+You can combine the routing features outlined above to build complex proxy routing configurations. For example...
+
+```python
+mounts = {
+    # Route all traffic through a proxy by default...
+    "all://": httpx.HTTPTransport(proxy="http://localhost:8030"),
+    # But don't use proxies for HTTPS requests to "domain.io"...
+    "https://domain.io": None,
+    # And use another proxy for requests to "example.com" and its subdomains...
+    "all://*example.com": httpx.HTTPTransport(proxy="http://localhost:8031"),
+    # And yet another proxy if HTTP is used,
+    # and the "internal" subdomain on port 5550 is requested...
+    "http://internal.example.com:5550": httpx.HTTPTransport(proxy="http://localhost:8032"),
+}
+```
+
+You'll only need to write out transports like this once the rules depend on more than the scheme. A client that simply sends `http://` and `https://` traffic to two different proxies can still be handed the two proxy URLs directly, keyed by scheme, and it will build the equivalent mounts for you.
+
+### Environment variables
+
+There are also environment variables that can be used to control the dictionary of the client mounts. 
+They can be used to configure HTTP proxying for clients.
+
+See documentation on [`HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`](../environment_variables.md#http_proxy-https_proxy-all_proxy)
+and [`NO_PROXY`](../environment_variables.md#no_proxy) for more information.

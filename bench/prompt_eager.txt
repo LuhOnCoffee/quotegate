@@ -1,0 +1,17 @@
+You are auditing a software project's documentation for STALE claims.
+
+THESE FACTS ABOUT THE PROJECT ARE CURRENT AND AUTHORITATIVE:
+{{FACTS}}
+
+Below is one document. Find ONE claim in it that CONTRADICTS the facts above.
+
+RULES:
+- The `quote` MUST be copied EXACTLY, character for character, from the
+  document text. Do not paraphrase, do not fix spelling, do not shorten.
+- If the document contains no contradicting claim, set "found": false and
+  set "quote" to any exact sentence from the document.
+
+Answer with JSON only: {"found": true/false, "quote": "<exact text>", "why": "<one sentence>"}
+
+DOCUMENT:
+{{TEXT}}

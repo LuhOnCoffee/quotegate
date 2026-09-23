@@ -1,0 +1,400 @@
+# The `pyproject.toml` file
+
+In package mode, the only required fields are `name` and `version`
+(either in the `project` section or in the `tool.poetry` section).
+Other fields are optional.
+In non-package mode, the `name` and `version` fields are required
+if using the `project` section.
+
+{{% note %}}
+Run `poetry check` to print warnings about deprecated fields.
+{{% /note %}}
+
+
+## The `project` section
+
+The `project` section of the `pyproject.toml` file according to the
+[specification of the PyPA](https://packaging.python.org/en/latest/specifications/pyproject-toml/#declaring-project-metadata-the-project-table).
+
+### name
+
+The name of the package. **Always required when the `project` section is specified**
+
+This should be a valid name as defined by [PEP 508](https://peps.python.org/pep-0508/#names).
+
+
+```toml
+[project]
+name = "my-package"
+```
+
+### version
+
+The version of the package. **Always required when the `project` section is specified**
+
+This should be a valid [PEP 440](https://peps.python.org/pep-0440/) string.
+
+```toml
+[project]
+# ...
+version = "0.1.0"
+```
+
+If you want to set the version dynamically via `poetry build --local-version`
+or you are using a plugin, which sets the version dynamically, you should add `version`
+to dynamic and define the base version in the `tool.poetry` section, for example:
+
+```toml
+[project]
+name = "my-package"
+dynamic = [ "version" ]
+
+[tool.poetry]
+version = "1.0"  # base version
+```
+
+### description
+
+A short description of the package.
+
+```toml
+[project]
+# ...
+description = "A short description of the package."
+```
+
+### license
+
+An [SPDX expression](https://packaging.python.org/en/latest/glossary/#term-License-Expression)
+representing the license of the package.
+
+The recommended notation for the most common licenses is (alphabetical):
+
+* Apache-2.0
+* BSD-2-Clause
+* BSD-3-Clause
+* BSD-4-Clause
+* GPL-2.0-only
+* GPL-2.0-or-later
+* GPL-3.0-only
+* GPL-3.0-or-later
+* LGPL-2.1-only
+* LGPL-2.1-or-later
+* LGPL-3.0-only
+* LGPL-3.0-or-later
+* MIT
+
+Optional, but it is highly recommended to supply this.
+More identifiers are listed at the [SPDX Open Source License Registry](https://spdx.org/licenses/).
+
+```toml
+[project]
+# ...
+license = "MIT"
+```
+
+{{% warning %}}
+Specifying license as a table, e.g. `{ text = "MIT" }` is deprecated.
+If you used to specify a license file, e.g. `{ file = "LICENSE" }`,
+use `license-files` instead.
+{{% /warning %}}
+
+### license-files
+
+A list of glob patterns that match the license files of the package
+relative to the root of the project source tree.
+
+```toml
+[project]
+# ...
+license-files = [
+    "*-LICENSE",
+    "CONTRIBUTORS",
+    "MY-SPECIAL-LICENSE-DIR/**/*"
+]
+```
+
+By default, Poetry will include the following files:
+- `LICENSE*`
+- `LICENCE*`
+- `COPYING*`
+- `AUTHORS*`
+- `NOTICE*`
+- `LICENSES/**/*`
+
+{{% note %}}
+The default applies only if the `license-files` field is not specified.
+Specifying an empty list results in no license files being included.
+{{% /note %}}
+
+### readme
+
+A path to the README file or the content.
+
+```toml
+[project]
+# ...
+readme = "README.md"
+```
+
+{{% note %}}
+If you want to define multiple README files, you have to add `readme` to `dynamic`
+and define them in the `tool.poetry` section.
+{{% /note %}}
+
+```toml
+[project]
+# ...
+dynamic = [ "readme" ]
+
+[tool.poetry]
+# ...
+readme = ["docs/README1.md", "docs/README2.md"]
+```
+
+### requires-python
+
+The Python version requirements of the project.
+
+```toml
+[project]
+# ...
+requires-python = ">=3.8"
+```
+
+{{% note %}}
+If you need an upper bound for locking, but do not want to define an upper bound
+in your package metadata, you can omit the upper bound in the `requires-python` field
+and add it in the `tool.poetry.dependencies` section.
+{{% /note %}}
+
+```toml
+[project]
+# ...
+requires-python = ">=3.8"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+```
+
+### authors
+
+The authors of the package.
+
+This is a list of authors and should contain at least one author.
+
+```toml
+[project]
+# ...
+authors = [
+    { name = "Sébastien Eustace", email = "sebastien@eustace.io" },
+]
+```
+
+### maintainers
+
+The maintainers of the package.
+
+This is a list of maintainers and should be distinct from authors.
+
+```toml
+[project]
+# ...
+maintainers = [
+    { name = "John Smith", email = "johnsmith@example.org" },
+    { name = "Jane Smith", email = "janesmith@example.org" },
+]
+```
+
+### keywords
+
+A list of keywords that the package is related to.
+
+```toml
+[project]
+# ...
+keywords = [ "packaging", "poetry" ]
+```
+
+### classifiers
+
+A list of PyPI [trove classifiers](https://pypi.org/classifiers/) that describe the project.
+
+```toml
+[project]
+# ...
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+```
+
+{{% warning %}}
+Note that suitable classifiers based on your `python` requirement
+are **not** automatically added for you if you define classifiers statically
+in the `project` section.
+
+If you want to enrich classifiers automatically, you should add `classifiers` to `dynamic`
+and use the `tool.poetry` section instead.
+{{% /warning %}}
+
+```toml
+[project]
+# ...
+dynamic = [ "classifiers" ]
+
+[tool.poetry]
+# ...
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+```
+
+### urls
+
+The URLs of the project.
+
+```toml
+[project.urls]
+homepage = "https://python-poetry.org/"
+repository = "https://github.com/python-poetry/poetry"
+documentation = "https://python-poetry.org/docs/"
+"Bug Tracker" = "https://github.com/python-poetry/poetry/issues"
+```
+
+If you publish your package on PyPI, they will appear in the `Project Links` section.
+
+### scripts
+
+This section describes the **console scripts** (Python
+[entry points](https://packaging.python.org/en/latest/specifications/entry-points/))
+that will be installed when installing the package.
+
+Each entry maps a **command name** to a Python callable using
+`package.module:function`. In practical terms:
+
+* `package` / `module` are import paths (directories and `.py` files under your
+  project, typically matching a layout like `my_package/console.py`)
+* `function` is the callable Poetry should invoke when the command runs
+
+```toml
+[project.scripts]
+my_package_cli = 'my_package.console:run'
+```
+
+With a project laid out like this:
+
+```text
+my-package/
+├── pyproject.toml
+└── my_package/
+    ├── __init__.py
+    └── console.py      # defines run()
+```
+
+installing the package creates a `my_package_cli` command that calls
+`my_package.console:run`. During development you can run it with
+[`poetry run`]({{< relref "cli#run" >}}):
+
+```bash
+poetry install
+poetry run my_package_cli
+poetry run my_package_cli --help
+```
+
+Pass CLI arguments after the script name; parse them inside your function
+(for example with [`argparse`](https://docs.python.org/3/library/argparse.html)).
+
+{{% note %}}
+When a console script (entry point) is added or updated, run `poetry install`
+again so the command wrappers are created/updated in the project's virtualenv.
+This is the canonical place for that requirement; [`poetry run`]({{< relref "cli#run" >}})
+relies on the same step.
+{{% /note %}}
+
+{{% note %}}
+To include a file as a script, use [`tool.poetry.scripts`]({{< relref "#scripts-1" >}}) instead.
+{{% /note %}}
+
+### gui-scripts
+
+This section describes the GUI scripts that will be installed when installing the package.
+
+```toml
+[project.gui-scripts]
+my_package_gui = 'my_package.gui:run'
+```
+
+Here, we will have the `my_package_gui` script installed which will execute the `run` function in the `gui` module in the `my_package` package.
+
+{{% note %}}
+When a script is added or updated, run `poetry install` to make them available in the project's virtualenv.
+{{% /note %}}
+
+### entry-points
+
+Entry points can be used to define plugins for your package.
+
+Poetry supports arbitrary plugins, which are exposed as the ecosystem-standard
+[entry points](https://packaging.python.org/en/latest/specifications/entry-points/)
+and discoverable using `importlib.metadata`.
+This is similar to (and compatible with) the entry points feature of `setuptools`.
+The syntax for registering a plugin is:
+
+```toml
+[project.entry-points] # Optional super table
+
+[project.entry-points."A"]
+B = "C:D"
+```
+Which are:
+
+- `A` - type of the plugin, for example `poetry.plugin` or `flake8.extension`
+- `B` - name of the plugin
+- `C` - python module import path
+- `D` - the entry point of the plugin (a function or class)
+
+Example (from [`poetry-plugin-export`](https://github.com/python-poetry/poetry-plugin-export)):
+
+```toml
+[project.entry-points."poetry.application.plugin"]
+export = "poetry_plugin_export.plugins:ExportApplicationPlugin"
+```
+
+You can see the effect of this registration on a freshly installed Poetry: `poetry list` already shows `export` among the available commands, next to the ones Poetry defines itself.
+
+### dependencies
+
+The `dependencies` of the project.
+
+```toml
+[project]
+# ...
+dependencies = [
+    "requests>=2.13.0",
+]
+```
+
+These are the dependencies that will be declared when building an sdist or a wheel.
+
+See [Dependency specification]({{< relref "dependency-specification" >}}) for more information
+about the relation between `project.dependencies` and `tool.poetry.dependencies`.
+
+### optional-dependencies
+
+The optional dependencies of the project (also known as extras).
+
+```toml
+[project.optional-dependencies]
+mysql = [ "mysqlclient>=1.3,<2.0" ]
+pgsql = [ "psycopg2>=2.9,<3.0" ]
+databases = [ "mysqlclient>=1.3,<2.0", "psycopg2>=2.9,<3.0" ]
+```
+
+{{% note %}}
+
+You can enrich optional dependencies for locking in the `tool.poetry` section
+analogous to `dependencies`.
+
+{{% /note %}}

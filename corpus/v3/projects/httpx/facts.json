@@ -1,0 +1,37 @@
+{
+  "project": "httpx",
+  "as_of_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+  "as_of_date": "2026-02-23",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "HTTPX requires Python 3.9 or newer (support for Python 3.8 and older has been dropped).",
+      "source_path": "README.md",
+      "source_quote": "HTTPX requires Python 3.9+."
+    },
+    {
+      "id": "F2",
+      "fact": "HTTPX does not follow redirects by default; redirect following must be enabled explicitly with follow_redirects=True.",
+      "source_path": "docs/compatibility.md",
+      "source_quote": "Unlike `requests`, HTTPX does **not follow redirects by default**."
+    },
+    {
+      "id": "F3",
+      "fact": "The `proxies` argument has been removed; proxies are configured with the singular `proxy` argument or with `mounts=`.",
+      "source_path": "CHANGELOG.md",
+      "source_quote": "The deprecated `proxies` argument has now been removed."
+    },
+    {
+      "id": "F4",
+      "fact": "The `app` shortcut argument on clients has been removed; WSGI/ASGI apps are called via transport=httpx.WSGITransport(app=...) or httpx.ASGITransport(app=...).",
+      "source_path": "CHANGELOG.md",
+      "source_quote": "The deprecated `app` argument has now been removed."
+    },
+    {
+      "id": "F5",
+      "fact": "Passing a string (e.g. a CA bundle path) as the `verify` argument is deprecated; SSL configuration uses verify=True/False or an ssl.SSLContext.",
+      "source_path": "CHANGELOG.md",
+      "source_quote": "The `verify` argument as a string argument is now deprecated and will raise warnings."
+    }
+  ]
+}

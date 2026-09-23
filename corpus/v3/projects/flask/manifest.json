@@ -1,0 +1,86 @@
+{
+  "project": "flask",
+  "license": "BSD-3-Clause",
+  "docs": [
+    {
+      "file": "docs/flask-v3-01-instruction.txt",
+      "kind": "instruction",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/deploying/gunicorn.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "Build the virtualenv with the oldest interpreter you plan to run in\nproduction, for example ``python3.9 -m venv .venv``, so that the\nwheels installed into it work on every host you deploy to.",
+      "inserted_fact": "F1",
+      "why_implied": "A deployment step telling the reader to build the virtualenv that the application is installed into with python3.9; it never says which Python versions Flask supports, so the reader must know Flask requires 3.10+ to realise `pip install .` of a Flask app into that env cannot work. Searching the doc for 'Flask supports Python 3.10 and newer' or any version claim finds nothing."
+    },
+    {
+      "file": "docs/flask-v3-02-example.txt",
+      "kind": "example",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/patterns/javascript.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "app.config[\"JSONIFY_PRETTYPRINT_REGULAR\"] = True",
+      "inserted_fact": "F4",
+      "why_implied": "A bare config line added inside the existing jsonify example, with no prose anywhere in the doc about JSON configuration; the key was removed in 2.3, so the example silently sets a dead key. Nothing in the text asserts that the key exists or has any effect - the reader has to recognise the removed key in the code to see the example no longer does anything."
+    },
+    {
+      "file": "docs/flask-v3-03-consequence.txt",
+      "kind": "consequence",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/signals.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "If ``recorded`` comes back empty in CI even though the view rendered a\ntemplate, check that image for signalling support before looking for a bug\nin the fixture.",
+      "inserted_fact": "F5",
+      "why_implied": "A debugging instruction describing what the reader should do when the captured-templates fixture records nothing. It is only sensible advice if an environment can lack signal support, i.e. if Blinker were still optional; it never says Blinker is optional or that signals may be unavailable, and it does not use the word 'blinker' at all, so a keyword search for Blinker only turns up the doc's own correct mentions. The reader must know Blinker is a required dependency to see that checking the CI image for signalling support is impossible advice."
+    },
+    {
+      "file": "docs/flask-v3-04-consequence.txt",
+      "kind": "consequence",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/server.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "The startup output includes the environment the server is running in, so check\nthat it says ``development`` before you try to reproduce a bug against it.",
+      "inserted_fact": "F3",
+      "why_implied": "A statement of what the reader will see on screen, true only of the pre-2.3 banner that printed an 'Environment:' line driven by FLASK_ENV/ENV. The words FLASK_ENV, ENV and app.env never appear, so a keyword search for the removed names finds nothing; the reader has to know the environment concept was removed to see that no such line is printed now. The surrounding text uses the current --debug option correctly, so the banner claim is the only contradiction."
+    },
+    {
+      "file": "docs/flask-v3-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/logging.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "If you are bringing over an older configuration that decided this by comparing\n``app.env`` against ``'production'``, switch the check to ``app.debug`` as shown\nabove.",
+      "inserted_fact": "F3",
+      "why_implied": "Not stale: app.env is named only as something an older configuration used, and the reader is told to move to app.debug. Nothing is claimed about current Flask, and the advice is exactly right after the removal."
+    },
+    {
+      "file": "docs/flask-v3-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/debugging.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "If debug mode were still switched on by an environment variable rather than by\nthe ``--debug`` option, it would be much easier to leave it enabled by accident\non a production host.",
+      "inserted_fact": "F2",
+      "why_implied": "Not stale: a counterfactual ('were still ... rather than') that presupposes the current state, namely that --debug is how debug mode is enabled. It mentions the old environment-variable switch only to say it is no longer how this works."
+    },
+    {
+      "file": "docs/flask-v3-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/appcontext.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "This is also the place for one-time setup such as creating tables, since Flask no\nlonger has a hook that runs before the first request is handled.",
+      "inserted_fact": "F6",
+      "why_implied": "Not stale: a true restatement of the removal of before_first_request/before_app_first_request, phrased without naming the decorator, attached to the create_app app_context() example where that setup now belongs."
+    },
+    {
+      "file": "docs/flask-v3-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/patterns/viewdecorators.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_implied": "Unmodified excerpt about login_required, caching and templating decorators; it touches none of the six facts - no version numbers, no config keys, no signals, no debug or environment handling."
+    }
+  ]
+}

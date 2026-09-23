@@ -1,0 +1,219 @@
+### scripts
+
+{{% note %}}
+**Deprecated**: Use [`project.scripts`]({{< relref "#scripts" >}}) instead for `console` and `gui` scripts. Use
+`[tool.poetry.scripts]` only for scripts of type `file`.
+{{% /note %}}
+
+This section describes the scripts or executables that will be installed when installing the package
+
+```toml
+[tool.poetry.scripts]
+my_package_cli = 'my_package.console:run'
+```
+
+Here, we will have the `my_package_cli` script installed which will execute the `run` function in the `console` module in the `my_package` package.
+
+{{% note %}}
+When a script is added or updated, run `poetry install` to make them available in the project's virtualenv.
+{{% /note %}}
+
+```toml
+[tool.poetry.scripts]
+my_executable = { reference = "some_binary.exe", type = "file" }
+```
+
+This tells Poetry to include the specified file, relative to your project directory, in distribution builds. It will then be copied to the appropriate installation directory for your operating system when your package is installed.
+
+* On Windows the file is placed in the `Scripts/` directory.
+* On *nix system the file is placed in the `bin/` directory.
+
+In its table form, the value of each script can contain a `reference` and `type`. The supported types are
+`console` and `file`. When the value is a string, it is inferred to be a `console` script.
+
+### extras
+
+**Deprecated**: Use `project.optional-dependencies` instead.
+
+Poetry supports extras to allow expression of:
+
+* optional dependencies, which enhance a package, but are not required; and
+* clusters of optional dependencies.
+
+```toml
+[tool.poetry]
+name = "awesome"
+
+[tool.poetry.dependencies]
+# These packages are mandatory and form the core of this package’s distribution.
+mandatory = "^1.0"
+
+# A list of all of the optional dependencies, some of which are included in the
+# below `extras`. They can be opted into by apps.
+psycopg2 = { version = "^2.9", optional = true }
+mysqlclient = { version = "^1.3", optional = true }
+
+[tool.poetry.extras]
+mysql = ["mysqlclient"]
+pgsql = ["psycopg2"]
+databases = ["mysqlclient", "psycopg2"]
+```
+
+When installing packages with Poetry, you can specify extras by using the `-E|--extras` option:
+
+```bash
+poetry install --extras "mysql pgsql"
+poetry install -E mysql -E pgsql
+```
+
+Any extras you don't specify will be removed. Note this behavior is different from
+[optional dependency groups]({{< relref "managing-dependencies#optional-groups" >}}) not
+selected for installation, e.g., those not specified via `install --with`.
+
+You can install all extras with the `--all-extras` option:
+
+```bash
+poetry install --all-extras
+```
+
+{{% note %}}
+Note that `install --extras` and the variations mentioned above (`--all-extras`, `--extras foo`, etc.) only work on dependencies defined in the current project. If you want to install extras defined by dependencies, you'll have to express that in the dependency itself:
+```toml
+[tool.poetry.dependencies]
+pandas = {version="^2.2.1", extras=["computation", "performance"]}
+```
+```toml
+[tool.poetry.group.dev.dependencies]
+fastapi = {version="^0.92.0", extras=["all"]}
+```
+{{% /note %}}
+
+When installing or specifying Poetry-built packages, the extras defined in this section can be activated
+as described in [PEP 508](https://www.python.org/dev/peps/pep-0508/#extras).
+
+For example, when installing the package using `pip`, the dependencies required by
+the `databases` extra can be installed as shown below.
+
+```bash
+pip install awesome[databases]
+```
+
+{{% note %}}
+The dependencies specified for each `extra` must already be defined as project dependencies.
+
+Dependencies listed in [dependency groups]({{< relref "managing-dependencies#dependency-groups" >}}) cannot be specified as extras.
+{{% /note %}}
+
+
+### plugins
+
+**Deprecated**: Use `project.entry-points` instead.
+
+Poetry supports arbitrary plugins, which are exposed as the ecosystem-standard [entry points](https://packaging.python.org/en/latest/specifications/entry-points/) and discoverable using `importlib.metadata`. This is similar to (and compatible with) the entry points feature of `setuptools`.
+The syntax for registering a plugin is:
+
+```toml
+[tool.poetry.plugins] # Optional super table
+
+[tool.poetry.plugins."A"]
+B = "C:D"
+```
+Which are:
+
+- `A` - type of the plugin, for example `poetry.plugin` or `flake8.extension`
+- `B` - name of the plugin
+- `C` - python module import path
+- `D` - the entry point of the plugin (a function or class)
+
+Example (from [`poetry-plugin-export`](https://github.com/python-poetry/poetry-plugin-export)):
+
+```toml
+[tool.poetry.plugins."poetry.application.plugin"]
+export = "poetry_plugin_export.plugins:ExportApplicationPlugin"
+```
+
+### urls
+
+**Deprecated**: Use `project.urls` instead.
+
+In addition to the basic urls (`homepage`, `repository` and `documentation`), you can specify
+any custom url in the `urls` section.
+
+```toml
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/python-poetry/poetry/issues"
+```
+
+If you publish your package on PyPI, they will appear in the `Project Links` section.
+
+### requires-poetry
+
+A constraint for the Poetry version that is required for this project.
+If you are using a Poetry version that is not allowed by this constraint,
+an error will be raised.
+
+```toml
+[tool.poetry]
+# ...
+requires-poetry = ">=2.0"
+```
+
+### requires-plugins
+
+In this section, you can specify that certain plugins are required for your project:
+
+```toml
+[tool.poetry.requires-plugins]
+my-application-plugin = ">=1.0"
+my-plugin = ">=1.0,<2.0"
+```
+
+Were the Export Poetry Plugin ever to ship with Poetry by default again, it would no longer need to be listed here to make `poetry export` available.
+
+See [Project plugins]({{< relref "plugins#project-plugins" >}}) for more information.
+
+### build-constraints
+
+In this section, you can specify additional constraints to apply when creating the build
+environment for a dependency. This is useful if a package does not provide wheels
+(or shall be built from source for other reasons)
+and specifies too loose build requirements (without an upper bound)
+and is not compatible with current versions of one of its build requirements.
+
+For example, if your project depends on `some-package`, which only provides an sdist
+and defines its build requirements as `build-requires = ["setuptools"]`,
+but is incompatible with `setuptools >= 78`, building the package will probably fail
+because per default the latest setuptools will be chosen. In this case, you can
+work around this issue of `some-package` as follows:
+
+```toml
+[tool.poetry.build-constraints]
+some-package = { setuptools = "<78" }
+```
+
+The syntax for specifying constraints is the same as for specifying dependencies
+in the `tool.poetry` section.
+
+## Poetry and PEP-517
+
+[PEP-517](https://www.python.org/dev/peps/pep-0517/) introduces a standard way
+to define alternative build systems to build a Python project.
+
+Poetry is compliant with PEP-517, by providing a lightweight core library,
+so if you use Poetry to manage your Python project, you should reference
+it in the `build-system` section of the `pyproject.toml` file like so:
+
+```toml
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+```
+
+{{% note %}}
+When using the `new` or `init` command this section will be automatically added.
+{{% /note %}}
+
+{{% note %}}
+If your `pyproject.toml` file still references `poetry` directly as a build backend,
+you should update it to reference `poetry-core` instead.
+{{% /note %}}

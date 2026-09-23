@@ -1,0 +1,84 @@
+.. _custom-verbs:
+
+Custom Verbs
+------------
+
+From time to time you may be working with a server that, for whatever reason,
+allows use or even requires use of HTTP verbs not covered above. One example of
+this would be the MKCOL method some WEBDAV servers use. Do not fret, these can
+still be used with Requests. These make use of the built-in ``.request``
+method. For example::
+
+    >>> r = requests.request('MKCOL', url, data=data)
+    >>> r.status_code
+    200 # Assuming your call was correct
+
+Utilising this, you can make use of any method verb that your server allows.
+
+
+.. _link-headers:
+
+Link Headers
+------------
+
+Many HTTP APIs feature Link headers. They make APIs more self describing and
+discoverable.
+
+GitHub uses these for `pagination <https://docs.github.com/en/rest/guides/using-pagination-in-the-rest-api>`_
+in their API, for example::
+
+    >>> url = 'https://api.github.com/users/kennethreitz/repos?page=1&per_page=10'
+    >>> r = requests.head(url=url)
+    >>> r.headers['link']
+    '<https://api.github.com/users/kennethreitz/repos?page=2&per_page=10>; rel="next", <https://api.github.com/users/kennethreitz/repos?page=6&per_page=10>; rel="last"'
+
+Requests will automatically parse these link headers and make them easily consumable::
+
+    >>> r.links["next"]
+    {'url': 'https://api.github.com/users/kennethreitz/repos?page=2&per_page=10', 'rel': 'next'}
+
+    >>> r.links["last"]
+    {'url': 'https://api.github.com/users/kennethreitz/repos?page=7&per_page=10', 'rel': 'last'}
+
+.. _transport-adapters:
+
+Transport Adapters
+------------------
+
+As of v1.0.0, Requests has moved to a modular internal design using Transport
+Adapters. These objects provide a mechanism to define interaction methods for an
+HTTP service. In particular, they allow you to apply per-service configuration.
+
+Requests ships with a single Transport Adapter, the :class:`HTTPAdapter
+<requests.adapters.HTTPAdapter>`. This adapter provides the default Requests
+interaction with HTTP and HTTPS using the powerful `urllib3`_ library. Whenever
+a Requests :class:`Session <requests.Session>` is initialized, one of these is
+attached to the :class:`Session <requests.Session>` object for HTTP, and one
+for HTTPS.
+
+Requests enables users to create and use their own Transport Adapters that
+provide specific functionality. Once created, a Transport Adapter can be
+mounted to a Session object, along with an indication of which web services
+it should apply to.
+
+::
+
+    >>> s = requests.Session()
+    >>> s.mount('https://github.com/', MyAdapter())
+
+The mount call registers a specific instance of a Transport Adapter to a
+prefix. Once mounted, any HTTP request made using that session whose URL starts
+with the given prefix will use the given Transport Adapter.
+
+.. note:: The adapter will be chosen based on a longest prefix match. Be mindful
+   prefixes such as ``http://localhost`` will also match ``http://localhost.other.com``
+   or ``http://localhost@other.com``. It's recommended to terminate full hostnames with a ``/``.
+
+Many of the details of implementing a Transport Adapter are beyond the scope of
+this documentation, but take a look at the next example for a simple SSL use-
+case. For more than that, you might look at subclassing the
+:class:`BaseAdapter <requests.adapters.BaseAdapter>`.
+
+The quickest way to see what you would be subclassing is to read the code you
+already have: unzip the ``requests-<version>-py3.x.egg`` file in your
+``site-packages`` directory and open ``requests/adapters.py`` inside it.

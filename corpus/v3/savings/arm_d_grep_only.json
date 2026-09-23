@@ -1,0 +1,329 @@
+{
+ "arm": "claude+grep, no local models",
+ "model": "claude-opus-5-5",
+ "subagent_tokens": 87875,
+ "tool_uses": 17,
+ "duration_ms": null,
+ "docs": [
+  {
+   "id": "black-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d03",
+   "found": true,
+   "quote": "experimental-string-processing = true"
+  },
+  {
+   "id": "black-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d06",
+   "found": true,
+   "quote": "For a module that still has to parse as Python 2 \u2014 `print` statements, `except Error, e:` \u2014 pass `-t py27` so _Black_ picks the matching grammar."
+  },
+  {
+   "id": "black-d07",
+   "found": true,
+   "quote": "`python3.9 -m venv blackd-env`, then `blackd-env/bin/pip install 'black[d]'`."
+  },
+  {
+   "id": "black-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d03",
+   "found": true,
+   "quote": "On Python 3.8 and 3.9, upgrade the installer first with `python -m pip install --upgrade pip`, then run the command above again."
+  },
+  {
+   "id": "click-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d06",
+   "found": true,
+   "quote": "$ eval \"$(_COPY_COMPLETE=source_bash copy)\""
+  },
+  {
+   "id": "click-d07",
+   "found": true,
+   "quote": "colorama.deinit()"
+  },
+  {
+   "id": "click-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d02",
+   "found": true,
+   "quote": "If ``recorded`` comes back empty in CI even though the view rendered a template, check that image for signalling support before looking for a bug in the fixture."
+  },
+  {
+   "id": "flask-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d04",
+   "found": true,
+   "quote": "app.config[\"JSONIFY_PRETTYPRINT_REGULAR\"] = True"
+  },
+  {
+   "id": "flask-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d06",
+   "found": true,
+   "quote": "Build the virtualenv with the oldest interpreter you plan to run in production, for example ``python3.9 -m venv .venv``, so that the wheels installed into it work on every host you deploy to."
+  },
+  {
+   "id": "flask-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d03",
+   "found": true,
+   "quote": "Before installing, create and activate a virtual environment for the checkout with `python3.8 -m venv venv` and `source venv/bin/activate`, so that the pinned development dependencies don't end up in your system site-packages."
+  },
+  {
+   "id": "httpx-d04",
+   "found": true,
+   "quote": "For a quick check of a single route, drop the `transport=` argument, pass `app=app` to the client instead, and request the path exactly as above."
+  },
+  {
+   "id": "httpx-d05",
+   "found": true,
+   "quote": "If `https://www.example.com/` sends you on somewhere else, `r` is the response from the end of the chain, and `r.history` lists the redirects that were made along the way."
+  },
+  {
+   "id": "httpx-d06",
+   "found": true,
+   "quote": "with httpx.Client(proxies=proxies) as client:"
+  },
+  {
+   "id": "httpx-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d06",
+   "found": true,
+   "quote": "python: [\"3.9\", \"3.10\", \"3.11\", \"3.12\", \"3.13\", \"3.14\", \"3.15\"]"
+  },
+  {
+   "id": "pip-d07",
+   "found": true,
+   "quote": "- Whether the project is on PyPI under the name being used: `pip search <project-name>`"
+  },
+  {
+   "id": "pip-d08",
+   "found": true,
+   "quote": "If you need the environment working right now, run the install again without `--use-feature=2020-resolver`, get yourself unblocked, and come back to the strategies below once you have time to work out the constraints."
+  },
+  {
+   "id": "poetry-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d03",
+   "found": true,
+   "quote": "poetry lock --no-update"
+  },
+  {
+   "id": "poetry-d04",
+   "found": true,
+   "quote": "To work with the tools you have just added, activate the project's environment with `poetry shell` and then call them directly - `pytest`, say - instead of prefixing every invocation with `poetry run`."
+  },
+  {
+   "id": "poetry-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d07",
+   "found": true,
+   "quote": "Once `poetry install` has succeeded, write the same pinned set out for it with `poetry export --without-hashes --output requirements.txt`."
+  },
+  {
+   "id": "poetry-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d01",
+   "found": true,
+   "quote": "[pytest]"
+  },
+  {
+   "id": "pytest-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d04",
+   "found": true,
+   "quote": "If you need to check your package against more than one interpreter, create one environment per version -- for example ``python3.9 -m venv .venv39`` and ``python3.13 -m venv .venv313`` -- and install ``pytest`` into each of them."
+  },
+  {
+   "id": "pytest-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d07",
+   "found": true,
+   "quote": "If the project also has a ``pytest.ini``, that is the file named on the ``configfile:`` line of the run header, so add the ``addopts`` entry there instead."
+  },
+  {
+   "id": "pytest-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d03",
+   "found": true,
+   "quote": "If you would rather let the detector pick, pin ``chardet`` in your requirements file next to Requests -- a different release of it can put a different label on the same bytes, and ``r.encoding`` follows whatever your resolver installed."
+  },
+  {
+   "id": "requests-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d08",
+   "found": true,
+   "quote": "Not installed yet? Run ``$ pipenv install requests`` in your project directory first -- it will add the dependency to your Pipfile -- and then try the snippet above."
+  }
+ ]
+}

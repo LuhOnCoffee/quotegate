@@ -1,0 +1,10 @@
+{
+  "name": "quotegate",
+  "displayName": "quotegate",
+  "description": "Verified local offload for Claude Code: local Ollama models answer narrow document questions, every answer must carry a quote checked against the source, and what they cannot settle comes back to Claude.",
+  "version": "0.0.4",
+  "author": { "name": "LuhOnCoffee" },
+  "license": "Apache-2.0",
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

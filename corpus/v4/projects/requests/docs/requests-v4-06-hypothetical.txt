@@ -1,0 +1,159 @@
+2.3.0 (2014-05-16)
+------------------
+
+**API Changes**
+
+-   New `Response` property `is_redirect`, which is true when the
+    library could have processed this response as a redirection (whether
+    or not it actually did).
+-   The `timeout` parameter now affects requests with both `stream=True`
+    and `stream=False` equally.
+-   The change in v2.0.0 to mandate explicit proxy schemes has been
+    reverted. Proxy schemes now default to `http://`.
+-   The `CaseInsensitiveDict` used for HTTP headers now behaves like a
+    normal dictionary when references as string or viewed in the
+    interpreter.
+
+**Bugfixes**
+
+-   No longer expose Authorization or Proxy-Authorization headers on
+    redirect. Fix CVE-2014-1829 and CVE-2014-1830 respectively.
+-   Authorization is re-evaluated each redirect.
+-   On redirect, pass url as native strings.
+-   Fall-back to autodetected encoding for JSON when Unicode detection
+    fails.
+-   Headers set to `None` on the `Session` are now correctly not sent.
+-   Correctly honor `decode_unicode` even if it wasn't used earlier in
+    the same response.
+-   Stop advertising `compress` as a supported Content-Encoding.
+-   The `Response.history` parameter is now always a list.
+-   Many, many `urllib3` bugfixes.
+
+2.2.1 (2014-01-23)
+------------------
+
+**Bugfixes**
+
+-   Fixes incorrect parsing of proxy credentials that contain a literal
+    or encoded '\#' character.
+-   Assorted urllib3 fixes.
+
+2.2.0 (2014-01-09)
+------------------
+
+**API Changes**
+
+-   New exception: `ContentDecodingError`. Raised instead of `urllib3`
+    `DecodeError` exceptions.
+
+**Bugfixes**
+
+-   Avoid many many exceptions from the buggy implementation of
+    `proxy_bypass` on OS X in Python 2.6.
+-   Avoid crashing when attempting to get authentication credentials
+    from \~/.netrc when running as a user without a home directory.
+-   Use the correct pool size for pools of connections to proxies.
+-   Fix iteration of `CookieJar` objects.
+-   Ensure that cookies are persisted over redirect.
+-   Switch back to using chardet, since it has merged with charade.
+
+2.1.0 (2013-12-05)
+------------------
+
+-   Updated CA Bundle, of course.
+-   Cookies set on individual Requests through a `Session` (e.g. via
+    `Session.get()`) are no longer persisted to the `Session`.
+-   Clean up connections when we hit problems during chunked upload,
+    rather than leaking them.
+-   Return connections to the pool when a chunked upload is successful,
+    rather than leaking it.
+-   Match the HTTPbis recommendation for HTTP 301 redirects.
+-   Prevent hanging when using streaming uploads and Digest Auth when a
+    401 is received.
+-   Values of headers set by Requests are now always the native string
+    type.
+-   Fix previously broken SNI support.
+-   Fix accessing HTTP proxies using proxy authentication.
+-   Unencode HTTP Basic usernames and passwords extracted from URLs.
+-   Support for IP address ranges for no\_proxy environment variable
+-   Parse headers correctly when users override the default `Host:`
+    header.
+-   Avoid munging the URL in case of case-sensitive servers.
+-   Looser URL handling for non-HTTP/HTTPS urls.
+-   Accept unicode methods in Python 2.6 and 2.7.
+-   More resilient cookie handling.
+-   Make `Response` objects pickleable.
+-   Actually added MD5-sess to Digest Auth instead of pretending to like
+    last time.
+-   Updated internal urllib3.
+-   Fixed @Lukasa's lack of taste.
+
+2.0.1 (2013-10-24)
+------------------
+
+-   Updated included CA Bundle with new mistrusts and automated process
+    for the future
+-   Added MD5-sess to Digest Auth
+-   Accept per-file headers in multipart file POST messages.
+-   Fixed: Don't send the full URL on CONNECT messages.
+-   Fixed: Correctly lowercase a redirect scheme.
+-   Fixed: Cookies not persisted when set via functional API.
+-   Fixed: Translate urllib3 ProxyError into a requests ProxyError
+    derived from ConnectionError.
+-   Updated internal urllib3 and chardet.
+
+2.0.0 (2013-09-24)
+------------------
+
+**API Changes:**
+
+-   Keys in the Headers dictionary are now native strings on all Python
+    versions, i.e. bytestrings on Python 2, unicode on Python 3.
+    Had Requests kept supporting Python 2, header keys would still come
+    back as two different types depending on the interpreter; on the
+    Python 3 versions it supports today they are always `str`.
+-   Proxy URLs now *must* have an explicit scheme. A `MissingSchema`
+    exception will be raised if they don't.
+-   Timeouts now apply to read time if `Stream=False`.
+-   `RequestException` is now a subclass of `IOError`, not
+    `RuntimeError`.
+-   Added new method to `PreparedRequest` objects:
+    `PreparedRequest.copy()`.
+-   Added new method to `Session` objects: `Session.update_request()`.
+    This method updates a `Request` object with the data (e.g. cookies)
+    stored on the `Session`.
+-   Added new method to `Session` objects: `Session.prepare_request()`.
+    This method updates and prepares a `Request` object, and returns the
+    corresponding `PreparedRequest` object.
+-   Added new method to `HTTPAdapter` objects:
+    `HTTPAdapter.proxy_headers()`. This should not be called directly,
+    but improves the subclass interface.
+-   `httplib.IncompleteRead` exceptions caused by incorrect chunked
+    encoding will now raise a Requests `ChunkedEncodingError` instead.
+-   Invalid percent-escape sequences now cause a Requests `InvalidURL`
+    exception to be raised.
+-   HTTP 208 no longer uses reason phrase `"im_used"`. Correctly uses
+    `"already_reported"`.
+-   HTTP 226 reason added (`"im_used"`).
+
+**Bugfixes:**
+
+-   Vastly improved proxy support, including the CONNECT verb. Special
+    thanks to the many contributors who worked towards this improvement.
+-   Cookies are now properly managed when 401 authentication responses
+    are received.
+-   Chunked encoding fixes.
+-   Support for mixed case schemes.
+-   Better handling of streaming downloads.
+-   Retrieve environment proxies from more locations.
+-   Minor cookies fixes.
+-   Improved redirect behaviour.
+-   Improved streaming behaviour, particularly for compressed data.
+-   Miscellaneous small Python 3 text encoding bugs.
+-   `.netrc` no longer overrides explicit auth.
+-   Cookies set by hooks are now correctly persisted on Sessions.
+-   Fix problem with cookies that specify port numbers in their host
+    field.
+-   `BytesIO` can be used to perform streaming uploads.
+-   More generous parsing of the `no_proxy` environment variable.
+-   Non-string objects can be passed in data values alongside files.

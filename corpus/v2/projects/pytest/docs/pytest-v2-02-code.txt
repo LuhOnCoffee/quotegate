@@ -1,0 +1,274 @@
+.. _`warnings`:
+
+How to capture warnings
+=======================
+
+
+
+Starting from version ``3.1``, pytest now automatically catches warnings during test execution
+and displays them at the end of the session:
+
+.. code-block:: python
+
+    # content of test_show_warnings.py
+    import warnings
+
+
+    def api_v1():
+        warnings.warn(UserWarning("api v1, should use functions from v2"))
+        return 1
+
+
+    def test_one():
+        assert api_v1() == 1
+
+Running pytest now produces this output:
+
+.. code-block:: pytest
+
+    $ pytest test_show_warnings.py
+    =========================== test session starts ============================
+    platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+    rootdir: /home/sweet/project
+    collected 1 item
+
+    test_show_warnings.py .                                              [100%]
+
+    ============================= warnings summary =============================
+    test_show_warnings.py::test_one
+      /home/sweet/project/test_show_warnings.py:5: UserWarning: api v1, should use functions from v2
+        warnings.warn(UserWarning("api v1, should use functions from v2"))
+
+    -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+    ======================= 1 passed, 1 warning in 0.12s =======================
+
+.. _`controlling-warnings`:
+
+Controlling warnings
+--------------------
+
+Similar to Python's `warning filter`_ and :option:`-W option <python:-W>` flag, pytest provides
+its own ``-W`` flag to control which warnings are ignored, displayed, or turned into
+errors. See the `warning filter`_ documentation for more
+advanced use-cases.
+
+.. _`warning filter`: https://docs.python.org/3/library/warnings.html#warning-filter
+
+This code sample shows how to treat any ``UserWarning`` category class of warning
+as an error:
+
+.. code-block:: pytest
+
+    $ pytest -q test_show_warnings.py -W error::UserWarning
+    F                                                                    [100%]
+    ================================= FAILURES =================================
+    _________________________________ test_one _________________________________
+
+        def test_one():
+    >       assert api_v1() == 1
+                   ^^^^^^^^
+
+    test_show_warnings.py:10:
+    _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+        def api_v1():
+    >       warnings.warn(UserWarning("api v1, should use functions from v2"))
+    E       UserWarning: api v1, should use functions from v2
+
+    test_show_warnings.py:5: UserWarning
+    ========================= short test summary info ==========================
+    FAILED test_show_warnings.py::test_one - UserWarning: api v1, should use ...
+    1 failed in 0.12s
+
+The same option can be set in the configuration file using the
+:confval:`filterwarnings` configuration option. For example, the configuration below will ignore all
+user warnings and specific deprecation warnings matching a regex, but will transform
+all other warnings into errors.
+
+.. tab:: toml
+
+    .. code-block:: toml
+
+        [pytest]
+        filterwarnings = [
+            'error',
+            'ignore::UserWarning',
+            # Note the use of single quote below to denote "raw" strings in TOML.
+            'ignore:function ham\(\) is deprecated:DeprecationWarning',
+        ]
+
+.. tab:: ini
+
+    .. code-block:: ini
+
+        # content of setup.cfg
+        [pytest]
+        filterwarnings =
+            error
+            ignore::UserWarning
+            ignore:function ham\(\) is deprecated:DeprecationWarning
+
+
+When a warning matches more than one option in the list, the action for the last matching option
+is performed.
+
+
+.. note::
+
+    The ``-W`` flag and the :confval:`filterwarnings` configuration option use warning filters that are
+    similar in structure, but each configuration option interprets its filter
+    differently. For example, *message* in ``filterwarnings`` is a string containing a
+    regular expression that the start of the warning message must match,
+    case-insensitively, while *message* in ``-W`` is a literal string that the start of
+    the warning message must contain (case-insensitively), ignoring any whitespace at
+    the start or end of message. Consult the `warning filter`_ documentation for more
+    details.
+
+
+.. _`filterwarnings`:
+
+``@pytest.mark.filterwarnings``
+-------------------------------
+
+
+
+You can use the :ref:`@pytest.mark.filterwarnings <pytest.mark.filterwarnings ref>` mark to add warning filters to specific test items,
+allowing you to have finer control of which warnings should be captured at test, class or
+even module level:
+
+.. code-block:: python
+
+    import warnings
+
+
+    def api_v1():
+        warnings.warn(UserWarning("api v1, should use functions from v2"))
+        return 1
+
+
+    @pytest.mark.filterwarnings("ignore:api v1")
+    def test_one():
+        assert api_v1() == 1
+
+
+You can specify multiple filters with separate decorators:
+
+.. code-block:: python
+
+    # Ignore "api v1" warnings, but fail on all other warnings
+    @pytest.mark.filterwarnings("ignore:api v1")
+    @pytest.mark.filterwarnings("error")
+    def test_one():
+        assert api_v1() == 1
+
+You can also pass multiple filters to a single mark by providing multiple arguments:
+
+.. code-block:: python
+
+    # Later arguments take precedence, matching warnings.filterwarnings behavior.
+    @pytest.mark.filterwarnings("error", "ignore:api v1")
+    def test_one():
+        assert api_v1() == 1
+
+.. important::
+
+    Regarding decorator order and filter precedence:
+    it's important to remember that decorators are evaluated in reverse order,
+    so you have to list the warning filters in the reverse order
+    compared to traditional :py:func:`warnings.filterwarnings` and :option:`-W option <python:-W>` usage.
+    This means in practice that filters from earlier :ref:`@pytest.mark.filterwarnings <pytest.mark.filterwarnings ref>` decorators
+    take precedence over filters from later decorators, as illustrated in the example above.
+
+
+Filters applied using a mark take precedence over filters passed on the command line or configured
+by the :confval:`filterwarnings` configuration option.
+
+You may apply a filter to all tests of a class by using the :ref:`filterwarnings <pytest.mark.filterwarnings ref>` mark as a class
+decorator or to all tests in a module by setting the :globalvar:`pytestmark` variable:
+
+.. code-block:: python
+
+    # turns all warnings into errors for this module
+    pytestmark = pytest.mark.filterwarnings("error")
+
+
+.. note::
+
+    If you want to apply multiple filters
+    (by assigning a list of :ref:`filterwarnings <pytest.mark.filterwarnings ref>` mark to :globalvar:`pytestmark`),
+    you must use the traditional :py:func:`warnings.filterwarnings` ordering approach (later filters take precedence),
+    which is the reverse of the decorator approach mentioned above.
+
+
+*Credits go to Florian Schulze for the reference implementation in the* `pytest-warnings`_
+*plugin.*
+
+.. _`pytest-warnings`: https://github.com/fschulze/pytest-warnings
+
+Setting a maximum number of warnings
+-------------------------------------
+
+.. versionadded:: 9.1
+
+You can use the :option:`--max-warnings` command-line option to fail the test run
+if the total number of warnings exceeds a given threshold:
+
+.. code-block:: bash
+
+    pytest --max-warnings=10
+
+If all tests pass but the number of warnings exceeds the threshold, pytest will exit with code ``6``
+(:class:`~pytest.ExitCode` ``MAX_WARNINGS_ERROR``). This is useful for gradually
+ratcheting down warnings in a codebase.
+
+Note that :confval:`filtered warnings <filterwarnings>` do not count toward this maximum total.
+
+The threshold can also be set in the configuration file using :confval:`max_warnings`:
+
+.. tab:: toml
+
+    .. code-block:: toml
+
+        [pytest]
+        max_warnings = 10
+
+.. tab:: ini
+
+    .. code-block:: ini
+
+        [pytest]
+        max_warnings = 10
+
+.. note::
+
+    If tests fail, the exit code will be ``1`` (:class:`~pytest.ExitCode` ``TESTS_FAILED``)
+    regardless of the warning count. ``MAX_WARNINGS_ERROR`` is only reported when all tests pass
+    but the warning threshold is exceeded.
+
+Disabling warnings summary
+--------------------------
+
+Although not recommended, you can use the :option:`--disable-warnings` command-line option to suppress the
+warning summary entirely from the test run output.
+
+Disabling warning capture entirely
+----------------------------------
+
+This plugin is enabled by default but can be disabled entirely in your configuration file with:
+
+.. tab:: toml
+
+    .. code-block:: toml
+
+        [pytest]
+        addopts = ["-p", "no:warnings"]
+
+.. tab:: ini
+
+    .. code-block:: ini
+
+        [pytest]
+        addopts = -p no:warnings
+
+Or passing ``-p no:warnings`` in the command-line. This might be useful if your test suite handles warnings
+using an external system.

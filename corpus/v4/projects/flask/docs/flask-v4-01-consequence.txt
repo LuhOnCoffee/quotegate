@@ -1,0 +1,172 @@
+.. _dotenv:
+
+Environment Variables From dotenv
+---------------------------------
+
+The ``flask`` command supports setting any option for any command with
+environment variables. The variables are named like ``FLASK_OPTION`` or
+``FLASK_COMMAND_OPTION``, for example ``FLASK_APP`` or
+``FLASK_RUN_PORT``.
+
+Rather than passing options every time you run a command, or environment
+variables every time you open a new terminal, you can use Flask's dotenv
+support to set environment variables automatically.
+
+If `python-dotenv`_ is installed, running the ``flask`` command will set
+environment variables defined in the files ``.env`` and ``.flaskenv``.
+You can also specify an extra file to load with the ``--env-file``
+option. Dotenv files can be used to avoid having to set ``--app`` or
+``FLASK_APP`` manually, and to set configuration using environment
+variables similar to how some deployment services work.
+
+Variables set on the command line are used over those set in :file:`.env`,
+which are used over those set in :file:`.flaskenv`. :file:`.flaskenv` should be
+used for public variables, such as ``FLASK_APP``, while :file:`.env` should not
+be committed to your repository so that it can set private variables.
+
+For example, a :file:`.flaskenv` that puts the project in the development
+environment gives everyone who checks it out the reloader and debugger, while
+a :file:`.env` on a staging server only has to set the environment back to
+``production`` to switch them off again.
+
+Directories are scanned upwards from the directory you call ``flask``
+from to locate the files.
+
+The files are only loaded by the ``flask`` command or calling
+:meth:`~Flask.run`. If you would like to load these files when running in
+production, you should call :func:`~cli.load_dotenv` manually.
+
+.. _python-dotenv: https://github.com/theskumar/python-dotenv#readme
+
+
+Setting Command Options
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Click is configured to load default values for command options from
+environment variables. The variables use the pattern
+``FLASK_COMMAND_OPTION``. For example, to set the port for the run
+command, instead of ``flask run --port 8000``:
+
+.. tabs::
+
+   .. group-tab:: Bash
+
+      .. code-block:: text
+
+         $ export FLASK_RUN_PORT=8000
+         $ flask run
+          * Running on http://127.0.0.1:8000/
+
+   .. group-tab:: Fish
+
+      .. code-block:: text
+
+         $ set -x FLASK_RUN_PORT 8000
+         $ flask run
+          * Running on http://127.0.0.1:8000/
+
+   .. group-tab:: CMD
+
+      .. code-block:: text
+
+         > set FLASK_RUN_PORT=8000
+         > flask run
+          * Running on http://127.0.0.1:8000/
+
+   .. group-tab:: Powershell
+
+      .. code-block:: text
+
+         > $env:FLASK_RUN_PORT = 8000
+         > flask run
+          * Running on http://127.0.0.1:8000/
+
+These can be added to the ``.flaskenv`` file just like ``FLASK_APP`` to
+control default command options.
+
+
+Disable dotenv
+~~~~~~~~~~~~~~
+
+The ``flask`` command will show a message if it detects dotenv files but
+python-dotenv is not installed.
+
+.. code-block:: bash
+
+    $ flask run
+     * Tip: There are .env files present. Do "pip install python-dotenv" to use them.
+
+You can tell Flask not to load dotenv files even when python-dotenv is
+installed by setting the ``FLASK_SKIP_DOTENV`` environment variable.
+This can be useful if you want to load them manually, or if you're using
+a project runner that loads them already. Keep in mind that the
+environment variables must be set before the app loads or it won't
+configure as expected.
+
+.. tabs::
+
+   .. group-tab:: Bash
+
+      .. code-block:: text
+
+         $ export FLASK_SKIP_DOTENV=1
+         $ flask run
+
+   .. group-tab:: Fish
+
+      .. code-block:: text
+
+         $ set -x FLASK_SKIP_DOTENV 1
+         $ flask run
+
+   .. group-tab:: CMD
+
+      .. code-block:: text
+
+         > set FLASK_SKIP_DOTENV=1
+         > flask run
+
+   .. group-tab:: Powershell
+
+      .. code-block:: text
+
+         > $env:FLASK_SKIP_DOTENV = 1
+         > flask run
+
+
+Environment Variables From virtualenv
+-------------------------------------
+
+If you do not want to install dotenv support, you can still set environment
+variables by adding them to the end of the virtualenv's :file:`activate`
+script. Activating the virtualenv will set the variables.
+
+.. tabs::
+
+   .. group-tab:: Bash
+
+      Unix Bash, :file:`.venv/bin/activate`::
+
+          $ export FLASK_APP=hello
+
+   .. group-tab:: Fish
+
+      Fish, :file:`.venv/bin/activate.fish`::
+
+          $ set -x FLASK_APP hello
+
+   .. group-tab:: CMD
+
+      Windows CMD, :file:`.venv\\Scripts\\activate.bat`::
+
+          > set FLASK_APP=hello
+
+   .. group-tab:: Powershell
+
+      Windows Powershell, :file:`.venv\\Scripts\\activate.ps1`::
+
+          > $env:FLASK_APP = "hello"
+
+It is preferred to use dotenv support over this, since :file:`.flaskenv` can be
+committed to the repository so that it works automatically wherever the project
+is checked out.

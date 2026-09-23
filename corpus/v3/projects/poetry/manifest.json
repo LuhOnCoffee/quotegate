@@ -1,0 +1,86 @@
+{
+  "project": "poetry",
+  "license": "MIT",
+  "docs": [
+    {
+      "file": "docs/poetry-v3-01-instruction.txt",
+      "kind": "instruction",
+      "source_tag": "main",
+      "source_path": "docs/managing-dependencies.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "To work with the tools you have just added, activate the project's environment with `poetry shell` and then call them directly - `pytest`, say - instead of prefixing every invocation with `poetry run`.",
+      "inserted_fact": "F2",
+      "why_implied": "It is a step, not a claim: it tells the reader to activate the environment with a command that Poetry no longer ships (moved to poetry-plugin-shell). Nothing in the passage says `poetry shell` is part of Poetry; the reader has to notice that the step is only executable if it still were. A keyword search for the fact's wording (moved to a plugin / poetry-plugin-shell / poetry env activate) turns up nothing in this doc - the rest of it is about dependency groups only."
+    },
+    {
+      "file": "docs/poetry-v3-02-instruction.txt",
+      "kind": "instruction",
+      "source_tag": "main",
+      "source_path": "docs/basic-usage.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Some deployment tooling cannot read `poetry.lock` directly. Once `poetry install` has succeeded, write the same pinned set out for it with `poetry export --without-hashes --output requirements.txt`.",
+      "inserted_fact": "F3",
+      "why_implied": "The passage sequences `poetry install` and then `poetry export` as the next step of the same workflow, with no mention of `poetry self add poetry-plugin-export`. It never says the export command is built in; the reader has to infer that the step is only complete if the Export plugin still shipped with Poetry, which it has not since 2.0. The doc says nothing else about export, so keyword matching on \"export\" finds only a step that looks ordinary."
+    },
+    {
+      "file": "docs/poetry-v3-03-example.txt",
+      "kind": "example",
+      "source_tag": "main",
+      "source_path": "docs/libraries.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "If you edit a constraint in `pyproject.toml` by hand, bring the lock file back in sync from the project root:\n\n```bash\npoetry lock --no-update\n```",
+      "inserted_fact": "F4",
+      "why_implied": "The example uses a flag that no longer exists: `lock` now only accepts `--regenerate`, because not updating already-locked packages became the default. The lead-in makes no claim about what `poetry lock` does; the staleness lives entirely in the removed argument, and seeing it requires knowing that opting out of updates is no longer something you ask for. Searching the doc for the fact's own words (\"already been added to the lock file\", \"will not be updated\", \"--regenerate\") finds nothing - the surrounding section only discusses whether to commit the lock file."
+    },
+    {
+      "file": "docs/poetry-v3-04-consequence.txt",
+      "kind": "consequence",
+      "source_tag": "main",
+      "source_path": "docs/building-extension-modules.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "The environment you activate for this stays in effect until you type `exit`, so leave it again before you run Poetry commands for another project.",
+      "inserted_fact": "F2",
+      "why_implied": "It describes what the reader will have to do - type `exit` to get out of the activated environment - which is only true of a spawned subshell, i.e. the old `poetry shell`. With `poetry env activate` you eval the printed command in your own shell and leave it with `deactivate`; typing `exit` would close your shell. The sentence never names `poetry shell` or the plugin at all, so no keyword search for the fact's terms can reach it; the contradiction is only visible to a reader who knows how activation works today."
+    },
+    {
+      "file": "docs/poetry-v3-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "main",
+      "source_path": "docs/managing-environments.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "If you are working on a machine that still has a Poetry 1.x installation, `poetry shell` is available there without installing anything extra.",
+      "inserted_fact": "F2",
+      "why_implied": "Not stale: the claim is scoped by \"still has a Poetry 1.x installation\", where `shell` really was a built-in command. It asserts nothing about current Poetry, and the doc's own note right above it states that `shell` was moved to `poetry-plugin-shell`. A reader matching on the phrase \"poetry shell\" will be tempted to flag it anyway."
+    },
+    {
+      "file": "docs/poetry-v3-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "main",
+      "source_path": "docs/plugins.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Had the `shell` command not been moved out into `poetry-plugin-shell`, users who would rather not work inside a nested shell would have had no way to leave that behaviour out of their installation.",
+      "inserted_fact": "F2",
+      "why_implied": "Not stale: a counterfactual in the past perfect about what would have happened if the move had not taken place. It presupposes the current fact - `shell` lives in `poetry-plugin-shell` - and asserts nothing false about today's Poetry."
+    },
+    {
+      "file": "docs/poetry-v3-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "main",
+      "source_path": "README.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Note that the Export plugin is no longer installed by default with Poetry 2.0; if you need `poetry export`, add `poetry-plugin-export` to your Poetry installation yourself.",
+      "inserted_fact": "F3",
+      "why_implied": "Not stale: a true restatement of the current fact - the Export plugin ships separately since Poetry 2.0 - placed next to the installation paragraph. It names `poetry export` and \"installed by default\", so a keyword-matching reader may flag it, but the sentence agrees with the docs and with the README's own Related Projects entry for poetry-plugin-export."
+    },
+    {
+      "file": "docs/poetry-v3-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "main",
+      "source_path": "docs/dependency-specification.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_implied": "Not stale: an unmodified excerpt (front matter and intro, then the version-constraint, git and path dependency sections, trimmed at section boundaries). It never mentions Poetry's own Python requirement, `poetry shell`, the export plugin, `poetry lock` semantics or the installer script, so it contradicts nothing."
+    }
+  ]
+}

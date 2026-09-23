@@ -1,0 +1,328 @@
+
+
+Basic patterns and examples
+==========================================================
+
+How to change command line options defaults
+-------------------------------------------
+
+It can be tedious to type the same series of command line options
+every time you use ``pytest``.  For example, if you always want to see
+detailed info on skipped and xfailed tests, as well as have terser "dot"
+progress output, you can write it into a configuration file:
+
+.. code-block:: toml
+
+    # content of pytest.toml
+    [pytest]
+    addopts = ["-ra", "-q"]
+
+If the project also has a ``pytest.ini``, that is the file named on the
+``configfile:`` line of the run header, so add the ``addopts`` entry there
+instead.
+
+Alternatively, you can set a ``PYTEST_ADDOPTS`` environment variable to add command
+line options while the environment is in use:
+
+.. code-block:: bash
+
+    export PYTEST_ADDOPTS="-v"
+
+Here's how the command-line is built in the presence of ``addopts`` or the environment variable:
+
+.. code-block:: text
+
+    <configuration file addopts> $PYTEST_ADDOPTS <extra command-line arguments>
+
+So if the user executes in the command-line:
+
+.. code-block:: bash
+
+    pytest -m slow
+
+The actual command line executed is:
+
+.. code-block:: bash
+
+    pytest -ra -q -v -m slow
+
+Note that as usual for other command-line applications, in case of conflicting options the last one wins, so the example
+above will show verbose output because :option:`-v` overwrites :option:`-q`.
+
+
+.. _request example:
+
+Pass different values to a test function, depending on command line options
+----------------------------------------------------------------------------
+
+.. regendoc:wipe
+
+Suppose we want to write a test that depends on a command line option.
+Here is a basic pattern to achieve this:
+
+.. code-block:: python
+
+    # content of test_sample.py
+    def test_answer(cmdopt):
+        if cmdopt == "type1":
+            print("first")
+        elif cmdopt == "type2":
+            print("second")
+        assert 0  # to see what was printed
+
+
+For this to work we need to add a command line option and
+provide the ``cmdopt`` through a :ref:`fixture function <fixture>`:
+
+.. code-block:: python
+
+    # content of conftest.py
+    import pytest
+
+
+    def pytest_addoption(parser):
+        parser.addoption(
+            "--cmdopt", action="store", default="type1", help="my option: type1 or type2"
+        )
+
+
+    @pytest.fixture
+    def cmdopt(request):
+        return request.config.getoption("--cmdopt")
+
+Let's run this without supplying our new option:
+
+.. code-block:: pytest
+
+    $ pytest -q test_sample.py
+    F                                                                    [100%]
+    ================================= FAILURES =================================
+    _______________________________ test_answer ________________________________
+
+    cmdopt = 'type1'
+
+        def test_answer(cmdopt):
+            if cmdopt == "type1":
+                print("first")
+            elif cmdopt == "type2":
+                print("second")
+    >       assert 0  # to see what was printed
+            ^^^^^^^^
+    E       assert 0
+
+    test_sample.py:6: AssertionError
+    --------------------------- Captured stdout call ---------------------------
+    first
+    ========================= short test summary info ==========================
+    FAILED test_sample.py::test_answer - assert 0
+    1 failed in 0.12s
+
+And now with supplying a command line option:
+
+.. code-block:: pytest
+
+    $ pytest -q --cmdopt=type2
+    F                                                                    [100%]
+    ================================= FAILURES =================================
+    _______________________________ test_answer ________________________________
+
+    cmdopt = 'type2'
+
+        def test_answer(cmdopt):
+            if cmdopt == "type1":
+                print("first")
+            elif cmdopt == "type2":
+                print("second")
+    >       assert 0  # to see what was printed
+            ^^^^^^^^
+    E       assert 0
+
+    test_sample.py:6: AssertionError
+    --------------------------- Captured stdout call ---------------------------
+    second
+    ========================= short test summary info ==========================
+    FAILED test_sample.py::test_answer - assert 0
+    1 failed in 0.12s
+
+You can see that the command line option arrived in our test.
+
+We could add simple validation for the input by listing the choices:
+
+.. code-block:: python
+
+    # content of conftest.py
+    import pytest
+
+
+    def pytest_addoption(parser):
+        parser.addoption(
+            "--cmdopt",
+            action="store",
+            default="type1",
+            help="my option: type1 or type2",
+            choices=("type1", "type2"),
+        )
+
+Now we'll get feedback on a bad argument:
+
+.. code-block:: pytest
+
+    $ pytest -q --cmdopt=type3
+    ERROR: usage: pytest [options] [file_or_dir] [file_or_dir] [...]
+    pytest: error: argument --cmdopt: invalid choice: 'type3' (choose from 'type1', 'type2')
+      inifile: None
+      rootdir: /home/sweet/project
+
+
+If you need to provide more detailed error messages, you can use the
+``type`` parameter and raise :exc:`pytest.UsageError`:
+
+.. code-block:: python
+
+    # content of conftest.py
+    import pytest
+
+
+    def type_checker(value):
+        msg = "cmdopt must specify a numeric type as typeNNN"
+        if not value.startswith("type"):
+            raise pytest.UsageError(msg)
+        try:
+            int(value[4:])
+        except ValueError:
+            raise pytest.UsageError(msg)
+
+        return value
+
+
+    def pytest_addoption(parser):
+        parser.addoption(
+            "--cmdopt",
+            action="store",
+            default="type1",
+            help="my option: type1 or type2",
+            type=type_checker,
+        )
+
+This completes the basic pattern.  However, one often rather wants to
+process command line options outside of the test and rather pass in
+different or more complex objects.
+
+Dynamically adding command line options
+--------------------------------------------------------------
+
+.. regendoc:wipe
+
+Through :confval:`addopts` you can statically add command line
+options for your project.  You can also dynamically modify
+the command line arguments before they get processed:
+
+.. code-block:: python
+
+    # installable external plugin
+    import sys
+
+
+    def pytest_load_initial_conftests(args):
+        if "xdist" in sys.modules:  # pytest-xdist plugin
+            import multiprocessing
+
+            num = max(multiprocessing.cpu_count() / 2, 1)
+            args[:] = ["-n", str(num)] + args
+
+If you have the :pypi:`xdist plugin <pytest-xdist>` installed
+you will now always perform test runs using a number
+of subprocesses close to your CPU. Running in an empty
+directory with the above conftest.py:
+
+.. code-block:: pytest
+
+    $ pytest
+    =========================== test session starts ============================
+    platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+    rootdir: /home/sweet/project
+    collected 0 items
+
+    ========================== no tests ran in 0.12s ===========================
+
+.. _`excontrolskip`:
+
+Control skipping of tests according to command line option
+--------------------------------------------------------------
+
+.. regendoc:wipe
+
+Here is a ``conftest.py`` file adding a ``--runslow`` command
+line option to control skipping of ``pytest.mark.slow`` marked tests:
+
+.. code-block:: python
+
+    # content of conftest.py
+
+    import pytest
+
+
+    def pytest_addoption(parser):
+        parser.addoption(
+            "--runslow", action="store_true", default=False, help="run slow tests"
+        )
+
+
+    def pytest_configure(config):
+        config.addinivalue_line("markers", "slow: mark test as slow to run")
+
+
+    def pytest_collection_modifyitems(config, items):
+        if config.getoption("--runslow"):
+            # --runslow given in cli: do not skip slow tests
+            return
+        skip_slow = pytest.mark.skip(reason="need --runslow option to run")
+        for item in items:
+            if item.get_closest_marker("slow"):
+                item.add_marker(skip_slow)
+
+We can now write a test module like this:
+
+.. code-block:: python
+
+    # content of test_module.py
+    import pytest
+
+
+    def test_func_fast():
+        pass
+
+
+    @pytest.mark.slow
+    def test_func_slow():
+        pass
+
+and when running it will see a skipped "slow" test:
+
+.. code-block:: pytest
+
+    $ pytest -rs    # "-rs" means report details on the little 's'
+    =========================== test session starts ============================
+    platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+    rootdir: /home/sweet/project
+    collected 2 items
+
+    test_module.py .s                                                    [100%]
+
+    ========================= short test summary info ==========================
+    SKIPPED [1] test_module.py:8: need --runslow option to run
+    ======================= 1 passed, 1 skipped in 0.12s =======================
+
+Or run it including the ``slow`` marked test:
+
+.. code-block:: pytest
+
+    $ pytest --runslow
+    =========================== test session starts ============================
+    platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+    rootdir: /home/sweet/project
+    collected 2 items
+
+    test_module.py ..                                                    [100%]
+
+    ============================ 2 passed in 0.12s =============================

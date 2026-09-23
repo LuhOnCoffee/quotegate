@@ -1,0 +1,184 @@
+2.14.2 (2017-05-10)
+-------------------
+
+**Bugfixes**
+
+-   Changed a less-than to an equal-to and an or in the dependency
+    markers to widen compatibility with older setuptools releases.
+
+2.14.1 (2017-05-09)
+-------------------
+
+**Bugfixes**
+
+-   Changed the dependency markers to widen compatibility with older pip
+    releases.
+
+2.14.0 (2017-05-09)
+-------------------
+
+**Improvements**
+
+-   It is now possible to pass `no_proxy` as a key to the `proxies`
+    dictionary to provide handling similar to the `NO_PROXY` environment
+    variable.
+-   When users provide invalid paths to certificate bundle files or
+    directories Requests now raises `IOError`, rather than failing at
+    the time of the HTTPS request with a fairly inscrutable certificate
+    validation error.
+-   The behavior of `SessionRedirectMixin` was slightly altered.
+    `resolve_redirects` will now detect a redirect by calling
+    `get_redirect_target(response)` instead of directly querying
+    `Response.is_redirect` and `Response.headers['location']`. Advanced
+    users will be able to process malformed redirects more easily.
+-   Changed the internal calculation of elapsed request time to have
+    higher resolution on Windows.
+-   Added `win_inet_pton` as conditional dependency for the `[socks]`
+    extra on Windows with Python 2.7.
+-   Changed the proxy bypass implementation on Windows: the proxy bypass
+    check doesn't use forward and reverse DNS requests anymore
+-   URLs with schemes that begin with `http` but are not `http` or
+    `https` no longer have their host parts forced to lowercase.
+
+**Bugfixes**
+
+-   Much improved handling of non-ASCII `Location` header values in
+    redirects. Fewer `UnicodeDecodeErrors` are encountered on Python 2,
+    and Python 3 now correctly understands that Latin-1 is unlikely to
+    be the correct encoding.
+-   If an attempt to `seek` file to find out its length fails, we now
+    appropriately handle that by aborting our content-length
+    calculations.
+-   Restricted `HTTPDigestAuth` to only respond to auth challenges made
+    on 4XX responses, rather than to all auth challenges.
+-   Fixed some code that was firing `DeprecationWarning` on Python 3.6.
+-   The dismayed person emoticon (`/o\\`) no longer has a big head. I'm
+    sure this is what you were all worrying about most.
+
+**Miscellaneous**
+
+-   Updated bundled urllib3 to v1.21.1.
+-   Updated bundled chardet to v3.0.2.
+-   If you are still running a 2.14.x release, it is this bundled copy
+    that guesses response encodings: upgrading or removing a separately
+    installed `chardet` package will not change what
+    `r.apparent_encoding` reports.
+-   Updated bundled idna to v2.5.
+-   Updated bundled certifi to 2017.4.17.
+
+2.13.0 (2017-01-24)
+-------------------
+
+**Features**
+
+-   Only load the `idna` library when we've determined we need it. This
+    will save some memory for users.
+
+**Miscellaneous**
+
+-   Updated bundled urllib3 to 1.20.
+-   Updated bundled idna to 2.2.
+
+2.12.5 (2017-01-18)
+-------------------
+
+**Bugfixes**
+
+-   Fixed an issue with JSON encoding detection, specifically detecting
+    big-endian UTF-32 with BOM.
+
+2.12.4 (2016-12-14)
+-------------------
+
+**Bugfixes**
+
+-   Fixed regression from 2.12.2 where non-string types were rejected in
+    the basic auth parameters. While support for this behaviour has been
+    re-added, the behaviour is deprecated and will be removed in the
+    future.
+
+2.12.3 (2016-12-01)
+-------------------
+
+**Bugfixes**
+
+-   Fixed regression from v2.12.1 for URLs with schemes that begin with
+    "http". These URLs have historically been processed as though they
+    were HTTP-schemed URLs, and so have had parameters added. This was
+    removed in v2.12.2 in an overzealous attempt to resolve problems
+    with IDNA-encoding those URLs. This change was reverted: the other
+    fixes for IDNA-encoding have been judged to be sufficient to return
+    to the behaviour Requests had before v2.12.0.
+
+2.12.2 (2016-11-30)
+-------------------
+
+**Bugfixes**
+
+-   Fixed several issues with IDNA-encoding URLs that are technically
+    invalid but which are widely accepted. Requests will now attempt to
+    IDNA-encode a URL if it can but, if it fails, and the host contains
+    only ASCII characters, it will be passed through optimistically.
+    This will allow users to opt-in to using IDNA2003 themselves if they
+    want to, and will also allow technically invalid but still common
+    hostnames.
+-   Fixed an issue where URLs with leading whitespace would raise
+    `InvalidSchema` errors.
+-   Fixed an issue where some URLs without the HTTP or HTTPS schemes
+    would still have HTTP URL preparation applied to them.
+-   Fixed an issue where Unicode strings could not be used in basic
+    auth.
+-   Fixed an issue encountered by some Requests plugins where
+    constructing a Response object would cause `Response.content` to
+    raise an `AttributeError`.
+
+2.12.1 (2016-11-16)
+-------------------
+
+**Bugfixes**
+
+-   Updated setuptools 'security' extra for the new PyOpenSSL backend in
+    urllib3.
+
+**Miscellaneous**
+
+-   Updated bundled urllib3 to 1.19.1.
+
+2.12.0 (2016-11-15)
+-------------------
+
+**Improvements**
+
+-   Updated support for internationalized domain names from IDNA2003 to
+    IDNA2008. This updated support is required for several forms of IDNs
+    and is mandatory for .de domains.
+-   Much improved heuristics for guessing content lengths: Requests will
+    no longer read an entire `StringIO` into memory.
+-   Much improved logic for recalculating `Content-Length` headers for
+    `PreparedRequest` objects.
+-   Improved tolerance for file-like objects that have no `tell` method
+    but do have a `seek` method.
+-   Anything that is a subclass of `Mapping` is now treated like a
+    dictionary by the `data=` keyword argument.
+-   Requests now tolerates empty passwords in proxy credentials, rather
+    than stripping the credentials.
+-   If a request is made with a file-like object as the body and that
+    request is redirected with a 307 or 308 status code, Requests will
+    now attempt to rewind the body object so it can be replayed.
+
+**Bugfixes**
+
+-   When calling `response.close`, the call to `close` will be
+    propagated through to non-urllib3 backends.
+-   Fixed issue where the `ALL_PROXY` environment variable would be
+    preferred over scheme-specific variables like `HTTP_PROXY`.
+-   Fixed issue where non-UTF8 reason phrases got severely mangled by
+    falling back to decoding using ISO 8859-1 instead.
+-   Fixed a bug where Requests would not correctly correlate cookies set
+    when using custom Host headers if those Host headers did not use the
+    native string type for the platform.
+
+**Miscellaneous**
+
+-   Updated bundled urllib3 to 1.19.
+-   Updated bundled certifi certs to 2016.09.26.

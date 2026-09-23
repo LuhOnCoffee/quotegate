@@ -1,0 +1,117 @@
+{
+ "project": "pip",
+ "head_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+ "head_date": "2026-09-21",
+ "license": "MIT",
+ "facts": [
+  {
+   "id": "F1",
+   "fact": "The current pip supports CPython 3.10, 3.11, 3.12, 3.13, 3.14 and 3.15 plus the latest PyPy3; Python 2 and older Python 3 versions are not supported.",
+   "source_path": "docs/html/installation.md",
+   "source_quote": "CPython 3.10, 3.11, 3.12, 3.13, 3.14, 3.15 and latest PyPy3."
+  },
+  {
+   "id": "F2",
+   "fact": "PyPI no longer supports `pip search` (XML-RPC search); users must search PyPI via the website instead.",
+   "source_path": "docs/html/cli/pip_search.rst",
+   "source_quote": "PyPI no longer supports ``pip search`` (or XML-RPC search). Please use https://pypi.org/search (via a browser)"
+  },
+  {
+   "id": "F3",
+   "fact": "pip's backtracking (2020) resolver is the default; the legacy resolver (--use-deprecated=legacy-resolver) is deprecated and unsupported.",
+   "source_path": "docs/html/user_guide.rst",
+   "source_quote": "The legacy resolver is deprecated and unsupported."
+  },
+  {
+   "id": "F4",
+   "fact": "When installing a project from a local directory, pip builds it in place rather than copying it to a temporary directory first (out-of-tree builds were removed in 22.1).",
+   "source_path": "docs/html/topics/local-project-installs.md",
+   "source_quote": "When provided with a project that's in a local directory, pip will invoke the build system \"in place\"."
+  }
+ ],
+ "docs": [
+  {
+   "file": "docs/pip-01-organic.txt",
+   "kind": "organic",
+   "source_tag": "19.3",
+   "source_path": "docs/html/installing.rst",
+   "source_commit": "afcb3e7eaf468450609f79d744918b6a37bca262",
+   "inserted": "",
+   "inserted_fact": "",
+   "expected_stale": "yes (F1): \"pip works with CPython versions 2.7, 3.5, 3.6, 3.7 and also PyPy.\" (also \"pip is already installed if you are using Python 2 >=2.7.9 or Python 3 >=3.4\")"
+  },
+  {
+   "file": "docs/pip-02-organic.txt",
+   "kind": "organic",
+   "source_tag": "20.2",
+   "source_path": "docs/html/user_guide.rst",
+   "source_commit": "127acd8c9eed66f1c0e2d251639b6d378f66b488",
+   "inserted": "",
+   "inserted_fact": "",
+   "expected_stale": "yes (F2): \"pip can search `PyPI`_ for packages using the ``pip search`` command::\"",
+   "source_note": "(lines 1-329, trimmed before the Configuration section)"
+  },
+  {
+   "file": "docs/pip-03-planted.txt",
+   "kind": "planted",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/dependency-resolution.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "You can also switch to the legacy resolver, which does not backtrack and remains fully supported, by passing `--use-deprecated=legacy-resolver`.",
+   "inserted_fact": "F3",
+   "expected_stale": "",
+   "source_note": "(lines 1-162, trimmed before 'Dealing with dependency conflicts')"
+  },
+  {
+   "file": "docs/pip-04-planted.txt",
+   "kind": "planted",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/caching.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "When building from such a path, pip first copies the project into a temporary directory and runs the build backend there, leaving the original source tree untouched.",
+   "inserted_fact": "F4",
+   "expected_stale": ""
+  },
+  {
+   "file": "docs/pip-05-distractor.txt",
+   "kind": "distractor",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/installation.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "Support for Python 2.7 ended with the pip 20.3 series; pip 21.0, released in January 2021, was the first release to require Python 3.",
+   "inserted_fact": "F1",
+   "expected_stale": ""
+  },
+  {
+   "file": "docs/pip-06-distractor.txt",
+   "kind": "distractor",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/more-dependency-resolution.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "Pip first shipped this backtracking resolver as its default in version 20.3, released in November 2020.",
+   "inserted_fact": "F3",
+   "expected_stale": ""
+  },
+  {
+   "file": "docs/pip-07-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/vcs-support.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "",
+   "inserted_fact": "",
+   "expected_stale": "no"
+  },
+  {
+   "file": "docs/pip-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/configuration.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "",
+   "inserted_fact": "",
+   "expected_stale": "no"
+  }
+ ],
+ "notes": "Network was blocked in the sandbox; blobs were fetched with the sandbox disabled. Organic 01 (19.3 installing.rst) also says get-pip.py installs setuptools and wheel, which is not one of the facts. Organic 02 (20.2 user guide excerpt) mentions pip search against PyPI as current; the 20.2 resolver-beta section (which would contradict F3) lies outside the excerpt. Planted 03 is placed in 'Allow pip to complete its backtracking', appended to the Ctrl+c paragraph; planted 04 is appended to the paragraph on wheels built from direct paths. Distractor 05 is a new paragraph after the Compatibility section's 'not supported by pip's maintainers' line; it is historically accurate (pip 21.0, Jan 2021, dropped Python 2). Distractor 06 is appended after 'we have to use a *backtracking algorithm*'; pip 20.3 was released 2020-11-30. The installation.md distractor doc also contains the F1 compatibility list itself. Clean doc 08 (configuration.md) mentions legacy config file locations, which are unrelated to the facts."
+}

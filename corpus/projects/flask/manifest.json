@@ -1,0 +1,127 @@
+{
+  "project": "flask",
+  "head_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+  "head_date": "2026-09-08",
+  "license": "BSD-3-Clause",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Flask supports Python 3.10 and newer.",
+      "source_path": "docs/installation.rst",
+      "source_quote": "Flask supports Python 3.10 and newer."
+    },
+    {
+      "id": "F2",
+      "fact": "Debug mode for the development server is enabled with the --debug option of the flask command.",
+      "source_path": "docs/quickstart.rst",
+      "source_quote": "To enable debug mode, use the ``--debug`` option."
+    },
+    {
+      "id": "F3",
+      "fact": "The FLASK_ENV environment variable, the ENV config key, and the app.env property have been removed (since Flask 2.3).",
+      "source_path": "CHANGES.rst",
+      "source_quote": "The ``FLASK_ENV`` environment variable, ``ENV`` config key, and ``app.env``\n        property are removed."
+    },
+    {
+      "id": "F4",
+      "fact": "The JSON_AS_ASCII, JSON_SORT_KEYS, JSONIFY_MIMETYPE, and JSONIFY_PRETTYPRINT_REGULAR config keys have been removed (since Flask 2.3).",
+      "source_path": "CHANGES.rst",
+      "source_quote": "The ``JSON_AS_ASCII``, ``JSON_SORT_KEYS``, ``JSONIFY_MIMETYPE``, and\n        ``JSONIFY_PRETTYPRINT_REGULAR`` config keys are removed."
+    },
+    {
+      "id": "F5",
+      "fact": "Blinker is a required dependency installed automatically with Flask, so signals are always available.",
+      "source_path": "CHANGES.rst",
+      "source_quote": "Signals are always available. ``blinker>=1.6.2`` is a required dependency."
+    },
+    {
+      "id": "F6",
+      "fact": "The app.before_first_request and bp.before_app_first_request decorators have been removed (since Flask 2.3).",
+      "source_path": "CHANGES.rst",
+      "source_quote": "The ``app.before_first_request`` and ``bp.before_app_first_request`` decorators\n        are removed."
+    }
+  ],
+  "docs": [
+    {
+      "file": "docs/flask-01-organic.txt",
+      "kind": "organic",
+      "source_tag": "1.1.4",
+      "source_path": "docs/installation.rst",
+      "source_commit": "1ca199f9b38b70a4e97cb47a4252ffd7fccc008c",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes: \"Flask supports Python 3.5 and newer, Python 2.7, and PyPy.\" contradicts F1; also lists Blinker under 'Optional dependencies ... will not be installed automatically' (\"* `Blinker`_ provides support for :ref:`signals`.\"), contradicting F5."
+    },
+    {
+      "file": "docs/flask-02-organic.txt",
+      "kind": "organic",
+      "source_tag": "2.1.3",
+      "source_path": "docs/quickstart.rst",
+      "source_commit": "187d7179f605d28c3d24e9f4d65d3295fb099afe",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes: \"To enable all development features, set the ``FLASK_ENV`` environment variable to ``development`` before calling ``flask run``.\" contradicts F3 (FLASK_ENV removed) and F2 (debug via --debug). Trimmed at the 'Routing' section boundary."
+    },
+    {
+      "file": "docs/flask-03-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/server.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "Debug mode can also be enabled by setting the ``FLASK_ENV`` environment variable to ``development`` before running ``flask run``.",
+      "inserted_fact": "F3",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/flask-04-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/signals.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "Blinker is not installed along with Flask, so add it to your project's dependencies first.",
+      "inserted_fact": "F5",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/flask-05-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/debugging.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "Before Flask 2.3, debug mode could also be enabled by setting the ``FLASK_ENV`` environment variable to ``development``, but that variable was removed in the 2.3 release.",
+      "inserted_fact": "F3",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/flask-06-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/installation.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "Flask 2.3, released in April 2023, dropped support for Python 3.7.",
+      "inserted_fact": "F1",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/flask-07-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/design.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    },
+    {
+      "file": "docs/flask-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/async-await.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    }
+  ],
+  "notes": "Planted/distractor inserted sentences are given unwrapped; in the files they are line-wrapped at the rst column width (planted 03, 04 and distractor 05 span line breaks, so match with whitespace normalized). Facts F3, F4, F6 are quoted from CHANGES.rst (included by docs/changes.rst); their quotes contain a newline plus 8 spaces of indentation, copied exactly. F2 is not strictly exclusive: FLASK_DEBUG still works, and FLASK_APP is still valid, so old FLASK_APP instructions were deliberately NOT treated as stale. Distractor 06 dates are from CHANGES.rst (2.3.0 released 2023-04-25, 'Drop support for Python 3.7'). HEAD is 3.2.0.dev (unreleased); the 3.2 changelog's redirect-303 change was avoided as a fact because it is unreleased. cli.rst was rejected as a clean doc because its flask shell sample output still shows 'App: example [production]', a relic of the removed ENV setting."
+}

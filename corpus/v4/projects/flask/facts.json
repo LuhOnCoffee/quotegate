@@ -1,0 +1,43 @@
+{
+  "project": "flask",
+  "as_of_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+  "as_of_date": "2026-09-08",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Flask supports Python 3.10 and newer.",
+      "source_path": "docs/installation.rst",
+      "source_quote": "Flask supports Python 3.10 and newer."
+    },
+    {
+      "id": "F2",
+      "fact": "Debug mode for the development server is enabled with the --debug option of the flask command.",
+      "source_path": "docs/quickstart.rst",
+      "source_quote": "To enable debug mode, use the ``--debug`` option."
+    },
+    {
+      "id": "F3",
+      "fact": "The FLASK_ENV environment variable, the ENV config key, and the app.env property have been removed (since Flask 2.3).",
+      "source_path": "CHANGES.rst",
+      "source_quote": "The ``FLASK_ENV`` environment variable, ``ENV`` config key, and ``app.env``\n        property are removed."
+    },
+    {
+      "id": "F4",
+      "fact": "The JSON_AS_ASCII, JSON_SORT_KEYS, JSONIFY_MIMETYPE, and JSONIFY_PRETTYPRINT_REGULAR config keys have been removed (since Flask 2.3).",
+      "source_path": "CHANGES.rst",
+      "source_quote": "The ``JSON_AS_ASCII``, ``JSON_SORT_KEYS``, ``JSONIFY_MIMETYPE``, and\n        ``JSONIFY_PRETTYPRINT_REGULAR`` config keys are removed."
+    },
+    {
+      "id": "F5",
+      "fact": "Blinker is a required dependency installed automatically with Flask, so signals are always available.",
+      "source_path": "CHANGES.rst",
+      "source_quote": "Signals are always available. ``blinker>=1.6.2`` is a required dependency."
+    },
+    {
+      "id": "F6",
+      "fact": "The app.before_first_request and bp.before_app_first_request decorators have been removed (since Flask 2.3).",
+      "source_path": "CHANGES.rst",
+      "source_quote": "The ``app.before_first_request`` and ``bp.before_app_first_request`` decorators\n        are removed."
+    }
+  ]
+}

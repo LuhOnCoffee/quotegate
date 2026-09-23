@@ -1,0 +1,121 @@
+{
+  "project": "pytest",
+  "head_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+  "head_date": "2026-09-21",
+  "license": "MIT",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "pytest requires Python 3.10 or newer (or PyPy3).",
+      "source_path": "README.rst",
+      "source_quote": "- Python 3.10+ or PyPy3"
+    },
+    {
+      "id": "F2",
+      "fact": "In setup.cfg, pytest configuration must live in a [tool:pytest] section; plain [pytest] sections in setup.cfg are no longer supported (removed in 4.0).",
+      "source_path": "doc/en/deprecations.rst",
+      "source_quote": "``[pytest]`` sections in ``setup.cfg`` files should now be named ``[tool:pytest]``"
+    },
+    {
+      "id": "F3",
+      "fact": "pytest.toml (new in 9.0) takes precedence over all other configuration files, including pytest.ini.",
+      "source_path": "doc/en/reference/customize.rst",
+      "source_quote": "``pytest.toml`` files take precedence over other files, even when empty."
+    },
+    {
+      "id": "F4",
+      "fact": "pytest.yield_fixture is a deprecated alias for pytest.fixture (deprecated since 6.2, to be removed in pytest 10); plain @pytest.fixture should be used for yield fixtures.",
+      "source_path": "doc/en/deprecations.rst",
+      "source_quote": "``pytest.yield_fixture`` is a deprecated alias for :func:`pytest.fixture` and will be removed in pytest 10."
+    },
+    {
+      "id": "F5",
+      "fact": "The tmp_path/tmp_path_factory fixtures (pathlib.Path) are preferred; tmpdir/tmpdir_factory are legacy py.path-based fixtures.",
+      "source_path": "doc/en/how-to/tmp_path.rst",
+      "source_quote": "These days, it is preferred to use ``tmp_path`` and ``tmp_path_factory``."
+    }
+  ],
+  "docs": [
+    {
+      "file": "docs/pytest-01-organic.txt",
+      "kind": "organic",
+      "source_tag": "4.6.11",
+      "source_path": "README.rst",
+      "source_commit": "2262734edfce27bed7839c93a9f7c42ace056a70",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes (F1): '- Python 2.7, Python 3.4+, PyPy 2.3, Jython 2.5 (untested);' stated as current supported versions in the Features list"
+    },
+    {
+      "file": "docs/pytest-02-organic.txt",
+      "kind": "organic",
+      "source_tag": "8.4.2",
+      "source_path": "doc/en/reference/customize.rst",
+      "source_commit": "bfae4224fd554d3d7f2c277a4cc092b6ec6af3ae",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes (F3): '``pytest.ini`` files take precedence over other files, even when empty.' (no pytest.toml exists in this version); also the config-file search lists omit pytest.toml"
+    },
+    {
+      "file": "docs/pytest-03-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/getting-started.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "``pytest`` requires: Python 3.8+ or PyPy3.",
+      "inserted_fact": "F1",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/pytest-04-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/explanation/goodpractices.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "If a ``pytest.ini`` file is also present, it takes precedence over ``pytest.toml``.",
+      "inserted_fact": "F3",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/pytest-05-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/backwards-compatibility.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "The pytest 4.6 series, first released in 2019, was the last to support Python 2.7 and Python 3.4.",
+      "inserted_fact": "F1",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/pytest-06-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/tmp_path.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "The ``tmp_path`` fixture was introduced in pytest 3.9 in 2018 as a :mod:`pathlib`-based alternative to ``tmpdir``.",
+      "inserted_fact": "F5",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/pytest-07-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "README.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    },
+    {
+      "file": "docs/pytest-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/capture-stdout-stderr.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    }
+  ],
+  "notes": "py.test entry point still exists at HEAD (pyproject scripts), so the py.test->pytest rename was deliberately NOT used as a fact. Nose removal (8.0) not used: HEAD quote wording says deprecated. Planted-04 and organic-02 both hinge on F3. goodpractices trimmed before the flake8-pytest-style section to fit 12k. Distractor-05 doc also contains the historical Python support table (3.3-4.6 -> 2.7, 3.4+), which is history, not a current claim. Organic-02 (8.4.2 customize.rst) also lists pytest.ini as 'always match and take precedence' in the rootdir search section."
+}

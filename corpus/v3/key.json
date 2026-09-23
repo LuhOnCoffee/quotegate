@@ -1,0 +1,388 @@
+{
+ "docs": {
+  "black-d01": [],
+  "black-d02": [],
+  "black-d03": [
+   {
+    "quote": "experimental-string-processing = true",
+    "fact": "The --experimental-string-processing flag was removed in 24.1.0; string splitting is only available as the unstable feature string_processing via --preview --enable-unstable-feature string_processing.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "This line sits inside a 'More complete pyproject.toml template' presented as current configuration, alongside preview/unstable keys. A reader must infer that offering experimental-string-processing as a live config key presupposes the flag still exists; today Black warns about the invalid key and the setting does nothing.",
+    "by": "AB"
+   }
+  ],
+  "black-d04": [],
+  "black-d05": [],
+  "black-d06": [
+   {
+    "quote": "For a module that still has to parse as Python 2 \u2014 `print` statements, `except Error, e:` \u2014 pass `-t py27` so _Black_ picks the matching grammar.",
+    "fact": "Black no longer supports formatting Python 2 code; that support was removed in version 22.0.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Presented as a present-tense instruction for --target-version. A reader must infer that telling someone to pass -t py27 to get a Python 2 grammar only makes sense if Python 2 parsing still exists; there is no py27 target version any more and such a module cannot be formatted at all.",
+    "by": "AB"
+   }
+  ],
+  "black-d07": [
+   {
+    "quote": "give it a virtualenv of its own: `python3.9 -m venv blackd-env`, then `blackd-env/bin/pip install 'black[d]'`.",
+    "fact": "Black requires Python 3.10 or newer to run.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "A step the reader is told to run now. It presupposes Black (and blackd) installs and runs on Python 3.9; under the current minimum of 3.10 the pip install into that 3.9 venv fails, so the instruction only works under the old requirement.",
+    "by": "AB"
+   }
+  ],
+  "black-d08": [
+   {
+    "quote": "expect a handful of them to start failing the first time you run a newly upgraded _Black_, and plan to regenerate them as part of every version bump.",
+    "fact": "Black is stable (no longer a beta product): formatting output is stable for all releases within the same calendar year.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "A stated consequence given as current advice. A reader must infer that routinely regenerating formatted snapshots at every version bump is only necessary if any release may reshuffle formatting \u2014 the pre-2022 beta behaviour \u2014 whereas output is now guaranteed stable across releases within a calendar year.",
+    "by": "AB"
+   }
+  ],
+  "click-d01": [
+   {
+    "quote": "Spell the optional parameters of that override as `t.Optional[click.Context]` rather than `click.Context | None`: the `|` form is not evaluated at runtime on every interpreter Click still runs on.",
+    "fact": "Since 8.2.0 Click's minimum supported Python is 3.10; 3.7, 3.8 and 3.9 are no longer supported.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Present-tense instruction plus a stated consequence. PEP 604 `X | None` is evaluatable at runtime from Python 3.10 on, so the claim that it 'is not evaluated at runtime on every interpreter Click still runs on' only holds if Click still runs on 3.9 or older.",
+    "by": "AB"
+   }
+  ],
+  "click-d02": [],
+  "click-d03": [
+   {
+    "quote": "On Python 3.8 and 3.9, upgrade the installer first with `python -m pip install --upgrade pip`, then run the command above again.",
+    "fact": "Click no longer supports Python 3.7, 3.8 or 3.9; the minimum supported Python is 3.10.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "An install step presented as current. It presupposes that `pip install click` can succeed on 3.8/3.9 given a new enough pip; under the current minimum no pip version installs a current Click there, so the remedy is only meaningful under the old support range.",
+    "by": "AB"
+   }
+  ],
+  "click-d04": [],
+  "click-d05": [],
+  "click-d06": [
+   {
+    "quote": "$ eval \"$(_COPY_COMPLETE=source_bash copy)\"",
+    "fact": "Shell completion is activated by setting _{PROG}_COMPLETE to `{shell}_source` (e.g. `bash_source`), not the old `source_{shell}` / `source_bash` form.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Shown as the command that was run to record the sessions that follow, i.e. what a reader would run now. The old `source_bash` value is no longer recognized, so the completion demonstration cannot be reproduced with this line.",
+    "by": "AB"
+   }
+  ],
+  "click-d07": [
+   {
+    "quote": "colorama.deinit()",
+    "fact": "Colorama is no longer a dependency of Click and is not used; supported Windows versions get ANSI styling natively.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Part of a runnable test example (with `import colorama` above it) given as how to assert on raw escape sequences today. Calling deinit() only makes sense to undo a colorama wrapping that Click itself installed; since Click neither depends on nor initializes colorama, the step is inert and the example presupposes the old behaviour.",
+    "by": "AB"
+   }
+  ],
+  "click-d08": [],
+  "flask-d01": [],
+  "flask-d02": [
+   {
+    "quote": "check that image for signalling support before looking for a bug\nin the fixture.",
+    "fact": "Blinker is a required dependency installed automatically with Flask, so signals are always available.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The troubleshooting advice only makes sense if signal support can be missing from an environment (i.e. Blinker still optional). Since Blinker is now a hard dependency, signals cannot be absent from an image that has Flask installed, so the suggested check presupposes the old optional-Blinker behaviour.",
+    "by": "AB"
+   }
+  ],
+  "flask-d03": [],
+  "flask-d04": [
+   {
+    "quote": "app.config[\"JSONIFY_PRETTYPRINT_REGULAR\"] = True",
+    "fact": "The JSON_AS_ASCII, JSON_SORT_KEYS, JSONIFY_MIMETYPE, and JSONIFY_PRETTYPRINT_REGULAR config keys have been removed (since Flask 2.3).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Presented inside a current 'how to return JSON' example as working configuration; the key was removed in Flask 2.3 and setting it now has no effect.",
+    "by": "AB"
+   }
+  ],
+  "flask-d05": [
+   {
+    "quote": "The startup output includes the environment the server is running in, so check",
+    "fact": "The FLASK_ENV environment variable, the ENV config key, and the app.env property have been removed (since Flask 2.3).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The instruction presupposes that the dev server still reports an 'environment' (the removed FLASK_ENV/ENV concept) and that it can say 'development'. With env removed, there is no such line to check.",
+    "by": "AB"
+   }
+  ],
+  "flask-d06": [
+   {
+    "quote": "Build the virtualenv with the oldest interpreter you plan to run in\nproduction, for example ``python3.9 -m venv .venv``",
+    "fact": "Flask supports Python 3.10 and newer.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The example is given as a deployment step to follow now, but a 3.9 virtualenv cannot install current Flask; it only makes sense under the older 3.8/3.9 support window.",
+    "by": "AB"
+   }
+  ],
+  "flask-d07": [],
+  "flask-d08": [],
+  "httpx-d01": [],
+  "httpx-d02": [],
+  "httpx-d03": [
+   {
+    "quote": "create and activate a virtual environment for the checkout with `python3.8 -m venv venv`",
+    "fact": "HTTPX requires Python 3.9 or newer (support for Python 3.8 and older has been dropped).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Given as the setup step to run now; a 3.8 virtualenv cannot install/develop current HTTPX, so the step only works under the dropped 3.8 support.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d04": [
+   {
+    "quote": "For a quick check of a single route, drop the `transport=` argument, pass `app=app` to the client instead",
+    "fact": "The `app` shortcut argument on clients has been removed; WSGI/ASGI apps are called via transport=httpx.WSGITransport(app=...) or httpx.ASGITransport(app=...).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The instruction presupposes the client-level `app=` shortcut still exists; passing app=app to httpx.Client now raises a TypeError.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d05": [
+   {
+    "quote": "If `https://www.example.com/` sends you on somewhere else, `r` is the response from the end of the chain, and `r.history` lists the redirects that were made along the way.",
+    "fact": "HTTPX does not follow redirects by default; redirect following must be enabled explicitly with follow_redirects=True.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Describes the result of the preceding example (a plain client.get with no follow_redirects) as the end of a redirect chain with a populated history; that is only true if redirects are followed by default. In current HTTPX r would be the 3xx response itself and r.history empty.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d06": [
+   {
+    "quote": "with httpx.Client(proxies=proxies) as client:",
+    "fact": "The `proxies` argument has been removed; proxies are configured with the singular `proxy` argument or with `mounts=`.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Offered as an 'equivalent configuration' to the mounts example, i.e. as something you can write now; the plural `proxies` argument was removed and this raises a TypeError.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d07": [],
+  "httpx-d08": [],
+  "pip-d01": [],
+  "pip-d02": [],
+  "pip-d03": [],
+  "pip-d04": [
+   {
+    "quote": "once `pip install .` finishes, you will not find a `build/` directory or an `.egg-info` sitting next to your `pyproject.toml`.",
+    "fact": "Since 22.1 pip builds a local directory in place rather than copying it to a temporary directory, so build artefacts such as `build/` and `.egg-info` ARE left next to `pyproject.toml` after `pip install .`.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The reader must infer that 'nothing left behind next to your pyproject.toml' is only true of the removed out-of-tree build behaviour; with in-place builds the source tree does get build/ and .egg-info residue.",
+    "by": "AB"
+   }
+  ],
+  "pip-d05": [],
+  "pip-d06": [
+   {
+    "quote": "python: [\"3.9\", \"3.10\", \"3.11\", \"3.12\", \"3.13\", \"3.14\", \"3.15\"]",
+    "fact": "Current pip supports CPython 3.10 through 3.15 (plus latest PyPy3); 3.9 is no longer supported, so it would not be in the CI test matrix.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Presented as the current matrix ('The interpreters the test job runs against are listed in the matrix of that workflow'), so the inclusion of 3.9 implies pip still supports and tests 3.9.",
+    "by": "AB"
+   }
+  ],
+  "pip-d07": [
+   {
+    "quote": "Whether the project is on PyPI under the name being used: `pip search <project-name>`",
+    "fact": "PyPI no longer supports XML-RPC search, so `pip search` does not work; users must search PyPI via the website.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Given as a command a triager should ask a reporter to run now; it only makes sense if `pip search` still works.",
+    "by": "AB"
+   }
+  ],
+  "pip-d08": [
+   {
+    "quote": "run the install again without `--use-feature=2020-resolver`, get yourself unblocked",
+    "fact": "The 2020 backtracking resolver is the default and is not opt-in; the legacy resolver is deprecated and unsupported (only reachable via --use-deprecated=legacy-resolver).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The advice presupposes that 2020-resolver is an opt-in feature flag and that dropping it yields a usable non-backtracking install; neither holds today.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d01": [],
+  "poetry-d02": [],
+  "poetry-d03": [
+   {
+    "quote": "poetry lock --no-update",
+    "fact": "`poetry lock` no longer updates packages already in the lock file by default, and the `--no-update` option was removed; refreshing/regenerating uses `poetry lock` or `poetry lock --regenerate`.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Presented as the command to run now after hand-editing a constraint; the flag only exists under the old behaviour where `poetry lock` updated everything.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d04": [
+   {
+    "quote": "activate the project's environment with `poetry shell` and then call them directly - `pytest`, say - instead of prefixing every invocation with `poetry run`.",
+    "fact": "`poetry shell` is no longer part of Poetry; it moved to the separate poetry-plugin-shell plugin, and `poetry env activate` is the built-in replacement.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Given as a present-tense instruction for working with newly added group dependencies; it only works if `poetry shell` is still a core command.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d05": [],
+  "poetry-d06": [],
+  "poetry-d07": [
+   {
+    "quote": "write the same pinned set out for it with `poetry export --without-hashes --output requirements.txt`",
+    "fact": "The `export` command comes from the Export Poetry Plugin, which since 2.0 is no longer installed by default, so `poetry export` is not available out of the box.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Offered as a step to run right after `poetry install` with no mention of installing poetry-plugin-export; it presupposes export is still bundled.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d08": [
+   {
+    "quote": "The environment you activate for this stays in effect until you type `exit`, so leave it again before you run Poetry commands for another project.",
+    "fact": "Poetry's built-in activation is `poetry env activate`, which prints an activation command to eval in the current shell; the nested sub-shell you leave with `exit` was `poetry shell`, now removed to the poetry-plugin-shell plugin.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The reader must infer the spawned-subshell model: 'until you type exit' is only true of the removed `poetry shell` command, not of `poetry env activate`.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d01": [
+   {
+    "quote": ".. tab:: setup.cfg\n\n    .. code-block:: ini\n\n        [pytest]\n        doctest_optionflags = NORMALIZE_WHITESPACE IGNORE_EXCEPTION_DETAIL",
+    "fact": "In setup.cfg, pytest configuration must live in a [tool:pytest] section; a plain [pytest] section in setup.cfg is no longer supported (removed in 4.0).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The tab is labelled setup.cfg and the snippet inside it is presented as a working way to set doctest_optionflags today; the reader must infer that the section header shown for setup.cfg is [pytest], which pytest no longer reads \u2014 it would have to be [tool:pytest].",
+    "by": "AB"
+   },
+   {
+    "quote": "This allows doctests to run in Python 2\n  and Python 3 unchanged.",
+    "fact": "pytest requires Python 3.10 or newer (or PyPy3); it cannot run on Python 2.",
+    "corrected_in_doc": false,
+    "confidence": "arguable",
+    "note": "Stated as a current benefit of ALLOW_UNICODE, it presupposes that a pytest-run doctest suite can still be executed under Python 2 as well as Python 3. Arguable because it can be read as describing doctest-text portability in the abstract rather than claiming pytest itself runs on Python 2.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d02": [
+   {
+    "quote": "requires-python = \">=3.9\"\n    dependencies = [\"pytest\"]",
+    "fact": "pytest requires Python 3.10 or newer (or PyPy3).",
+    "corrected_in_doc": false,
+    "confidence": "arguable",
+    "note": "This is the sample pyproject.toml the page tells you to copy for a pytest plugin. A plugin that declares requires-python >=3.9 while depending on pytest only makes sense if pytest still installs on 3.9; under the current floor of 3.10 the declared range is unsatisfiable. Arguable because the value is the plugin author's own metadata rather than a direct statement about pytest's support.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d03": [],
+  "pytest-d04": [
+   {
+    "quote": "create one\nenvironment per version -- for example ``python3.9 -m venv .venv39`` and\n``python3.13 -m venv .venv313`` -- and install ``pytest`` into each of them.",
+    "fact": "pytest requires Python 3.10 or newer (or PyPy3).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "This is an instruction for what to do now. The reader must infer that the recommended step of creating a Python 3.9 venv and installing pytest into it only works if pytest still supports 3.9; with the 3.10 floor the 3.9 half of the example cannot be carried out.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d05": [],
+  "pytest-d06": [],
+  "pytest-d07": [
+   {
+    "quote": "If the project also has a ``pytest.ini``, that is the file named on the\n``configfile:`` line of the run header, so add the ``addopts`` entry there\ninstead.",
+    "fact": "pytest.toml (new in 9.0) takes precedence over all other configuration files, including pytest.ini.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The instruction to move addopts out of the pytest.toml just shown and into pytest.ini only makes sense if pytest.ini wins when both exist; under current precedence pytest.toml is the file that is used, so following this step would put the option in the ignored file.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d08": [],
+  "requests-d01": [
+   {
+    "quote": ">>> username = raw_input('Username: ')",
+    "fact": "Requests officially supports Python 3.10 and newer; Python 2.7 support was dropped in Requests 2.28.0.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Presented as a runnable snippet for asking for credentials now. raw_input is a Python-2-only builtin (it is input() on Python 3), so the example only runs on an interpreter Requests no longer supports.",
+    "by": "AB"
+   }
+  ],
+  "requests-d02": [],
+  "requests-d03": [
+   {
+    "quote": "let the detector pick, pin ``chardet`` in your requirements file next to\nRequests -- a different release of it can put a different label on the same\nbytes",
+    "fact": "chardet is not a mandatory dependency; unless chardet is already installed or the [use_chardet_on_py3] extra is used, Requests uses charset-normalizer to guess response encodings.",
+    "corrected_in_doc": false,
+    "confidence": "arguable",
+    "note": "Framed as the way to get automatic detection today, it presupposes that chardet is the detector Requests uses, so that its pinned release determines r.encoding; in fact the default detector is charset-normalizer. Arguable because installing chardet does still switch Requests to chardet, so the advice is not literally impossible to follow.",
+    "by": "AB"
+   }
+  ],
+  "requests-d04": [],
+  "requests-d05": [],
+  "requests-d06": [],
+  "requests-d07": [
+   {
+    "quote": "a ``match`` statement or an\n``int | None`` annotation will not even parse on the oldest interpreter\nRequests still supports, so reach for ``if``/``elif`` and ``typing.Optional``\ninstead.",
+    "fact": "Requests officially supports Python 3.10 and newer.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "A stated consequence given as a current documentation rule. Both match statements and PEP 604 int | None annotations parse on Python 3.10, so the claim and the instruction that follows from it only hold if the oldest supported interpreter were older than 3.10.",
+    "by": "AB"
+   }
+  ],
+  "requests-d08": [
+   {
+    "quote": "Not installed yet? Run ``$ pipenv install requests`` in your project directory\nfirst -- it will add the dependency to your Pipfile -- and then try the snippet\nabove.",
+    "fact": "The documented way to install Requests is `python -m pip install requests` (not pipenv or easy_install).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Given as the current install step for a new reader; it presents pipenv/Pipfile as the documented installation route, where the documented command today is python -m pip install requests.",
+    "by": "AB"
+   }
+  ]
+ },
+ "judged": {
+  "poetry-d01": {
+   "requires-python = \">=3.7\"": "correct"
+  }
+ },
+ "borderline": [
+  {
+   "doc": "pytest-d01",
+   "quote": "This allows doctests to run in Python 2\n   and Python 3 unchanged.",
+   "ruled": "kept in the key",
+   "why": "upstream HEAD text, not an insertion; both keyers listed it as ARGUABLE (pytest requires 3.10+, so a pytest-run doctest suite cannot run on Python 2). Kept so a model that flags it is not penalised; it is the only doc in v3 with two keyed claims."
+  },
+  {
+   "doc": "poetry-d01",
+   "quote": "requires-python = \">=3.7\"",
+   "ruled": "ambiguous - neither right nor wrong",
+   "why": "upstream text in an EXAMPLE PLUGIN's metadata (requires-python for the plugin, not for Poetry); both keyers listed it as arguable. Removed from the key so ignoring it is correct, and recorded as a 'correct' verdict so flagging it is not punished either."
+  }
+ ],
+ "provenance": {
+  "keyers": "two blind Claude agents per document, different prompts and pairings, 2026-09-22",
+  "checks": "all quotes verbatim; both keyers keyed all 32 IMPLIED insertions (instruction 11/11, example 11/11, consequence 10/10) and none of the 24 traps or 8 clean docs; one extra upstream passage found by both (borderline, kept)",
+  "construction": "construction_key.json"
+ }
+}

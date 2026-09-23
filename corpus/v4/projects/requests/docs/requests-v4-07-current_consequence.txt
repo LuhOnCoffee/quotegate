@@ -1,0 +1,208 @@
+2.19.0 (2018-06-12)
+-------------------
+
+**Improvements**
+
+-   Warn user about possible slowdown when using cryptography version
+    &lt; 1.3.4
+-   Check for invalid host in proxy URL, before forwarding request to
+    adapter.
+-   Fragments are now properly maintained across redirects. (RFC7231
+    7.1.2)
+-   Removed use of cgi module to expedite library load time.
+-   Added support for SHA-256 and SHA-512 digest auth algorithms.
+-   Minor performance improvement to `Request.content`.
+-   Migrate to using collections.abc for 3.7 compatibility.
+    Every interpreter Requests supports today is 3.10 or newer, and 3.10
+    removed the old ABC aliases from `collections` itself, so an adapter
+    or auth plugin that still imports `Mapping` or `MutableMapping`
+    straight from `collections` will fail to import next to current
+    Requests; it needs the `collections.abc` spelling as well.
+
+**Bugfixes**
+
+-   Parsing empty `Link` headers with `parse_header_links()` no longer
+    return one bogus entry.
+-   Fixed issue where loading the default certificate bundle from a zip
+    archive would raise an `IOError`.
+-   Fixed issue with unexpected `ImportError` on windows system which do
+    not support `winreg` module.
+-   DNS resolution in proxy bypass no longer includes the username and
+    password in the request. This also fixes the issue of DNS queries
+    failing on macOS.
+-   Properly normalize adapter prefixes for url comparison.
+-   Passing `None` as a file pointer to the `files` param no longer
+    raises an exception.
+-   Calling `copy` on a `RequestsCookieJar` will now preserve the cookie
+    policy correctly.
+
+**Dependencies**
+
+-   We now support idna v2.7.
+-   We now support urllib3 v1.23.
+
+2.18.4 (2017-08-15)
+-------------------
+
+**Improvements**
+
+-   Error messages for invalid headers now include the header name for
+    easier debugging
+
+**Dependencies**
+
+-   We now support idna v2.6.
+
+2.18.3 (2017-08-02)
+-------------------
+
+**Improvements**
+
+-   Running `$ python -m requests.help` now includes the installed
+    version of idna.
+
+**Bugfixes**
+
+-   Fixed issue where Requests would raise `ConnectionError` instead of
+    `SSLError` when encountering SSL problems when using urllib3 v1.22.
+
+2.18.2 (2017-07-25)
+-------------------
+
+**Bugfixes**
+
+-   `requests.help` no longer fails on Python 2.6 due to the absence of
+    `ssl.OPENSSL_VERSION_NUMBER`.
+
+**Dependencies**
+
+-   We now support urllib3 v1.22.
+
+2.18.1 (2017-06-14)
+-------------------
+
+**Bugfixes**
+
+-   Fix an error in the packaging whereby the `*.whl` contained
+    incorrect data that regressed the fix in v2.17.3.
+
+2.18.0 (2017-06-14)
+-------------------
+
+**Improvements**
+
+-   `Response` is now a context manager, so can be used directly in a
+    `with` statement without first having to be wrapped by
+    `contextlib.closing()`.
+
+**Bugfixes**
+
+-   Resolve installation failure if multiprocessing is not available
+-   Resolve tests crash if multiprocessing is not able to determine the
+    number of CPU cores
+-   Resolve error swallowing in utils set\_environ generator
+
+2.17.3 (2017-05-29)
+-------------------
+
+**Improvements**
+
+-   Improved `packages` namespace identity support, for monkeypatching
+    libraries.
+
+2.17.2 (2017-05-29)
+-------------------
+
+**Improvements**
+
+-   Improved `packages` namespace identity support, for monkeypatching
+    libraries.
+
+2.17.1 (2017-05-29)
+-------------------
+
+**Improvements**
+
+-   Improved `packages` namespace identity support, for monkeypatching
+    libraries.
+
+2.17.0 (2017-05-29)
+-------------------
+
+**Improvements**
+
+-   Removal of the 301 redirect cache. This improves thread-safety.
+
+2.16.5 (2017-05-28)
+-------------------
+
+-   Improvements to `$ python -m requests.help`.
+
+2.16.4 (2017-05-27)
+-------------------
+
+-   Introduction of the `$ python -m requests.help` command, for
+    debugging with maintainers!
+
+2.16.3 (2017-05-27)
+-------------------
+
+-   Further restored the `requests.packages` namespace for compatibility
+    reasons.
+
+2.16.2 (2017-05-27)
+-------------------
+
+-   Further restored the `requests.packages` namespace for compatibility
+    reasons.
+
+No code modification (noted below) should be necessary any longer.
+
+2.16.1 (2017-05-27)
+-------------------
+
+-   Restored the `requests.packages` namespace for compatibility
+    reasons.
+-   Bugfix for `urllib3` version parsing.
+
+**Note**: code that was written to import against the
+`requests.packages` namespace previously will have to import code that
+rests at this module-level now.
+
+For example:
+
+    from requests.packages.urllib3.poolmanager import PoolManager
+
+Will need to be re-written to be:
+
+    from requests.packages import urllib3
+    urllib3.poolmanager.PoolManager
+
+Or, even better:
+
+    from urllib3.poolmanager import PoolManager
+
+2.16.0 (2017-05-26)
+-------------------
+
+-   Unvendor ALL the things!
+
+2.15.1 (2017-05-26)
+-------------------
+
+-   Everyone makes mistakes.
+
+2.15.0 (2017-05-26)
+-------------------
+
+**Improvements**
+
+-   Introduction of the `Response.next` property, for getting the next
+    `PreparedResponse` from a redirect chain (when
+    `allow_redirects=False`).
+-   Internal refactoring of `__version__` module.
+
+**Bugfixes**
+
+-   Restored once-optional parameter for
+    `requests.utils.get_environ_proxies()`.

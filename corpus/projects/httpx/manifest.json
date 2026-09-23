@@ -1,0 +1,121 @@
+{
+  "project": "httpx",
+  "head_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+  "head_date": "2026-02-23",
+  "license": "BSD-3-Clause",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "HTTPX requires Python 3.9 or newer (support for Python 3.8 and older has been dropped).",
+      "source_path": "README.md",
+      "source_quote": "HTTPX requires Python 3.9+."
+    },
+    {
+      "id": "F2",
+      "fact": "HTTPX does not follow redirects by default; redirect following must be enabled explicitly with follow_redirects=True.",
+      "source_path": "docs/compatibility.md",
+      "source_quote": "Unlike `requests`, HTTPX does **not follow redirects by default**."
+    },
+    {
+      "id": "F3",
+      "fact": "The `proxies` argument has been removed; proxies are configured with the singular `proxy` argument or with `mounts=`.",
+      "source_path": "CHANGELOG.md",
+      "source_quote": "The deprecated `proxies` argument has now been removed."
+    },
+    {
+      "id": "F4",
+      "fact": "The `app` shortcut argument on clients has been removed; WSGI/ASGI apps are called via transport=httpx.WSGITransport(app=...) or httpx.ASGITransport(app=...).",
+      "source_path": "CHANGELOG.md",
+      "source_quote": "The deprecated `app` argument has now been removed."
+    },
+    {
+      "id": "F5",
+      "fact": "Passing a string (e.g. a CA bundle path) as the `verify` argument is deprecated; SSL configuration uses verify=True/False or an ssl.SSLContext.",
+      "source_path": "CHANGELOG.md",
+      "source_quote": "The `verify` argument as a string argument is now deprecated and will raise warnings."
+    }
+  ],
+  "docs": [
+    {
+      "file": "docs/httpx-01-organic.txt",
+      "kind": "organic",
+      "source_tag": "0.19.0",
+      "source_path": "README.md",
+      "source_commit": "0d7c4caada43324cb3b6ebe4101745c0f7f575db",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes (F1): 'HTTPX requires Python 3.6+.' Also mentions async_generator 'Only required for Python 3.6' as a dependency."
+    },
+    {
+      "file": "docs/httpx-02-organic.txt",
+      "kind": "organic",
+      "source_tag": "0.18.2",
+      "source_path": "docs/compatibility.md",
+      "source_commit": "f312e629bf0f1a03ae66bc08130e2fb0799a1c89",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes (F2, F3): 'In consideration of consistency, we make `HEAD` follow redirects by default in HTTPX.' (plus allow_redirects=False usage), and 'When using `httpx.Client(proxies={...})` to map to a selection of different proxies, we use full URL schemes...'"
+    },
+    {
+      "file": "docs/httpx-03-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/proxies.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "You can also pass a `proxies` dictionary directly to the client, for example `httpx.Client(proxies={\"http://\": \"http://localhost:8030\", \"https://\": \"http://localhost:8031\"})`, which maps each URL scheme onto its own proxy.",
+      "inserted_fact": "F3",
+      "expected_stale": "yes"
+    },
+    {
+      "file": "docs/httpx-04-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/transports.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "For simple cases you can skip creating the transport and pass the application straight to the client instead, using `httpx.Client(app=app, base_url=\"http://testserver\")`.",
+      "inserted_fact": "F4",
+      "expected_stale": "yes"
+    },
+    {
+      "file": "docs/httpx-05-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/ssl.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "Before the 0.28 release in November 2024, the documentation showed passing a CA bundle path to `verify` as a plain string, a style which that release deprecated.",
+      "inserted_fact": "F5",
+      "expected_stale": "no"
+    },
+    {
+      "file": "docs/httpx-06-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "docs/compatibility.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "Before the 0.20 release in October 2021, HTTPX did follow redirects by default and used an `allow_redirects` argument, which that release replaced with `follow_redirects`.",
+      "inserted_fact": "F2",
+      "expected_stale": "no"
+    },
+    {
+      "file": "docs/httpx-07-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/async.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    },
+    {
+      "file": "docs/httpx-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/logging.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    }
+  ],
+  "notes": "HEAD = master b5addb6 (2026-02-23). transports.md (planted-04) trimmed before '## Mounting transports' section to fit 12k. Organic docs taken unmodified from tags 0.19.0 and 0.18.2. Distractor dates verified against CHANGELOG (0.20.0 13 Oct 2021; 0.28.0 28 Nov 2024) and 0.27.2 ssl.md showing verify=\"path\". F5 is 'deprecated' not removed, so it is the weakest fact; no planted doc relies on it. Clean async.md mentions 'Python 3.9+ with python -m asyncio', consistent with F1. Docs redistributed under BSD-3-Clause (LICENSE-NOTICE.txt)."
+}

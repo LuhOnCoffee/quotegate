@@ -1,0 +1,1 @@
+{"type": "object", "properties": {"analysis": {"type": "string"}, "found": {"type": "boolean"}, "quote": {"type": "string", "minLength": 12}, "why": {"type": "string"}, "fact": {"type": "string"}}, "required": ["analysis", "found", "quote", "why", "fact"]}

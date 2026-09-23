@@ -1,0 +1,12 @@
+# One GPU, one Ollama, one model: tier 1 only. The smallest useful setup.
+[[models]]
+name = "gemma4:12b-it-qat"
+family = "gemma"
+host = "127.0.0.1:11434"
+think = "off"
+num_predict = 4096
+s_per_kchar = 0.83
+load_s = 60
+
+[roles]
+first = "gemma4:12b-it-qat"

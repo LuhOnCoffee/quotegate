@@ -1,0 +1,87 @@
+{
+ "project": "black",
+ "license": "MIT",
+ "docs": [
+  {
+   "file": "docs/black-v4-01-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/the_black_code_style/current_style.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "Long string literals are the most common case, because _Black_ does not split them in\nits default style. Run it with `--preview` and expect those strings to be broken into\nimplicitly concatenated pieces that fit your limit as well.",
+   "inserted_fact": "F5",
+   "why_implied": "The insertion only tells the reader what to expect when running with `--preview` (long strings broken into implicitly concatenated pieces); it never mentions `--experimental-string-processing`, `string_processing`, `--unstable` or `--enable-unstable-feature`. It was true from 22.1.0 through 23.x, when the experimental string processing lived under `--preview`. Since 24.1.0 string splitting is only the unstable `string_processing` feature (`--preview --enable-unstable-feature string_processing`, or `--unstable`), so plain `--preview` leaves long strings alone. The excerpt (Code style through Empty lines) never discusses string splitting or which features `--preview` holds, so the reader has to know that string splitting is unstable-only."
+  },
+  {
+   "file": "docs/black-v4-02-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/integrations/editors.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "Because the watcher always runs whatever `black` sits at the configured path, upgrading\nthat installation shows up on the very next save: after any upgrade, even to a bugfix\nrelease, expect files you had already formatted to come back with a few changed lines\nyou never touched, and commit that churn separately from your own edits.",
+   "inserted_fact": "F4",
+   "why_implied": "The insertion only describes what the reader will see after upgrading the `black` the file watcher runs, and a chore that follows. The words stable, beta, stability policy and calendar year never appear. Under the stability policy, code already formatted with _Black_ stays unchanged with any other release in the same calendar year, so a bugfix or other same-year upgrade does not rewrite already formatted files. The advice only holds for the pre-2022 beta era. The excerpt (Emacs, PyCharm/IntelliJ, Wing IDE) says nothing about version stability."
+  },
+  {
+   "file": "docs/black-v4-03-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/the_black_code_style/current_style.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "If a module still has to be importable by the old interpreter as well, where a `u`\nmarker does change the type of the literal, add `py27` to the `--target-version` values\nyou format it with and _Black_ will leave those markers alone.",
+   "inserted_fact": "F2",
+   "why_implied": "A configuration step for keeping `u` prefixes in modules that must still import under 'the old interpreter'. It never says Python 2 or claims _Black_ formats it. The step only works if `py27` is still a valid `--target-version` value and _Black_ can still format such code. Both went away when Python 2 formatting support was removed in 22.0: TargetVersion now starts at PY33 and `py27` is rejected. The unmodified sentence just before it ('meaningless in Python 3') makes the step look like a natural exception."
+  },
+  {
+   "file": "docs/black-v4-04-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/the_black_code_style/future_style.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "print \"area:\", side**2",
+   "inserted_fact": "F2",
+   "why_implied": "One line added to the 'Simple expressions - whitespace is removed' code block, with no prose: a Python 2 `print` statement using the power operator. It is shown as formatted output, which only works if _Black_ can still format Python 2 code. Since 22.0 it cannot and fails to parse the line. Nothing in the excerpt mentions Python 2, so the reader has to recognise the syntax and know that support was removed."
+  },
+  {
+   "file": "docs/black-v4-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "CHANGES.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "- If your CI image is still on Python 3.7, installing `black` there will keep resolving\n  to 23.3.0, the last release that runs on it; current releases need Python 3.10 or\n  newer.",
+   "inserted_fact": "F1",
+   "why_implied": "Not stale. It is about the reader's legacy CI still on Python 3.7, and every claim in it is currently true. 23.7.0 raised requires-python to >=3.8 while 23.3.0 has >=3.7, so pip on 3.7 resolves to 23.3.0. Current releases require Python 3.10+ (F1). It sits exactly where a stale runtime-version claim would go, inside the 23.7.0 runtime-support highlight."
+  },
+  {
+   "file": "docs/black-v4-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "CHANGES.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "  Were PyPy 3.7 still among the interpreters _Black_ can run on, this caveat would still\n  apply to current releases.",
+   "inserted_fact": "F3",
+   "why_implied": "Not stale. The counterfactual 'Were PyPy 3.7 still among the interpreters _Black_ can run on' presupposes that PyPy 3.7 is no longer supported, which matches F3 (PyPy 3.8+). It sits directly after the organic, historical 22.8.0 PyPy 3.7 caveat, so a reader keyed on 'PyPy 3.7' may flag it."
+  },
+  {
+   "file": "docs/black-v4-07-current_consequence.txt",
+   "kind": "current_consequence",
+   "source_tag": "HEAD",
+   "source_path": "CHANGES.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "As the first release of 2026, this is the one upgrade this year that is expected to\nchange how already formatted code looks: plan for a single reformatting commit when you\nmove to it, after which later 26.x releases will leave that code as it is (the\n`--preview` and `--unstable` styles excepted).",
+   "inserted_fact": "F4",
+   "why_implied": "True today. The stability policy says the first release of a calendar year may contain formatting changes, and code formatted with _Black_ stays unchanged with any other release in the same year (`--preview` and `--unstable` exempt). 26.1.0 is the first 2026 release and introduces the 2026 stable style, so one reformatting commit on moving to it, and none from later 26.x releases for that code, follows from F4. It is phrased like the stale 'expect reformatting after an upgrade' advice, but correctly limited to the January release."
+  },
+  {
+   "file": "docs/black-v4-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "CHANGES.md",
+   "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt (the 25.9.0 and 25.1.0 release sections). It mentions `string_processing` fixes under 'Preview style' headings (the changelog files unstable-feature changes there), `multiline_string_handling`, and the vim check rejecting Python 3.8. All of it is historical and consistent with the facts: nothing claims `--preview` alone enables string splitting or refers to the removed flag."
+  }
+ ],
+ "notes": "HEAD = main at 62bcae6 (2026-09-21). Every new doc file at HEAD is under 3,000 chars (getting_started 1993, introducing_black_to_your_project 2424, doctest_formatting 2550, black_docker_image 2173, file_collection_and_discovery 2275, gauging_changes 2721, the_black_code_style/index 2346, the index pages, CONTRIBUTING/SECURITY/.github templates). So all eight docs come from sections of previously used files that earlier versions did not use: current_style.md 01 = start through Empty lines (ends before '### Comments') and 03 = Comments through Line breaks & binary operators (ends before '### Slices', about 2.7k chars before v3's excerpt, which starts at Typing stub files); editors.md 02 = title, Emacs, PyCharm/IntelliJ and Wing IDE (v2's clean doc was Vim to the end); future_style.md 04 = the preview-feature subsections from 'Redundant generator parentheses' up to '## Unstable style' (v2 inserted into the Improved string processing section under Unstable style; I could not check how much of the top of the file v2's excerpt included); CHANGES.md 05 = 23.12.1-23.7.0, 06 = 22.12.0-22.3.0 (stops before 22.1.0), 07 = 26.1.0-25.11.0, 08 = 25.9.0-25.1.0 (v3 used 24.1.1/24.1.0). Stale insertions sit only in guide pages, never in the historical changelog, where they would be ambiguous. Facts per kind: consequence F5 and F4, instruction F2, example F2, conditional F1, hypothetical F3, current_consequence F4. Checked: string_processing is in UNSTABLE_FEATURES in mode.py, so `--preview` alone does not split strings. TargetVersion starts at PY33, so there is no py27. requires-python is >=3.7 at 23.3.0, >=3.8 at 23.7.0, >=3.9 at 25.11.0 and >=3.10 at 25.12.0 and HEAD. Caveat: doc 03's instruction uses the literal target `py27` (the genuine old mechanism), similar in form to v3's `-t py27` instruction in a different file and for a different purpose."
+}

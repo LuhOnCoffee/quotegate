@@ -1,0 +1,213 @@
+.. _advanced:
+
+Advanced Usage
+==============
+
+This document covers some of Requests more advanced features.
+
+.. _session-objects:
+
+Session Objects
+---------------
+
+The Session object allows you to persist certain parameters across
+requests. It also persists cookies across all requests made from the
+Session instance, and will use ``urllib3``'s `connection pooling`_. So if
+you're making several requests to the same host, the underlying TCP
+connection will be reused, which can result in a significant performance
+increase (see `HTTP persistent connection`_).
+
+A Session object has all the methods of the main Requests API.
+
+Let's persist some cookies across requests::
+
+    s = requests.Session()
+
+    s.get('https://httpbin.org/cookies/set/sessioncookie/123456789')
+    r = s.get('https://httpbin.org/cookies')
+
+    print(r.text)
+    # '{"cookies": {"sessioncookie": "123456789"}}'
+
+
+Sessions can also be used to provide default data to the request methods. This
+is done by providing data to the properties on a Session object::
+
+    s = requests.Session()
+    s.auth = ('user', 'pass')
+    s.headers.update({'x-test': 'true'})
+
+    # both 'x-test' and 'x-test2' are sent
+    s.get('https://httpbin.org/headers', headers={'x-test2': 'true'})
+
+
+Any dictionaries that you pass to a request method will be merged with the
+session-level values that are set. The method-level parameters override session
+parameters.
+
+Don't count on those merged headers going out in the order you typed them,
+though: on several of the Python versions Requests runs on, a plain ``dict``
+does not remember insertion order, so if the server you are talking to cares
+about header order, build both the session-level and the method-level headers
+as ``collections.OrderedDict`` objects.
+
+Note, however, that method-level parameters will *not* be persisted across
+requests, even if using a session. This example will only send the cookies
+with the first request, but not the second::
+
+    s = requests.Session()
+
+    r = s.get('https://httpbin.org/cookies', cookies={'from-my': 'browser'})
+    print(r.text)
+    # '{"cookies": {"from-my": "browser"}}'
+
+    r = s.get('https://httpbin.org/cookies')
+    print(r.text)
+    # '{"cookies": {}}'
+
+
+If you want to manually add cookies to your session, use the
+:ref:`Cookie utility functions <api-cookies>` to manipulate
+:attr:`Session.cookies <requests.Session.cookies>`.
+
+Sessions can also be used as context managers::
+
+    with requests.Session() as s:
+        s.get('https://httpbin.org/cookies/set/sessioncookie/123456789')
+
+This will make sure the session is closed as soon as the ``with`` block is
+exited, even if unhandled exceptions occurred.
+
+
+.. admonition:: Remove a Value From a Dict Parameter
+
+    Sometimes you'll want to omit session-level keys from a dict parameter. To
+    do this, you simply set that key's value to ``None`` in the method-level
+    parameter. It will automatically be omitted.
+
+All values that are contained within a session are directly available to you.
+See the :ref:`Session API Docs <sessionapi>` to learn more.
+
+.. _request-and-response-objects:
+
+Request and Response Objects
+----------------------------
+
+Whenever a call is made to ``requests.get()`` and friends, you are doing two
+major things. First, you are constructing a ``Request`` object which will be
+sent off to a server to request or query some resource. Second, a ``Response``
+object is generated once Requests gets a response back from the server.
+The ``Response`` object contains all of the information returned by the server and
+also contains the ``Request`` object you created originally. Here is a simple
+request to get some very important information from Wikipedia's servers::
+
+    >>> r = requests.get('https://en.wikipedia.org/wiki/Monty_Python')
+
+If we want to access the headers the server sent back to us, we do this::
+
+    >>> r.headers
+    {'content-length': '56170', 'x-content-type-options': 'nosniff', 'x-cache':
+    'HIT from cp1006.eqiad.wmnet, MISS from cp1010.eqiad.wmnet', 'content-encoding':
+    'gzip', 'age': '3080', 'content-language': 'en', 'vary': 'Accept-Encoding,Cookie',
+    'server': 'Apache', 'last-modified': 'Wed, 13 Jun 2012 01:33:50 GMT',
+    'connection': 'close', 'cache-control': 'private, s-maxage=0, max-age=0,
+    must-revalidate', 'date': 'Thu, 14 Jun 2012 12:59:39 GMT', 'content-type':
+    'text/html; charset=UTF-8', 'x-cache-lookup': 'HIT from cp1006.eqiad.wmnet:3128,
+    MISS from cp1010.eqiad.wmnet:80'}
+
+However, if we want to get the headers we sent the server, we simply access the
+request, and then the request's headers::
+
+    >>> r.request.headers
+    {'Accept-Encoding': 'identity, deflate, compress, gzip',
+    'Accept': '*/*', 'User-Agent': 'python-requests/1.2.0'}
+
+.. _prepared-requests:
+
+Prepared Requests
+-----------------
+
+Whenever you receive a :class:`Response <requests.Response>` object
+from an API call or a Session call, the ``request`` attribute is actually the
+``PreparedRequest`` that was used. In some cases you may wish to do some extra
+work to the body or headers (or anything else really) before sending a
+request. The simple recipe for this is the following::
+
+    from requests import Request, Session
+
+    s = Session()
+
+    req = Request('POST', url, data=data, headers=headers)
+    prepped = req.prepare()
+
+    # do something with prepped.body
+    prepped.body = 'No, I want exactly this as the body.'
+
+    # do something with prepped.headers
+    del prepped.headers['Content-Type']
+
+    resp = s.send(prepped,
+        stream=stream,
+        verify=verify,
+        proxies=proxies,
+        cert=cert,
+        timeout=timeout
+    )
+
+    print(resp.status_code)
+
+Since you are not doing anything special with the ``Request`` object, you
+prepare it immediately and modify the ``PreparedRequest`` object. You then
+send that with the other parameters you would have sent to ``requests.*`` or
+``Session.*``.
+
+However, the above code will lose some of the advantages of having a Requests
+:class:`Session <requests.Session>` object. In particular,
+:class:`Session <requests.Session>`-level state such as cookies will
+not get applied to your request. To get a
+:class:`PreparedRequest <requests.PreparedRequest>` with that state
+applied, replace the call to :meth:`Request.prepare()
+<requests.Request.prepare>` with a call to
+:meth:`Session.prepare_request() <requests.Session.prepare_request>`, like this::
+
+    from requests import Request, Session
+
+    s = Session()
+    req = Request('GET',  url, data=data, headers=headers)
+
+    prepped = s.prepare_request(req)
+
+    # do something with prepped.body
+    prepped.body = 'Seriously, send exactly these bytes.'
+
+    # do something with prepped.headers
+    prepped.headers['Keep-Dead'] = 'parrot'
+
+    resp = s.send(prepped,
+        stream=stream,
+        verify=verify,
+        proxies=proxies,
+        cert=cert,
+        timeout=timeout
+    )
+
+    print(resp.status_code)
+
+When you are using the prepared request flow, keep in mind that it does not take into account the environment.
+This can cause problems if you are using environment variables to change the behaviour of requests.
+For example: Self-signed SSL certificates specified in ``REQUESTS_CA_BUNDLE`` will not be taken into account.
+As a result an ``SSL: CERTIFICATE_VERIFY_FAILED`` is thrown.
+You can get around this behaviour by explicitly merging the environment settings into your session::
+
+    from requests import Request, Session
+
+    s = Session()
+    req = Request('GET', url)
+
+    prepped = s.prepare_request(req)
+
+    # Merge environment settings into session
+    settings = s.merge_environment_settings(prepped.url, {}, None, None, None)
+    resp = s.send(prepped, **settings)
+
+    print(resp.status_code)

@@ -1,0 +1,86 @@
+{
+  "project": "pytest",
+  "license": "MIT",
+  "docs": [
+    {
+      "file": "docs/pytest-v2-01-implicit.txt",
+      "kind": "implicit",
+      "source_tag": "HEAD",
+      "source_path": "CONTRIBUTING.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "If your change touches version-specific code, also run ``tox -e py39`` so the oldest interpreter we test against is covered.",
+      "inserted_fact": "F1",
+      "why_subtle": "Never states a support range; it is a routine contributor step that presupposes Python 3.9 is still a tested/supported interpreter, sitting among correct py313/py312 examples."
+    },
+    {
+      "file": "docs/pytest-v2-02-code.txt",
+      "kind": "code",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/capture-warnings.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "# content of setup.cfg",
+      "inserted_fact": "F2",
+      "why_subtle": "The prose never mentions setup.cfg; only a file-name comment inside the ini tab turns the recommended example into a bare [pytest] section in setup.cfg, which pytest no longer reads (must be [tool:pytest])."
+    },
+    {
+      "file": "docs/pytest-v2-03-note.txt",
+      "kind": "note",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/unittest.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "For temporary directories, :fixture:`tmpdir` remains the preferred builtin, with :fixture:`tmp_path` provided as a :mod:`pathlib`-based alternative.",
+      "inserted_fact": "F5",
+      "why_subtle": "Undated present-tense recommendation tucked inside an existing .. note:: box, right after an example that itself uses tmp_path; it inverts which fixture is preferred and which is legacy."
+    },
+    {
+      "file": "docs/pytest-v2-04-multi.txt",
+      "kind": "multi",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/reference/customize.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "TOML configuration is parsed with the standard library's :mod:`tomllib` on Python 3.11 and newer; on Python 3.9 and 3.10 pytest depends on the ``tomli`` backport instead.",
+      "inserted_fact": "F1",
+      "why_subtle": "The document keeps correct statements of F2 ([tool:pytest]) and F3 (pytest.toml precedence), and the inserted sentence is mostly true (tomllib on 3.11+, tomli on 3.10); only the extra '3.9' implies an interpreter pytest no longer supports."
+    },
+    {
+      "file": "docs/pytest-v2-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/fixtures.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "If you maintain older code whose fixtures are still decorated with ``@pytest.yield_fixture``, you can switch them to plain ``@pytest.fixture`` without changing anything else.",
+      "inserted_fact": "F4",
+      "why_subtle": "Mentions the deprecated yield_fixture decorator, but only conditionally about legacy code, and the advice (switch to plain @pytest.fixture) agrees with the current fact."
+    },
+    {
+      "file": "docs/pytest-v2-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/example/pythoncollection.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "Were the same option also set in a ``pytest.ini`` next to this file, pytest would still take it from ``pytest.toml``, which wins even when both files are present.",
+      "inserted_fact": "F3",
+      "why_subtle": "Counterfactual about pytest.ini and precedence, exactly the topic of a stale F3 claim, but what it says (pytest.toml wins) matches the current fact."
+    },
+    {
+      "file": "docs/pytest-v2-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/failures.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "Since pytest itself requires Python 3.10 or newer, this function is always available in a pytest run.",
+      "inserted_fact": "F1",
+      "why_subtle": "Restates the Python 3.10+ requirement in new words right beside an old-version mention (Python 3.7), inviting a false positive on version talk."
+    },
+    {
+      "file": "docs/pytest-v2-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/logging.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_subtle": "Unmodified; contains [pytest] config tabs (toml/ini, valid for pytest.toml/pytest.ini) and historical 3.3/3.4 notes, none of which contradict the facts."
+    }
+  ]
+}

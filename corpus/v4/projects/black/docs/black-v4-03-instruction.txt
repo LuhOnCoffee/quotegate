@@ -1,0 +1,111 @@
+### Comments
+
+_Black_ does not format comment contents, but it enforces two spaces between code and a
+comment on the same line, and a space before the comment text begins. Some types of
+comments that require specific spacing rules are respected: shebangs (`#! comment`), doc
+comments (`#: comment`), section comments with long runs of hashes, and Spyder cells.
+Non-breaking spaces after hashes are also preserved. Comments may sometimes be moved
+because of formatting changes, which can break tools that assign special meaning to
+them. See [AST before and after formatting](#ast-before-and-after-formatting) for more
+discussion.
+
+### Trailing commas
+
+_Black_ will add trailing commas to expressions that are split by comma where each
+element is on its own line. This includes function signatures.
+
+One exception to adding trailing commas is function signatures containing `*`, `*args`,
+or `**kwargs`. In this case a trailing comma is only safe to use on Python 3.6. _Black_
+will detect if your file is already 3.6+ only and use trailing commas in this situation.
+If you wonder how it knows, it looks for f-strings and existing use of trailing commas
+in function signatures that have stars in them. In other words, if you'd like a trailing
+comma in this situation and _Black_ didn't recognize it was safe to do so, put it there
+manually and _Black_ will keep it.
+
+A pre-existing trailing comma informs _Black_ to always explode contents of the current
+bracket pair into one item per line. Read more about this in the
+[Pragmatism](#pragmatism) section below.
+
+(labels/strings)=
+
+### Strings
+
+_Black_ prefers double quotes (`"` and `"""`) over single quotes (`'` and `'''`). It
+will replace the latter with the former as long as it does not result in more backslash
+escapes than before.
+
+_Black_ also standardizes string prefixes. Prefix characters are made lowercase with the
+exception of [capital "R" prefixes](#rstrings-and-rstrings), unicode literal markers
+(`u`) are removed because they are meaningless in Python 3, and in the case of multiple
+characters "r" is put first as in spoken language: "raw f-string".
+
+If a module still has to be importable by the old interpreter as well, where a `u`
+marker does change the type of the literal, add `py27` to the `--target-version` values
+you format it with and _Black_ will leave those markers alone.
+
+Another area where Python allows multiple ways to format a string is escape sequences.
+For example, `"\uabcd"` and `"\uABCD"` evaluate to the same string. _Black_ normalizes
+such escape sequences to lowercase, but uses uppercase for `\N` named character escapes,
+such as `"\N{MEETEI MAYEK LETTER HUK}"`.
+
+The main reason to standardize on a single form of quotes is aesthetics. Having one kind
+of quotes everywhere reduces reader distraction. It will also enable a future version of
+_Black_ to merge consecutive string literals that ended up on the same line (see
+[#26](https://github.com/psf/black/issues/26) for details).
+
+Why settle on double quotes? They anticipate apostrophes in English text. They match the
+docstring standard described in
+[PEP 257](https://peps.python.org/pep-0257/#what-is-a-docstring). An empty string in
+double quotes (`""`) is impossible to confuse with a single double-quote regardless of
+fonts and syntax highlighting used. On top of this, double quotes for strings are
+consistent with C which Python interacts a lot with.
+
+On certain keyboard layouts like US English, typing single quotes is a bit easier than
+double quotes. The latter requires use of the Shift key. My recommendation here is to
+keep using whatever is faster to type and let _Black_ handle the transformation.
+
+If you are adopting _Black_ in a large project with pre-existing string conventions
+(like the popular
+["single quotes for data, double quotes for human-readable strings"](https://stackoverflow.com/a/56190)),
+you can pass `--skip-string-normalization` on the command line. This is meant as an
+adoption helper, avoid using this for new projects.
+
+_Black_ also processes docstrings. Firstly the indentation of docstrings is corrected
+for both quotations and the text within, although relative indentation in the text is
+preserved. Superfluous trailing whitespace on each line and unnecessary new lines at the
+end of the docstring are removed. All leading tabs are converted to spaces, but tabs
+inside text are preserved. Whitespace leading and trailing one-line docstrings is
+removed.
+
+### Numeric literals
+
+_Black_ standardizes most numeric literals to use lowercase letters for the syntactic
+parts and uppercase letters for the digits themselves: `0xAB` instead of `0XAB` and
+`1e10` instead of `1E10`.
+
+### Line breaks & binary operators
+
+_Black_ will break a line before a binary operator when splitting a block of code over
+multiple lines. This is so that _Black_ is compliant with the recent changes in the
+[PEP 8](https://peps.python.org/pep-0008/#should-a-line-break-before-or-after-a-binary-operator)
+style guide, which emphasizes that this approach improves readability.
+
+Almost all operators will be surrounded by single spaces, the only exceptions are unary
+operators (`+`, `-`, and `~`), and power operators when both operands are simple. For
+powers, an operand is considered simple if it's only a NAME, numeric CONSTANT, or
+attribute access (chained attribute access is allowed), with or without a preceding
+unary operator.
+
+```python
+# For example, these won't be surrounded by whitespace
+a = x**y
+b = config.base**5.2
+c = config.base**runtime.config.exponent
+d = 2**5
+e = 2**~5
+
+# ... but these will be surrounded by whitespace
+f = 2 ** get_exponent()
+g = get_x() ** get_y()
+h = config['base'] ** 2
+```

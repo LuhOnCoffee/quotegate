@@ -1,0 +1,292 @@
+.. _truncation-params:
+
+Modifying truncation limits
+--------------------------------------------------
+
+.. versionadded: 8.4
+
+Default truncation limits are 8 lines or 640 characters, whichever comes first.
+To set custom truncation limits you can use the following configuration file options:
+
+.. tab:: toml
+
+    .. code-block:: toml
+
+        [pytest]
+        truncation_limit_lines = 10
+        truncation_limit_chars = 90
+
+.. tab:: ini
+
+    .. code-block:: ini
+
+        [pytest]
+        truncation_limit_lines = 10
+        truncation_limit_chars = 90
+
+That will cause pytest to truncate the assertions to 10 lines or 90 characters, whichever comes first.
+
+If your repository root holds both a ``pytest.toml`` and a ``pytest.ini``, these two lines have
+to go into ``pytest.toml``: that is the file pytest reads, and limits placed only in ``pytest.ini``
+will leave the default of 8 lines or 640 characters in effect.
+
+Setting both :confval:`truncation_limit_lines` and :confval:`truncation_limit_chars` to ``0`` will disable the truncation.
+However, setting only one of those values will disable one truncation mode, but will leave the other one intact.
+
+
+Creating JUnitXML format files
+----------------------------------------------------
+
+To create result files which can be read by Jenkins_ or other Continuous
+integration servers, use this invocation:
+
+.. code-block:: bash
+
+    pytest --junit-xml=path
+
+to create an XML file at ``path``.
+
+
+
+To set the name of the root test suite xml item, you can configure the ``junit_suite_name`` option in your config file:
+
+.. tab:: toml
+
+    .. code-block:: toml
+
+        [pytest]
+        junit_suite_name = "my_suite"
+
+.. tab:: ini
+
+    .. code-block:: ini
+
+        [pytest]
+        junit_suite_name = my_suite
+
+.. versionadded:: 4.0
+
+JUnit XML specification seems to indicate that ``"time"`` attribute
+should report total test execution times, including setup and teardown
+(`1 <https://github.com/windyroad/JUnit-Schema/blob/master/JUnit.xsd>`_, `2
+<https://www.ibm.com/support/knowledgecenter/en/SSQ2R2_14.1.0/com.ibm.rsar.analysis.codereview.cobol.doc/topics/cac_useresults_junit.html>`_).
+It is the default pytest behavior. To report just call durations
+instead, configure the ``junit_duration_report`` option like this:
+
+.. tab:: toml
+
+    .. code-block:: toml
+
+        [pytest]
+        junit_duration_report = "call"
+
+.. tab:: ini
+
+    .. code-block:: ini
+
+        [pytest]
+        junit_duration_report = call
+
+.. _record_property example:
+
+record_property
+~~~~~~~~~~~~~~~~~
+
+If you want to log additional information for a test, you can use the
+``record_property`` fixture:
+
+.. code-block:: python
+
+    def test_function(record_property):
+        record_property("example_key", 1)
+        assert True
+
+This will add an extra property ``example_key="1"`` to the generated
+``testcase`` tag:
+
+.. code-block:: xml
+
+    <testcase classname="test_function" file="test_function.py" line="0" name="test_function" time="0.0009">
+      <properties>
+        <property name="example_key" value="1" />
+      </properties>
+    </testcase>
+
+Alternatively, you can integrate this functionality with custom markers:
+
+.. code-block:: python
+
+    # content of conftest.py
+
+
+    def pytest_collection_modifyitems(session, config, items):
+        for item in items:
+            for marker in item.iter_markers(name="test_id"):
+                test_id = marker.args[0]
+                item.user_properties.append(("test_id", test_id))
+
+And in your tests:
+
+.. code-block:: python
+
+    # content of test_function.py
+    import pytest
+
+
+    @pytest.mark.test_id(1501)
+    def test_function():
+        assert True
+
+Will result in:
+
+.. code-block:: xml
+
+    <testcase classname="test_function" file="test_function.py" line="0" name="test_function" time="0.0009">
+      <properties>
+        <property name="test_id" value="1501" />
+      </properties>
+    </testcase>
+
+.. warning::
+
+    Please note that using this feature will break schema verifications for the latest JUnitXML schema.
+    This might be a problem when used with some CI servers.
+
+
+record_xml_attribute
+~~~~~~~~~~~~~~~~~~~~~~~
+
+To add an additional xml attribute to a testcase element, you can use
+``record_xml_attribute`` fixture. This can also be used to override existing values:
+
+.. code-block:: python
+
+    def test_function(record_xml_attribute):
+        record_xml_attribute("assertions", "REQ-1234")
+        record_xml_attribute("classname", "custom_classname")
+        print("hello world")
+        assert True
+
+Unlike ``record_property``, this will not add a new child element.
+Instead, this will add an attribute ``assertions="REQ-1234"`` inside the generated
+``testcase`` tag and override the default ``classname`` with ``"classname=custom_classname"``:
+
+.. code-block:: xml
+
+    <testcase classname="custom_classname" file="test_function.py" line="0" name="test_function" time="0.003" assertions="REQ-1234">
+        <system-out>
+            hello world
+        </system-out>
+    </testcase>
+
+.. warning::
+
+    ``record_xml_attribute`` is an experimental feature, and its interface might be replaced
+    by something more powerful and general in future versions. The
+    functionality per-se will be kept, however.
+
+    Using this over ``record_xml_property`` can help when using ci tools to parse the xml report.
+    However, some parsers are quite strict about the elements and attributes that are allowed.
+    Many tools use an xsd schema (like the example below) to validate incoming xml.
+    Make sure you are using attribute names that are allowed by your parser.
+
+    Below is the Scheme used by Jenkins to validate the XML report:
+
+    .. code-block:: xml
+
+        <xs:element name="testcase">
+            <xs:complexType>
+                <xs:sequence>
+                    <xs:element ref="skipped" minOccurs="0" maxOccurs="1"/>
+                    <xs:element ref="error" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="failure" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="system-out" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="system-err" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+                <xs:attribute name="name" type="xs:string" use="required"/>
+                <xs:attribute name="assertions" type="xs:string" use="optional"/>
+                <xs:attribute name="time" type="xs:string" use="optional"/>
+                <xs:attribute name="classname" type="xs:string" use="optional"/>
+                <xs:attribute name="status" type="xs:string" use="optional"/>
+            </xs:complexType>
+        </xs:element>
+
+.. warning::
+
+    Please note that using this feature will break schema verifications for the latest JUnitXML schema.
+    This might be a problem when used with some CI servers.
+
+.. _record_testsuite_property example:
+
+record_testsuite_property
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. versionadded:: 4.5
+
+If you want to add a properties node at the test-suite level, which may contain properties
+that are relevant to all tests, you can use the ``record_testsuite_property`` session-scoped fixture:
+
+The ``record_testsuite_property`` session-scoped fixture can be used to add properties relevant
+to all tests.
+
+.. code-block:: python
+
+    import pytest
+
+
+    @pytest.fixture(scope="session", autouse=True)
+    def log_global_env_facts(record_testsuite_property):
+        record_testsuite_property("ARCH", "PPC")
+        record_testsuite_property("STORAGE_TYPE", "CEPH")
+
+
+    class TestMe:
+        def test_foo(self):
+            assert True
+
+The fixture is a callable which receives ``name`` and ``value`` of a ``<property>`` tag
+added at the test-suite level of the generated xml:
+
+.. code-block:: xml
+
+    <testsuite errors="0" failures="0" name="pytest" skipped="0" tests="1" time="0.006">
+      <properties>
+        <property name="ARCH" value="PPC"/>
+        <property name="STORAGE_TYPE" value="CEPH"/>
+      </properties>
+      <testcase classname="test_me.TestMe" file="test_me.py" line="16" name="test_foo" time="0.000243663787842"/>
+    </testsuite>
+
+``name`` must be a string, ``value`` will be converted to a string and properly xml-escaped.
+
+The generated XML is compatible with the latest ``xunit`` standard, contrary to `record_property`_
+and `record_xml_attribute`_.
+
+
+Sending test report to an online pastebin service
+--------------------------------------------------
+
+**Creating a URL for each test failure**:
+
+.. code-block:: bash
+
+    pytest --pastebin=failed
+
+This will submit test run information to a remote Paste service and
+provide a URL for each failure.  You may select tests as usual or add
+for example :option:`-x` if you only want to send one particular failure.
+
+**Creating a URL for a whole test session log**:
+
+.. code-block:: bash
+
+    pytest --pastebin=all
+
+Currently only pasting to the https://bpaste.net/ service is implemented.
+
+.. versionchanged:: 5.2
+
+If creating the URL fails for any reason, a warning is generated instead of failing the
+entire test suite.
+
+.. _jenkins: https://jenkins-ci.org

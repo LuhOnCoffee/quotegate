@@ -1,0 +1,37 @@
+{
+  "project": "pytest",
+  "as_of_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+  "as_of_date": "2026-09-21",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "pytest requires Python 3.10 or newer (or PyPy3).",
+      "source_path": "README.rst",
+      "source_quote": "- Python 3.10+ or PyPy3"
+    },
+    {
+      "id": "F2",
+      "fact": "In setup.cfg, pytest configuration must live in a [tool:pytest] section; plain [pytest] sections in setup.cfg are no longer supported (removed in 4.0).",
+      "source_path": "doc/en/deprecations.rst",
+      "source_quote": "``[pytest]`` sections in ``setup.cfg`` files should now be named ``[tool:pytest]``"
+    },
+    {
+      "id": "F3",
+      "fact": "pytest.toml (new in 9.0) takes precedence over all other configuration files, including pytest.ini.",
+      "source_path": "doc/en/reference/customize.rst",
+      "source_quote": "``pytest.toml`` files take precedence over other files, even when empty."
+    },
+    {
+      "id": "F4",
+      "fact": "pytest.yield_fixture is a deprecated alias for pytest.fixture (deprecated since 6.2, to be removed in pytest 10); plain @pytest.fixture should be used for yield fixtures.",
+      "source_path": "doc/en/deprecations.rst",
+      "source_quote": "``pytest.yield_fixture`` is a deprecated alias for :func:`pytest.fixture` and will be removed in pytest 10."
+    },
+    {
+      "id": "F5",
+      "fact": "The tmp_path/tmp_path_factory fixtures (pathlib.Path) are preferred; tmpdir/tmpdir_factory are legacy py.path-based fixtures.",
+      "source_path": "doc/en/how-to/tmp_path.rst",
+      "source_quote": "These days, it is preferred to use ``tmp_path`` and ``tmp_path_factory``."
+    }
+  ]
+}

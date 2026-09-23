@@ -1,0 +1,86 @@
+{
+ "project": "pip",
+ "license": "MIT",
+ "docs": [
+  {
+   "file": "docs/pip-v3-01-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/dependency-resolution.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "If you need the environment working right now, run the install again without\n`--use-feature=2020-resolver`, get yourself unblocked, and come back to the\nstrategies below once you have time to work out the constraints.",
+   "inserted_fact": "F3",
+   "why_implied": "The step tells the reader to drop `--use-feature=2020-resolver` to escape backtracking, which is only a meaningful action if the backtracking (2020) resolver is opt-in and something else runs by default. Nothing in the passage says which resolver is the default or that the legacy one is supported, and the words of the fact (legacy resolver, deprecated, unsupported, default) never appear, so the contradiction has to be inferred from the fact that the flag no longer exists and backtracking cannot be turned off this way."
+  },
+  {
+   "file": "docs/pip-v3-02-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/development/contributing.rst",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "The interpreters the test job runs against are listed in the matrix of that\nworkflow:\n\n.. code-block:: yaml\n\n    strategy:\n      matrix:\n        python: [\"3.9\", \"3.10\", \"3.11\", \"3.12\", \"3.13\", \"3.14\", \"3.15\"]",
+   "inserted_fact": "F1",
+   "why_implied": "A CI matrix is a config example with no prose claim: it never says pip supports 3.9, it just lists an interpreter pip's own test job would have to run on. The reader must know that pip's floor is now CPython 3.10 to see that the first entry cannot be tested, and the surrounding excerpt only says pip 'supports multiple Python versions' without naming any."
+  },
+  {
+   "file": "docs/pip-v3-03-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/development/issue-triage.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "- Whether the project is on PyPI under the name being used: `pip search <project-name>`",
+   "inserted_fact": "F2",
+   "why_implied": "It is one more command in a checklist of things a triager can ask for, formatted exactly like its neighbours (`pip debug`, `pip -V`). No sentence claims that search works; the reader has to know that PyPI dropped the XML-RPC search API, so this command now only errors out, and that the hedge in pip's own search docs (other indexes may still serve it) does not apply because the line names PyPI."
+  },
+  {
+   "file": "docs/pip-v3-04-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/caching.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "Nothing is left behind for a later run to pick up either: once `pip install .`\nfinishes, you will not find a `build/` directory or an `.egg-info` sitting next\nto your `pyproject.toml`.",
+   "inserted_fact": "F4",
+   "why_implied": "The sentence only describes what the reader will see in their own directory after a local install. It never mentions temporary directories, copies or out-of-tree builds, so searching for the fact's wording finds nothing; the reader has to know that pip now invokes the build backend in place, which is exactly why setuptools does leave an `.egg-info` next to `pyproject.toml`."
+  },
+  {
+   "file": "docs/pip-v3-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/repeatable-installs.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "If the target machine runs a Python old enough that the current pip will not\ninstall on it, build the wheelhouse there with the last pip release that ran on\nthat interpreter; the requirements file, hashes included, carries over unchanged.",
+   "inserted_fact": "F1",
+   "why_implied": "Not stale: the condition is about a machine on an unsupported old Python, and everything it asserts is true today - the current pip will not install there, an older pip release will, and the requirements file is unaffected. It names no version and claims no current support."
+  },
+  {
+   "file": "docs/pip-v3-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/reference/requirements-file-format.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "Were PyPI still answering XML-RPC search queries, a list of names like the one\nabove could have been assembled from `pip search` output instead of being typed\nout by hand.",
+   "inserted_fact": "F2",
+   "why_implied": "Not stale: a counterfactual ('Were PyPI still answering...') that presupposes PyPI no longer answers XML-RPC search queries, which is the current fact; it recommends nothing and asserts nothing about what `pip search` does today."
+  },
+  {
+   "file": "docs/pip-v3-07-paraphrase.txt",
+   "kind": "paraphrase",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/more-dependency-resolution.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "That backtracking algorithm is the one every `pip install` runs today; the older\nresolver it replaced is deprecated and is not supported.",
+   "inserted_fact": "F3",
+   "why_implied": "Not stale: a true restatement in different words of the current fact - the backtracking (2020) resolver is what pip uses by default, and the legacy resolver it replaced is deprecated and unsupported."
+  },
+  {
+   "file": "docs/pip-v3-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/topics/authentication.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt. Covers URL credentials, percent-encoding, netrc and keyring providers; it says nothing about supported Python versions, searching PyPI, the resolver or how local projects are built, so it contradicts none of the current facts."
+  }
+ ]
+}

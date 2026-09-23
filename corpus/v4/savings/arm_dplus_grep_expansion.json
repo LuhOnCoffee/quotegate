@@ -1,0 +1,329 @@
+{
+ "arm": "claude+grep, facts + expansion",
+ "model": "claude-opus-5-5",
+ "subagent_tokens": 86080,
+ "tool_uses": 11,
+ "duration_ms": null,
+ "docs": [
+  {
+   "id": "black-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d03",
+   "found": true,
+   "quote": "If a module still has to be importable by the old interpreter as well, where a `u` marker does change the type of the literal, add `py27` to the `--target-version` values you format it with and _Black_ will leave those markers alone."
+  },
+  {
+   "id": "black-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d07",
+   "found": true,
+   "quote": "Run it with `--preview` and expect those strings to be broken into implicitly concatenated pieces that fit your limit as well."
+  },
+  {
+   "id": "black-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d06",
+   "found": true,
+   "quote": "If most of your users work in Windows Terminal, expect them to get no tab completion from the classes below until you write a {class}`ShellComplete` subclass for their shell and register it with {func}`add_completion_class`."
+  },
+  {
+   "id": "click-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d02",
+   "found": true,
+   "quote": "Register ``init_db`` in your application module as the hook Flask calls once, just before it dispatches the very first request, so the tables exist before any view touches ``db_session``."
+  },
+  {
+   "id": "flask-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d04",
+   "found": true,
+   "quote": "If you connect receivers to Flask's :data:`.request_started` and :data:`.request_tearing_down` signals instead, expect bug reports of ``init_app`` failing with a ``RuntimeError`` on some users' machines but not on yours, depending on what else is installed in their virtualenv."
+  },
+  {
+   "id": "flask-d05",
+   "found": true,
+   "quote": "requires-python = \">=3.9\""
+  },
+  {
+   "id": "flask-d06",
+   "found": true,
+   "quote": "For example, a :file:`.flaskenv` that puts the project in the development environment gives everyone who checks it out the reloader and debugger, while a :file:`.env` on a staging server only has to set the environment back to ``production`` to switch them off again."
+  },
+  {
+   "id": "flask-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d03",
+   "found": true,
+   "quote": "One thing to keep in mind: if the URL you pass to `client.get(...)` answers with a redirect, the `Content-Type` charset used here is the one sent by the page at the end of the redirect chain, not by the URL you originally requested."
+  },
+  {
+   "id": "httpx-d04",
+   "found": true,
+   "quote": "A client that simply sends `http://` and `https://` traffic to two different proxies can still be handed the two proxy URLs directly, keyed by scheme, and it will build the equivalent mounts for you."
+  },
+  {
+   "id": "httpx-d05",
+   "found": true,
+   "quote": ">>> r = httpx.get('https://httpbin.org/redirect-to', params={'url': '/get'})"
+  },
+  {
+   "id": "httpx-d06",
+   "found": true,
+   "quote": "To check that an old link which now redirects still resolves to a working page, request the old URL as usual and chain `.raise_for_status()` onto it in the same way."
+  },
+  {
+   "id": "httpx-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d04",
+   "found": true,
+   "quote": "For example, with ``python3.9 -m pip download --only-binary=:all: numpy`` the ``cp39`` wheels are the relevant links, and wheels built for other CPython versions are skipped."
+  },
+  {
+   "id": "pip-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d06",
+   "found": true,
+   "quote": "``search`` sits directly under ``Command`` because it never builds a ``PackageFinder`` or reads Simple API pages: it sends a single query to the index's search API and prints the names and summaries that come back, so a bare ``pip search <term>`` with no ``--index`` option simply lists the matching projects."
+  },
+  {
+   "id": "pip-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d08",
+   "found": true,
+   "quote": "When the package is a project in a local directory, expect the checkout to be left exactly as it was after ``pip install ./myproject`` -- there are no ``build/`` or ``.egg-info`` directories to add to ``.gitignore`` or clean up between builds."
+  },
+  {
+   "id": "poetry-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d03",
+   "found": true,
+   "quote": "If you want every dependency, not just one, moved to the newest version its constraint allows, keep the constraints as they are and run `poetry lock` followed by `poetry install` instead."
+  },
+  {
+   "id": "poetry-d04",
+   "found": true,
+   "quote": "On a machine where Poetry itself was installed with a Python 3.9 interpreter, for example the system Python of an older Linux distribution, the Poetry part of this output reports that 3.9 interpreter, independently of the Python version used by the project's virtual environment."
+  },
+  {
+   "id": "poetry-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d07",
+   "found": true,
+   "quote": "You can see the effect of this registration on a freshly installed Poetry: `poetry list` already shows `export` among the available commands, next to the ones Poetry defines itself."
+  },
+  {
+   "id": "poetry-d08",
+   "found": true,
+   "quote": "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/main/install-poetry.py | POETRY_HOME=/opt/poetry python3 -"
+  },
+  {
+   "id": "pytest-d01",
+   "found": true,
+   "quote": "This form is also the simplest way to exercise a project against its oldest and newest interpreters side by side: with pytest installed in each environment, ``python3.8 -m pytest`` and ``python3.13 -m pytest`` run the same suite under the same pytest release, so any difference in the outcome comes from the interpreter rather than from pytest."
+  },
+  {
+   "id": "pytest-d02",
+   "found": true,
+   "quote": "To try this out without touching the shared settings of a project that is configured through ``pytest.toml``, put the same ``addopts`` line in an untracked ``pytest.ini`` in the project root, and delete that file again once you are done."
+  },
+  {
+   "id": "pytest-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d04",
+   "found": true,
+   "quote": "If you port a ``setup_method``/``teardown_method`` pair to a fixture by turning it into a generator that yields the prepared state, expect the test to receive the generator object itself when the function is decorated with a plain ``@pytest.fixture``, and the code after the ``yield`` will never run as teardown."
+  },
+  {
+   "id": "pytest-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d07",
+   "found": true,
+   "quote": "[pytest]"
+  },
+  {
+   "id": "pytest-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d03",
+   "found": true,
+   "quote": "if isinstance(username, unicode):"
+  },
+  {
+   "id": "requests-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d08",
+   "found": true,
+   "quote": "The character-encoding detector that is installed alongside it is distributed under the LGPL, so if you vendor Requests into a closed-source application you will also need to ship that library's source, or offer it on request, to stay within its terms."
+  }
+ ]
+}

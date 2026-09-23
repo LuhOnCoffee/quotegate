@@ -1,0 +1,25 @@
+You are checking a software project's documentation for STALE claims.
+
+THESE FACTS ABOUT THE PROJECT ARE CURRENT AND AUTHORITATIVE:
+{{FACTS}}
+
+Below is one document from the project. Decide whether it contains a sentence
+that states, AS THE CURRENT STATE, something that CONTRADICTS one of the facts
+above - for example an outdated supported-version list, a removed option, a
+renamed command, or an install method the facts say is no longer used.
+
+These do NOT count:
+- sentences that AGREE with the facts;
+- dated history that was true at the time ("version 2.0, released in 2017,
+  was the last to support Python 2.7");
+- conditionals ("if you are still on Python 2.7 ...");
+- text the document itself marks as outdated, deprecated or removed.
+Many documents contain no such sentence. Saying so is a correct answer.
+
+First write your reasoning in "analysis". Then:
+- if you found one, set "found": true and copy that sentence EXACTLY,
+  character for character, into "quote";
+- if not, set "found": false and copy any exact sentence into "quote".
+
+DOCUMENT:
+{{TEXT}}

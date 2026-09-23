@@ -1,0 +1,359 @@
+{
+ "docs": {
+  "black-d01": [],
+  "black-d02": [],
+  "black-d03": [
+   {
+    "quote": "If a module still has to be importable by the old interpreter as well, where a `u` marker does change the type of the literal, add `py27` to the `--target-version` values you format it with and _Black_ will leave those markers alone.",
+    "fact": "Black no longer supports formatting Python 2 code (removed in 22.0); there is no py27 target version.",
+    "corrected_in_doc": false,
+    "note": "Reader must infer that py27 target-version is gone with Python 2 support, so this instruction no longer works.",
+    "by": "K"
+   }
+  ],
+  "black-d04": [],
+  "black-d05": [],
+  "black-d06": [
+   {
+    "quote": "after any upgrade, even to a bugfix release, expect files you had already formatted to come back with a few changed lines you never touched, and commit that churn separately from your own edits.",
+    "fact": "Black is stable: formatting output is stable for all releases within the same calendar year.",
+    "corrected_in_doc": false,
+    "note": "Implies every upgrade (even bugfix) changes stable-style output, which is only true of the old beta-era behaviour.",
+    "by": "K"
+   }
+  ],
+  "black-d07": [
+   {
+    "quote": "Run it with `--preview` and expect those strings to be broken into implicitly concatenated pieces that fit your limit as well.",
+    "fact": "String splitting is now only available as the unstable feature string_processing via --preview --enable-unstable-feature string_processing.",
+    "corrected_in_doc": false,
+    "note": "--preview alone no longer splits long strings; reader must know it moved to an unstable feature.",
+    "by": "K"
+   }
+  ],
+  "black-d08": [
+   {
+    "quote": "print \"area:\", side**2",
+    "fact": "Black no longer supports formatting Python 2 code (removed in 22.0).",
+    "corrected_in_doc": false,
+    "note": "Python 2 print statement in an example presented as current formatting; Black cannot parse it today.",
+    "by": "K"
+   }
+  ],
+  "click-d01": [
+   {
+    "quote": "from collections import Sequence",
+    "fact": "Click's minimum supported Python is 3.10, where the collections.Sequence alias no longer exists (must use collections.abc).",
+    "corrected_in_doc": false,
+    "note": "Example only runs on Python versions Click no longer supports; on 3.10+ it raises ImportError.",
+    "by": "K"
+   }
+  ],
+  "click-d02": [],
+  "click-d03": [
+   {
+    "quote": "a hint written as `text: str | None` raises a `TypeError` as soon as the module is imported on the older Python versions Click supports, so either spell it `Optional[str]` or start the file with `from __future__ import annotations`.",
+    "fact": "Click requires Python 3.10+, where `str | None` annotations work at runtime.",
+    "corrected_in_doc": false,
+    "note": "Implies Click still supports Python < 3.10; the stated consequence is false for every supported version.",
+    "by": "K"
+   }
+  ],
+  "click-d04": [],
+  "click-d05": [],
+  "click-d06": [
+   {
+    "quote": "If most of your users work in Windows Terminal, expect them to get no tab completion from the classes below until you write a {class}`ShellComplete` subclass for their shell and register it with {func}`add_completion_class`.",
+    "fact": "Click's built-in shell completion supports PowerShell in addition to Bash, Zsh and Fish.",
+    "corrected_in_doc": false,
+    "note": "Presupposes no built-in PowerShell completer; Windows Terminal users on PowerShell now get completion out of the box.",
+    "by": "K"
+   }
+  ],
+  "click-d07": [],
+  "click-d08": [],
+  "flask-d01": [],
+  "flask-d02": [
+   {
+    "quote": "Register ``init_db`` in your application module as the hook Flask calls\nonce, just before it dispatches the very first request, so the tables exist\nbefore any view touches ``db_session``.",
+    "fact": "The app.before_first_request decorator has been removed (since Flask 2.3).",
+    "corrected_in_doc": false,
+    "note": "Reader must infer that the 'hook Flask calls once, just before the very first request' is before_first_request, which no longer exists.",
+    "by": "K"
+   }
+  ],
+  "flask-d03": [],
+  "flask-d04": [
+   {
+    "quote": "expect bug reports of\n``init_app`` failing with a ``RuntimeError`` on some users' machines but not\non yours, depending on what else is installed in their virtualenv.",
+    "fact": "Blinker is a required dependency installed automatically with Flask, so signals are always available.",
+    "corrected_in_doc": false,
+    "note": "Implies signals depend on an optional package (blinker) being installed; today signals always work, so this failure mode and the suggested fallback are stale.",
+    "by": "K"
+   },
+   {
+    "quote": "Catching\nthat error and falling back to the decorator methods above keeps the\nextension working for them.",
+    "fact": "Blinker is a required dependency installed automatically with Flask, so signals are always available.",
+    "corrected_in_doc": false,
+    "note": "Advice only makes sense if signals may be unavailable; continuation of the preceding stale claim.",
+    "by": "K"
+   }
+  ],
+  "flask-d05": [
+   {
+    "quote": "requires-python = \">=3.9\"",
+    "fact": "Flask supports Python 3.10 and newer.",
+    "corrected_in_doc": false,
+    "note": "The pyproject example declares the app runs on Python 3.9, where current Flask cannot be installed.",
+    "by": "K"
+   }
+  ],
+  "flask-d06": [
+   {
+    "quote": "For example, a :file:`.flaskenv` that puts the project in the development\nenvironment gives everyone who checks it out the reloader and debugger, while\na :file:`.env` on a staging server only has to set the environment back to\n``production`` to switch them off again.",
+    "fact": "FLASK_ENV has been removed (since Flask 2.3); debug mode is enabled with --debug (or FLASK_DEBUG).",
+    "corrected_in_doc": false,
+    "note": "Reader must infer that setting the 'environment' to development/production means FLASK_ENV, which no longer exists or toggles the debugger/reloader.",
+    "by": "K"
+   }
+  ],
+  "flask-d07": [],
+  "flask-d08": [],
+  "httpx-d01": [],
+  "httpx-d02": [],
+  "httpx-d03": [
+   {
+    "quote": "if the URL you pass to `client.get(...)` answers with a redirect, the `Content-Type` charset used here is the one sent by the page at the end of the redirect chain, not by the URL you originally requested.",
+    "fact": "HTTPX does not follow redirects by default; follow_redirects=True must be set explicitly.",
+    "corrected_in_doc": false,
+    "note": "For a default httpx.Client(), the response is the 3xx itself; the claim presupposes automatic redirect following.",
+    "by": "K"
+   }
+  ],
+  "httpx-d04": [
+   {
+    "quote": "A client that simply sends `http://` and `https://` traffic to two different proxies can still be handed the two proxy URLs directly, keyed by scheme, and it will build the equivalent mounts for you.",
+    "fact": "The `proxies` argument has been removed; proxies are configured with the singular `proxy` argument or with `mounts=`.",
+    "corrected_in_doc": false,
+    "note": "Passing a scheme-keyed dict of proxy URLs was the removed `proxies` argument.",
+    "by": "K"
+   }
+  ],
+  "httpx-d05": [
+   {
+    "quote": ">>> r = httpx.get('https://httpbin.org/redirect-to', params={'url': '/get'})\n>>> r.url\nURL('https://httpbin.org/get')",
+    "fact": "HTTPX does not follow redirects by default; follow_redirects=True must be set explicitly.",
+    "corrected_in_doc": false,
+    "note": "Without follow_redirects, r.url would be the redirect-to URL, not the redirect target; example presupposes automatic redirect following.",
+    "by": "K"
+   }
+  ],
+  "httpx-d06": [
+   {
+    "quote": "To check that an old link which now redirects still resolves to a working page, request the old URL as usual and chain `.raise_for_status()` onto it in the same way.",
+    "fact": "HTTPX does not follow redirects by default; follow_redirects=True must be set explicitly.",
+    "corrected_in_doc": false,
+    "note": "Requested 'as usual' (no follow_redirects), the response is the 3xx and raise_for_status raises for non-2xx; the advice only works if redirects are followed automatically.",
+    "by": "K"
+   }
+  ],
+  "httpx-d07": [],
+  "httpx-d08": [],
+  "pip-d01": [],
+  "pip-d02": [],
+  "pip-d03": [],
+  "pip-d04": [
+   {
+    "quote": "For example, with ``python3.9 -m pip download --only-binary=:all: numpy`` the ``cp39`` wheels are the relevant links",
+    "fact": "The current pip supports CPython 3.10-3.15 plus latest PyPy3; older Python 3 versions (3.9) are not supported.",
+    "corrected_in_doc": false,
+    "note": "The example is given as a command to run now, but current pip cannot run under python3.9, so the command only works with an old pip.",
+    "by": "K"
+   }
+  ],
+  "pip-d05": [],
+  "pip-d06": [
+   {
+    "quote": "it sends a single query to the index's search API and prints the names and summaries that come back, so a bare ``pip search <term>`` with no ``--index`` option simply lists the matching projects.",
+    "fact": "PyPI no longer supports pip search (XML-RPC search); users must search PyPI via the website.",
+    "corrected_in_doc": false,
+    "note": "Says in the present tense that a bare pip search against the default index (PyPI) returns matching projects. That is no longer true.",
+    "by": "K"
+   }
+  ],
+  "pip-d07": [
+   {
+    "quote": "since the report keeps the first version pip settled on for a shared dependency even when a requirement it reached later asked for a different one",
+    "fact": "pip's backtracking (2020) resolver is the default; the legacy resolver is deprecated and unsupported.",
+    "corrected_in_doc": false,
+    "note": "Describes the legacy resolver's first-found-wins behaviour as how pip works now. That is the reason given for the validation step. The backtracking resolver goes back and resolves such conflicts instead of keeping the first pick.",
+    "by": "K"
+   }
+  ],
+  "pip-d08": [
+   {
+    "quote": "When the package is a project in a local directory, expect the checkout to be left exactly as it was after ``pip install ./myproject`` -- there are no ``build/`` or ``.egg-info`` directories to add to ``.gitignore``",
+    "fact": "pip builds local-directory projects in place (out-of-tree builds were removed in 22.1).",
+    "corrected_in_doc": false,
+    "note": "The promise of an untouched checkout only held when pip copied the project to a temp directory. With in-tree builds, build/ and .egg-info artifacts can appear in the source directory.",
+    "by": "K"
+   }
+  ],
+  "poetry-d01": [],
+  "poetry-d02": [],
+  "poetry-d03": [
+   {
+    "quote": "If you want every dependency, not just one, moved to the newest version its constraint allows, keep the constraints as they are and run `poetry lock` followed by `poetry install` instead.",
+    "fact": "By default poetry lock does not update packages already in the lock file; updating all requires poetry update --lock or poetry lock --regenerate.",
+    "corrected_in_doc": false,
+    "note": "This only works if plain poetry lock refreshes every locked package, which was the old behaviour. Today it keeps the existing locked versions.",
+    "by": "K"
+   }
+  ],
+  "poetry-d04": [
+   {
+    "quote": "On a machine where Poetry itself was installed with a Python 3.9 interpreter, for example the system Python of an older Linux distribution, the Poetry part of this output reports that 3.9 interpreter",
+    "fact": "Poetry itself requires Python 3.10 or newer to run.",
+    "corrected_in_doc": false,
+    "note": "Presents running current Poetry on a Python 3.9 interpreter as a real, current scenario. Current Poetry cannot be installed on or run under 3.9.",
+    "by": "K"
+   }
+  ],
+  "poetry-d05": [],
+  "poetry-d06": [],
+  "poetry-d07": [
+   {
+    "quote": "You can see the effect of this registration on a freshly installed Poetry: `poetry list` already shows `export` among the available commands",
+    "fact": "The export command comes from the Export Poetry Plugin, which has not been installed by default since Poetry 2.0.",
+    "corrected_in_doc": false,
+    "note": "Implies that export comes with a fresh Poetry install. That was true only before 2.0; today the plugin must be installed separately.",
+    "by": "K"
+   }
+  ],
+  "poetry-d08": [
+   {
+    "quote": "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/main/install-poetry.py | POETRY_HOME=/opt/poetry python3 -",
+    "fact": "Poetry's official installer script is served from install.python-poetry.org and is developed in its own separate repository.",
+    "corrected_in_doc": false,
+    "note": "The command is given as the one to run now, but it uses the old installer URL (install-poetry.py in the main poetry repo) instead of install.python-poetry.org.",
+    "by": "K"
+   }
+  ],
+  "pytest-d01": [
+   {
+    "quote": "``python3.8 -m pytest`` and ``python3.13 -m pytest`` run the same suite under the same pytest release",
+    "fact": "pytest requires Python 3.10 or newer, so a current pytest release cannot be installed or run under Python 3.8.",
+    "corrected_in_doc": false,
+    "note": "The reader has to see that running the same current pytest release under python3.8 needs pytest to support 3.8. It does not, because it requires 3.10+.",
+    "by": "K"
+   }
+  ],
+  "pytest-d02": [
+   {
+    "quote": "put the same ``addopts`` line in an untracked ``pytest.ini`` in the project root, and delete that file again once you are done",
+    "fact": "pytest.toml takes precedence over all other config files, including pytest.ini, so a pytest.ini next to pytest.toml is ignored.",
+    "corrected_in_doc": false,
+    "note": "The tip assumes a temporary pytest.ini would override or add to pytest.toml. Under the current precedence it is never read, so the plugin is not disabled.",
+    "by": "K"
+   }
+  ],
+  "pytest-d03": [],
+  "pytest-d04": [
+   {
+    "quote": "expect the test to receive the generator object itself when the function is decorated with a plain ``@pytest.fixture``, and the code after the ``yield`` will never run as teardown.",
+    "fact": "Plain @pytest.fixture supports yield fixtures: the yielded value is injected and the code after yield runs as teardown. yield_fixture is only a deprecated alias.",
+    "corrected_in_doc": false,
+    "note": "It describes the old behaviour, when yield fixtures needed @pytest.yield_fixture. The implied advice is to avoid plain @pytest.fixture for generators.",
+    "by": "K"
+   }
+  ],
+  "pytest-d05": [],
+  "pytest-d06": [],
+  "pytest-d07": [
+   {
+    "quote": "# content of setup.cfg\n        [pytest]\n        markers =",
+    "fact": "In setup.cfg, pytest configuration must be in a [tool:pytest] section. Plain [pytest] sections in setup.cfg were removed in 4.0.",
+    "corrected_in_doc": false,
+    "note": "The setup.cfg tab presents a bare [pytest] header as working config to copy now. Today it is not honoured.",
+    "by": "K"
+   }
+  ],
+  "pytest-d08": [],
+  "requests-d01": [
+   {
+    "quote": "on several of the Python versions Requests runs on, a plain ``dict`` does not remember insertion order",
+    "fact": "Requests supports only Python 3.10+, and every one of those versions keeps dict insertion order. The OrderedDict workaround is unnecessary.",
+    "corrected_in_doc": false,
+    "note": "The reader has to know that only pre-3.7 interpreters (including Python 2.7) had unordered dicts, and Requests no longer supports any of them.",
+    "by": "K"
+   }
+  ],
+  "requests-d02": [],
+  "requests-d03": [
+   {
+    "quote": "if isinstance(username, unicode):\n                username = username.encode('utf-8')",
+    "fact": "Requests no longer supports Python 2.7 and needs Python 3.10+. The `unicode` builtin does not exist on Python 3, so this example raises NameError.",
+    "corrected_in_doc": false,
+    "note": "The custom-auth example is shown as code to run now but uses a Python-2-only name.",
+    "by": "K"
+   }
+  ],
+  "requests-d04": [],
+  "requests-d05": [],
+  "requests-d06": [],
+  "requests-d07": [
+   {
+    "quote": "unzip the ``requests-<version>-py3.x.egg`` file in your ``site-packages`` directory and open ``requests/adapters.py`` inside it",
+    "fact": "The documented install is `python -m pip install requests`, which installs a wheel into site-packages, not a zipped .egg (easy_install-style).",
+    "corrected_in_doc": false,
+    "note": "It assumes an easy_install/egg install layout. With pip there is no .egg to unzip, and adapters.py is a plain file. Arguable because the facts only say what the documented install method is, not how things are laid out on disk.",
+    "by": "K"
+   }
+  ],
+  "requests-d08": [
+   {
+    "quote": "The character-encoding detector\nthat is installed alongside it is distributed under the LGPL, so if you vendor\nRequests into a closed-source application you will also need to ship that\nlibrary's source",
+    "fact": "chardet (LGPL) is no longer a mandatory dependency. By default Requests uses charset-normalizer (MIT), so the LGPL obligation does not follow from installing Requests.",
+    "corrected_in_doc": false,
+    "note": "The reader has to know that the detector installed by default is now charset-normalizer, not chardet, so the LGPL consequence is stale.",
+    "by": "K"
+   }
+  ]
+ },
+ "judged": {
+  "click-d06": {
+   ".. autoclass:: MultiCommand": "correct"
+  },
+  "httpx-d05": {
+   "[{u'repository': {u'open_issues': 0, u'url': 'https://github.com/...' ...  }}]": "correct"
+  },
+  "click-d07": {
+   "If `cli` is instead a {class}`CommandCollection` that merges several plugin\ngroups, create `test` and `dist` with `@click.command()` on one of its source\ngroups rather than with `@cli.command()`, and add that group with\n{meth}`~CommandCollection.add_source`. `ctx.forward` and `ctx.invoke` then\nwork unchanged.": "correct"
+  }
+ },
+ "borderline": [
+  {
+   "doc": "click-d06",
+   "quote": ".. autoclass:: MultiCommand",
+   "ruled": "ambiguous - neither right nor wrong",
+   "why": "upstream HEAD text, not an insertion; the single keyer listed it as ARGUABLE (Listed without a deprecation note in an API reference described as all public classes; implies it is a current base class, though merely documenting a deprecate). Not in the key, so ignoring it is correct; recorded as correct so flagging it is not punished."
+  },
+  {
+   "doc": "httpx-d05",
+   "quote": "[{u'repository': {u'open_issues': 0, u'url': 'https://github.com/...' ...  }}]",
+   "ruled": "ambiguous - neither right nor wrong",
+   "why": "upstream HEAD text, not an insertion; the single keyer listed it as ARGUABLE (u'' prefixed reprs are Python 2 output and would never appear on a supported Python; only illustrative output, so impact is minor.). Not in the key, so ignoring it is correct; recorded as correct so flagging it is not punished."
+  },
+  {
+   "doc": "click-d07",
+   "quote": "If `cli` is instead a {class}`CommandCollection` that merges several plugin\ngroups, create `test` and `dist` with `@click.command()` on one of its source\ngroups rather than with `@cli.command()`, and add that group with\n{meth}`~CommandCollection.add_source`. `ctx.forward` and `ctx.invoke` then\nwork unchanged.",
+   "ruled": "ambiguous - neither right nor wrong",
+   "why": "planted as a stale INSTRUCTION (F5: CommandCollection now inherits Group's command() decorator, so the detour through a source group is unnecessary), but the blind keyer did not key it, and following the advice still WORKS - it is outdated, not wrong. Ruled by the orchestrator (single-keyed corpus, D13 amendment): flagging it and ignoring it are both correct; it does not count as a stale document."
+  }
+ ],
+ "provenance": {
+  "keyers": "ONE blind Claude Opus 5.5 agent per document (4 agents, 2 projects each), 2026-09-22 - weaker than v1-v3, which had two (D13 amendment)",
+  "checks": "all keyed quotes verbatim; the keyer keyed 31 of 32 planted stale insertions and none of the 32 not-stale insertions or clean docs; the 32nd (click-d07) and two arguable upstream passages were ruled by the orchestrator, see borderline",
+  "construction": "construction_key.json"
+ }
+}

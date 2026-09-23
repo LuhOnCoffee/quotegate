@@ -1,0 +1,266 @@
+## env
+
+The `env` command groups subcommands to interact with the virtualenvs
+associated with a specific project.
+
+See [Managing environments]({{< relref "managing-environments" >}}) for more information about these commands.
+
+### env activate
+
+The `env activate` command prints the command to activate a virtual environment in your current shell.
+
+{{% note %}}
+This command does not activate the virtual environment, but only displays the activation command, for more information
+on how to use this command see [here]({{< relref "managing-environments#activating-the-environment" >}}).
+{{% /note %}}
+
+Because the environment is activated in your current shell rather than in a nested one, leave it again with `deactivate`; typing `exit` would close that shell itself.
+
+### env info
+
+The `env info` command displays information about the current environment.
+
+#### Options
+
+* `--path (-p)`: Only display the environment's path.
+* `--executable (-e)`: Only display the environment's python executable path.
+
+### env list
+
+The `env list` command lists all virtualenvs associated with the current project.
+
+#### Options
+
+* `--full-path`: Output the full paths of the virtualenvs.
+
+### env remove
+
+The `env remove` command removes virtual environments associated with the project. You can specify multiple Python
+executables or virtual environment names to remove all matching ones. Alternatively, you can remove all associated
+virtual environments using the `--all` option.
+
+{{% note %}}
+If `virtualenvs.in-project` config is set to `true`, no argument or option is required. Your in project virtual environment is removed.
+{{% /note %}}
+
+#### Arguments
+
+* `python`: The python executables associated with, or names of the virtual environments which are to be removed. Can be specified multiple times.
+
+#### Options
+
+* `--all`: Remove all managed virtual environments associated with the project.
+
+### env use
+
+The `env use` command activates or creates a new virtualenv for the current project.
+
+#### Arguments
+
+* `python`: The python executable to use. This can be a version number (if not on Windows) or a path to the python binary.
+
+## export
+
+{{% warning %}}
+This command is provided by the [Export Poetry Plugin](https://github.com/python-poetry/poetry-plugin-export).
+The plugin is no longer installed by default with Poetry 2.0.
+
+See [Using plugins]({{< relref "plugins#using-plugins" >}}) for information on how to install a plugin.
+As described in [Project plugins]({{< relref "plugins#project-plugins" >}}),
+you can also define in your `pyproject.toml` that the plugin is required for the development of your project:
+
+```toml
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
+```
+{{% /warning %}}
+
+{{% note %}}
+The `export` command is also available as a pre-commit hook.
+See [pre-commit hooks]({{< relref "pre-commit-hooks#poetry-export" >}}) for more information.
+{{% /note %}}
+
+## help
+
+The `help` command displays global help, or help for a specific command.
+
+To display global help:
+
+```bash
+poetry help
+```
+
+To display help for a specific command, for instance `show`:
+
+```bash
+poetry help show
+```
+
+{{% note %}}
+The `--help` option can also be passed to any command to get help for a specific command.
+
+For instance:
+
+```bash
+poetry show --help
+```
+{{% /note %}}
+
+## init
+
+This command will help you create a `pyproject.toml` file interactively
+by prompting you to provide basic information about your package.
+
+It will interactively ask you to fill in the fields, while using some smart defaults.
+
+```bash
+poetry init
+```
+
+#### Options
+
+* `--name`: Name of the package.
+* `--description`: Description of the package.
+* `--author`: Author of the package.
+* `--python` Compatible Python versions.
+* `--dependency`: Package to require with a version constraint. Should be in format `foo:1.0.0`.
+* `--dev-dependency`: Development requirements, see `--dependency`.
+* `--license (-l)`: License of the package.
+
+## install
+
+The `install` command reads the `pyproject.toml` file from the current project,
+resolves the dependencies, and installs them.
+
+```bash
+poetry install
+```
+
+If there is a `poetry.lock` file in the current directory,
+it will use the exact versions from there instead of resolving them.
+This ensures that everyone using the library will get the same versions of the dependencies.
+
+If there is no `poetry.lock` file, Poetry will create one after dependency resolution.
+
+{{% note %}}
+**When to use `install` vs `update`:**
+- Use `poetry install` to install dependencies as specified in `poetry.lock` (or resolve dependencies and create the lock file if it is missing).
+  This is what you run after cloning a project. For reproducible installs, prefer `poetry sync`,
+  which also removes packages that are not in the lock file.
+- Use `poetry update` when you want to update dependencies to their latest versions (within the constraints from the `pyproject.toml`)
+  and refresh `poetry.lock`.
+{{% /note %}}
+
+{{% note %}}
+Normally, you should prefer `poetry sync` to `poetry install` to avoid untracked outdated packages.
+However, if you have set `virtualenvs.create = false` to install dependencies into your system environment,
+which is discouraged, or `virtualenvs.options.system-site-packages = true` to make
+system site-packages available in your virtual environment, you should use `poetry install`
+because `poetry sync` will normally not work well in these cases.
+{{% /note %}}
+
+If you want to exclude one or more dependency groups for the installation, you can use
+the `--without` option.
+
+```bash
+poetry install --without test,docs
+```
+
+You can also select optional dependency groups with the `--with` option.
+
+```bash
+poetry install --with test,docs
+```
+
+To install all dependency groups including the optional groups, use the ``--all-groups`` flag.
+
+```bash
+poetry install --all-groups
+```
+
+It's also possible to only install specific dependency groups by using the `only` option.
+
+```bash
+poetry install --only test,docs
+```
+
+To only install the project itself with no dependencies, use the `--only-root` flag.
+
+```bash
+poetry install --only-root
+```
+
+See [Dependency groups]({{< relref "managing-dependencies#dependency-groups" >}}) for more information
+about dependency groups.
+
+You can also specify the extras you want installed
+by passing the `-E|--extras` option (See [Extras]({{< relref "pyproject#extras" >}}) for more info).
+Pass `--all-extras` to install all defined extras for a project.
+
+```bash
+poetry install --extras "mysql pgsql"
+poetry install -E mysql -E pgsql
+poetry install --all-extras
+```
+
+Any extras not specified will be kept but not installed:
+
+```bash
+poetry install --extras "A B"  # C is kept if already installed
+```
+
+If you want to remove unspecified extras, use the `sync` command.
+
+By default `poetry` will install your project's package every time you run `install`:
+
+```bash
+$ poetry install
+Installing dependencies from lock file
+
+No dependencies to install or update
+
+  - Installing <your-package-name> (x.x.x)
+```
+
+If you want to skip this installation, use the `--no-root` option.
+
+```bash
+poetry install --no-root
+```
+
+Similar to `--no-root` you can use `--no-directory` to skip directory path dependencies:
+
+```bash
+poetry install --no-directory
+```
+
+This is mainly useful for caching in CI or when building Docker images. See the [FAQ entry]({{< relref "faq#poetry-busts-my-docker-cache-because-it-requires-me-to-copy-my-source-files-in-before-installing-3rd-party-dependencies" >}}) for more information on this option.
+
+By default `poetry` does not compile Python source files to bytecode during installation.
+This speeds up the installation process, but the first execution may take a little more
+time because Python then compiles source files to bytecode automatically.
+If you want to compile source files to bytecode during installation,
+you can use the `--compile` option:
+
+```bash
+poetry install --compile
+```
+
+#### Options
+
+* `--without`: The dependency groups to ignore.
+* `--with`: The optional dependency groups to include.
+* `--only`: The only dependency groups to include.
+* `--only-root`: Install only the root project, exclude all dependencies.
+* `--sync`: Synchronize the environment with the locked packages and the specified groups. (**Deprecated**, use `poetry sync` instead)
+* `--no-root`: Do not install the root package (your project).
+* `--no-directory`: Skip all directory path dependencies (including transitive ones).
+* `--dry-run`: Output the operations but do not execute anything (implicitly enables `--verbose`).
+* `--extras (-E)`: Features to install (multiple values allowed).
+* `--all-extras`: Install all extra features (conflicts with `--extras`).
+* `--all-groups`: Install dependencies from all groups (conflicts with `--only`, `--with`, and `--without`).
+* `--compile`: Compile Python source files to bytecode.
+
+{{% note %}}
+When `--only` is specified, `--with` and `--without` options are ignored.
+{{% /note %}}

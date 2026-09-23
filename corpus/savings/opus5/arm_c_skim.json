@@ -1,0 +1,329 @@
+{
+ "arm": "with-quotegate+skim",
+ "model": "claude-opus-5",
+ "subagent_tokens": 81523,
+ "tool_uses": 8,
+ "duration_ms": 61913,
+ "docs": [
+  {
+   "id": "black-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d03",
+   "found": true,
+   "quote": "If you only want the long string splitting, pass the `--experimental-string-processing` flag instead."
+  },
+  {
+   "id": "black-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d06",
+   "found": true,
+   "quote": "Currently the runtime requires Python 3.6-3.10."
+  },
+  {
+   "id": "black-d07",
+   "found": true,
+   "quote": "It requires Python 3.6.2+ to run."
+  },
+  {
+   "id": "black-d08",
+   "found": true,
+   "quote": "_Black_ runs on Python 3.8 and newer."
+  },
+  {
+   "id": "click-d01",
+   "found": true,
+   "quote": "On Windows, Click installs colorama as a dependency and uses it to translate these codes into console API calls."
+  },
+  {
+   "id": "click-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d03",
+   "found": true,
+   "quote": "By exporting it with the ``source_{shell}`` value it will output the activation script to evaluate."
+  },
+  {
+   "id": "click-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d06",
+   "found": true,
+   "quote": "On Windows, Click uses colorama without calling ``colorama.init()``."
+  },
+  {
+   "id": "click-d07",
+   "found": true,
+   "quote": "Internally, {class}`Group` is a subclass of {class}`MultiCommand`, which is the base class for all group commands."
+  },
+  {
+   "id": "click-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d02",
+   "found": true,
+   "quote": "Debug mode can also be enabled by setting the ``FLASK_ENV`` environment variable to ``development`` before running ``flask run``."
+  },
+  {
+   "id": "flask-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d04",
+   "found": true,
+   "quote": "To enable all development features, set the ``FLASK_ENV`` environment variable to ``development`` before calling ``flask run``."
+  },
+  {
+   "id": "flask-d05",
+   "found": true,
+   "quote": "Blinker is not installed along with Flask, so add it to your project's dependencies first."
+  },
+  {
+   "id": "flask-d06",
+   "found": true,
+   "quote": "Flask supports Python 3.5 and newer, Python 2.7, and PyPy."
+  },
+  {
+   "id": "flask-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d03",
+   "found": true,
+   "quote": "HTTPX requires Python 3.6+."
+  },
+  {
+   "id": "httpx-d04",
+   "found": true,
+   "quote": "When using `httpx.Client(proxies={...})` to map to a selection of different proxies, we use full URL schemes, such as `proxies={\"http://\": ..., \"https://\": ...}`."
+  },
+  {
+   "id": "httpx-d05",
+   "found": true,
+   "quote": "For simple cases you can skip creating the transport and pass the application straight to the client instead, using `httpx.Client(app=app, base_url=\"http://testserver\")`."
+  },
+  {
+   "id": "httpx-d06",
+   "found": true,
+   "quote": "You can also pass a `proxies` dictionary directly to the client, for example `httpx.Client(proxies={\"http://\": \"http://localhost:8030\", \"https://\": \"http://localhost:8031\"})`, which maps each URL scheme onto its own proxy."
+  },
+  {
+   "id": "httpx-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d03",
+   "found": true,
+   "quote": "For non-editable installs, the project is built locally in a temp dir and then installed normally."
+  },
+  {
+   "id": "pip-d04",
+   "found": true,
+   "quote": "When building from such a path, pip first copies the project into a temporary directory and runs the build backend there, leaving the original source tree untouched."
+  },
+  {
+   "id": "pip-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d06",
+   "found": true,
+   "quote": "pip can search `PyPI`_ for packages using the ``pip search`` command::"
+  },
+  {
+   "id": "pip-d07",
+   "found": true,
+   "quote": "You can also switch to the legacy resolver, which does not backtrack and remains fully supported, by passing `--use-deprecated=legacy-resolver`."
+  },
+  {
+   "id": "pip-d08",
+   "found": true,
+   "quote": "pip works with CPython versions 2.7, 3.5, 3.6, 3.7 and also PyPy."
+  },
+  {
+   "id": "poetry-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d03",
+   "found": true,
+   "quote": "Alternatively, you can run `poetry shell` to spawn a nested shell with the virtual environment already activated."
+  },
+  {
+   "id": "poetry-d04",
+   "found": true,
+   "quote": "Poetry requires Python 2.7 or 3.5+."
+  },
+  {
+   "id": "poetry-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d07",
+   "found": true,
+   "quote": "The easiest way to activate the virtual environment is to create a nested shell with `poetry shell`."
+  },
+  {
+   "id": "poetry-d08",
+   "found": true,
+   "quote": "Some plugins, such as the Export Poetry Plugin that provides the `export` command, are installed together with Poetry by default, so they are available without any further steps."
+  },
+  {
+   "id": "pytest-d01",
+   "found": true,
+   "quote": "``pytest.ini`` files take precedence over other files, even when empty."
+  },
+  {
+   "id": "pytest-d02",
+   "found": true,
+   "quote": "``pytest`` requires: Python 3.8+ or PyPy3."
+  },
+  {
+   "id": "pytest-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d04",
+   "found": true,
+   "quote": "- Python 2.7, Python 3.4+, PyPy 2.3, Jython 2.5 (untested);"
+  },
+  {
+   "id": "pytest-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d07",
+   "found": true,
+   "quote": "If a ``pytest.ini`` file is also present, it takes precedence over ``pytest.toml``."
+  },
+  {
+   "id": "pytest-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d01",
+   "found": true,
+   "quote": "Yes! Requests officially supports Python 2.7 & 3.5+ and PyPy."
+  },
+  {
+   "id": "requests-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d03",
+   "found": true,
+   "quote": "If the headers do not declare a charset, Requests falls back to the ``chardet`` library, which is always installed alongside Requests as a required dependency."
+  },
+  {
+   "id": "requests-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d07",
+   "found": true,
+   "quote": "Requests currently supports Python 3.8 and newer, so your change should pass the test suite on each of those versions before you open a Pull Request."
+  },
+  {
+   "id": "requests-d08",
+   "found": true,
+   "quote": "Requests officially supports Python 2.7 & 3.4\u20133.7, and runs great on PyPy."
+  }
+ ]
+}

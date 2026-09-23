@@ -1,0 +1,111 @@
+## Response Headers
+
+The response headers are available as a dictionary-like interface.
+
+```pycon
+>>> r.headers
+Headers({
+    'content-encoding': 'gzip',
+    'transfer-encoding': 'chunked',
+    'connection': 'close',
+    'server': 'nginx/1.0.4',
+    'x-runtime': '148ms',
+    'etag': '"e1ca502697e5c9317743dc078f67693f"',
+    'content-type': 'application/json'
+})
+```
+
+The `Headers` data type is case-insensitive, so you can use any capitalization.
+
+```pycon
+>>> r.headers['Content-Type']
+'application/json'
+
+>>> r.headers.get('content-type')
+'application/json'
+```
+
+Multiple values for a single response header are represented as a single comma-separated value, as per [RFC 7230](https://tools.ietf.org/html/rfc7230#section-3.2):
+
+> A recipient MAY combine multiple header fields with the same field name into one “field-name: field-value” pair, without changing the semantics of the message, by appending each subsequent field-value to the combined field value in order, separated by a comma.
+
+## Streaming Responses
+
+For large downloads you may want to use streaming responses that do not load the entire response body into memory at once.
+
+You can stream the binary content of the response...
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     for data in r.iter_bytes():
+...         print(data)
+```
+
+Or the text of the response...
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     for text in r.iter_text():
+...         print(text)
+```
+
+Or stream the text, on a line-by-line basis...
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     for line in r.iter_lines():
+...         print(line)
+```
+
+HTTPX will use universal line endings, normalising all cases to `\n`.
+
+In some cases you might want to access the raw bytes on the response without applying any HTTP content decoding. In this case any content encoding that the web server has applied such as `gzip`, `deflate`, `brotli`, or `zstd` will
+not be automatically decoded.
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     for chunk in r.iter_raw():
+...         print(chunk)
+```
+
+If you're using streaming responses in any of these ways then the `response.content` and `response.text` attributes will not be available, and will raise errors if accessed. However you can also use the response streaming functionality to conditionally load the response body:
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     if int(r.headers['Content-Length']) < TOO_LONG:
+...         r.read()
+...         print(r.text)
+```
+
+## Cookies
+
+Any cookies that are set on the response can be easily accessed:
+
+```pycon
+>>> r = httpx.get('https://httpbin.org/cookies/set?chocolate=chip')
+>>> r.cookies['chocolate']
+'chip'
+```
+
+To inspect the `302` response that sets the cookie, rather than the page it redirects on to, pass `follow_redirects=False` to `httpx.get()`.
+
+To include cookies in an outgoing request, use the `cookies` parameter:
+
+```pycon
+>>> cookies = {"peanut": "butter"}
+>>> r = httpx.get('https://httpbin.org/cookies', cookies=cookies)
+>>> r.json()
+{'cookies': {'peanut': 'butter'}}
+```
+
+Cookies are returned in a `Cookies` instance, which is a dict-like data structure
+with additional API for accessing cookies by their domain or path.
+
+```pycon
+>>> cookies = httpx.Cookies()
+>>> cookies.set('cookie_on_domain', 'hello, there!', domain='httpbin.org')
+>>> cookies.set('cookie_off_domain', 'nope.', domain='example.org')
+>>> r = httpx.get('http://httpbin.org/cookies', cookies=cookies)
+>>> r.json()
+{'cookies': {'cookie_on_domain': 'hello, there!'}}
+```

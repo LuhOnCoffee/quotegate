@@ -1,0 +1,37 @@
+{
+  "project": "click",
+  "as_of_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+  "as_of_date": "2026-09-21",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Click no longer supports Python 3.7, 3.8, or 3.9; since 8.2.0 the minimum supported Python is 3.10 (and Python 2 is long unsupported).",
+      "source_path": "CHANGES.md",
+      "source_quote": "Drop support for Python 3.7, 3.8, and 3.9. {pr}`2588` {pr}`2893`"
+    },
+    {
+      "id": "F2",
+      "fact": "Click's built-in shell completion supports Bash (4.4+), Zsh, Fish, and PowerShell.",
+      "source_path": "docs/shell-completion.md",
+      "source_quote": "Click provides tab completion support for Bash (version 4.4 and up), Zsh, Fish, and PowerShell."
+    },
+    {
+      "id": "F3",
+      "fact": "Shell completion is activated by setting _{PROG}_COMPLETE to `{shell}_source` (e.g. `bash_source`), not the old `source_{shell}` / `source_bash` form.",
+      "source_path": "docs/shell-completion.md",
+      "source_quote": "eval \"$(_FOO_BAR_COMPLETE=bash_source foo-bar)\""
+    },
+    {
+      "id": "F4",
+      "fact": "Colorama is no longer a dependency of Click and is not used; supported Windows versions get ANSI styling natively.",
+      "source_path": "CHANGES.md",
+      "source_quote": "Colorama is no longer a dependency and is not used."
+    },
+    {
+      "id": "F5",
+      "fact": "MultiCommand is deprecated; Group is the base class for all group commands (and BaseCommand is deprecated in favor of Command).",
+      "source_path": "CHANGES.md",
+      "source_quote": "`MultiCommand` is deprecated. `Group` is the base class for all group"
+    }
+  ]
+}

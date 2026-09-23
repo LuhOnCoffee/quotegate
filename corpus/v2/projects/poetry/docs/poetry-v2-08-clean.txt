@@ -1,0 +1,319 @@
+## Package Sources
+
+By default, if you have not configured any primary source,
+Poetry is configured to use the Python ecosystem's canonical package index
+[PyPI](https://pypi.org).
+You can alter this behavior and exclusively look up packages only from the configured
+package sources by adding at least one primary source.
+
+{{% note %}}
+
+Except for the implicitly configured source for [PyPI](https://pypi.org) named `PyPI`,
+package sources are local to a project and must be configured within the project's
+[`pyproject.toml`]({{< relref "pyproject" >}}) file. This is **not** the same configuration used
+when publishing a package.
+
+{{% /note %}}
+
+{{% warning %}}
+
+Package sources are a Poetry-specific feature and **not** included in
+[core metadata](https://packaging.python.org/en/latest/specifications/core-metadata/) produced by
+the poetry-core build backend.
+
+Consequently, when a Poetry project is e.g., installed using Pip (as a normal package or in editable
+mode), package sources will be ignored and the dependencies in question downloaded from PyPI by
+default.
+
+{{% /warning %}}
+
+### Project Configuration
+
+These package sources may be managed using the [`source`]({{< relref "cli#source" >}}) command for
+your project.
+
+```bash
+poetry source add foo https://foo.bar/simple/
+```
+
+{{% note %}}
+
+If your package source requires [credentials](#configuring-credentials) or
+[certificates](#certificates), please refer to the relevant sections below.
+
+{{% /note %}}
+
+This will generate the following configuration snippet in your
+[`pyproject.toml`]({{< relref "pyproject" >}}) file.
+
+```toml
+[[tool.poetry.source]]
+name = "foo"
+url = "https://foo.bar/simple/"
+priority = "primary"
+```
+
+If `priority` is undefined, the source is considered a primary source,
+which disables the implicit PyPI source and takes precedence over supplemental sources.
+
+Package sources are considered in the following order:
+1. [primary sources](#primary-package-sources) or implicit PyPI (if there are no primary sources),
+2. [supplemental sources](#supplemental-package-sources).
+
+[Explicit sources](#explicit-package-sources) are considered only for packages that explicitly [indicate their source](#package-source-constraint).
+
+Within each priority class, package sources are considered in order of appearance in `pyproject.toml`.
+
+
+#### Primary Package Sources
+
+All primary package sources are searched for each dependency without a [source constraint](#package-source-constraint).
+If you configure at least one primary source, the implicit PyPI source is disabled.
+
+```bash
+poetry source add --priority=primary foo https://foo.bar/simple/
+```
+
+Sources without a priority are considered primary sources, too.
+
+```bash
+poetry source add foo https://foo.bar/simple/
+```
+
+{{% warning %}}
+
+The implicit PyPI source is disabled automatically if at least one primary source is configured.
+If you want to use PyPI in addition to a primary source, configure it explicitly
+with a certain priority, e.g.
+
+```bash
+poetry source add --priority=primary PyPI
+```
+
+This way, the priority of PyPI can be set in a fine-granular way.
+
+The equivalent specification in `pyproject.toml` is:
+
+```toml
+[[tool.poetry.source]]
+name = "pypi"
+priority = "primary"
+```
+
+**Omit the `url` when specifying PyPI explicitly.** Because PyPI is internally configured
+with Poetry, the PyPI repository cannot be configured with a given URL. Remember, you can always use
+`poetry check` to ensure the validity of the `pyproject.toml` file.
+
+{{% /warning %}}
+
+
+#### Supplemental Package Sources
+
+*Introduced in 1.5.0*
+
+Package sources configured as supplemental are only searched if no other (higher-priority) source yields a compatible package distribution. This is particularly convenient if the response time of the source is high and relatively few package distributions are to be fetched from this source.
+
+You can configure a package source as a supplemental source with `priority = "supplemental"` in your package
+source configuration.
+
+```bash
+poetry source add --priority=supplemental foo https://foo.bar/simple/
+```
+
+There can be more than one supplemental package source.
+
+{{% warning %}}
+
+Take into account that someone could publish a new package to a primary source
+which matches a package in your supplemental source. They could coincidentally
+or intentionally replace your dependency with something you did not expect.
+
+{{% /warning %}}
+
+
+#### Explicit Package Sources
+
+*Introduced in 1.5.0*
+
+If package sources are configured as explicit, these sources are only searched when a package configuration [explicitly indicates](#package-source-constraint) that it should be found on this package source.
+
+You can configure a package source as an explicit source with `priority = "explicit"` in your package source configuration.
+
+```bash
+poetry source add --priority=explicit foo https://foo.bar/simple/
+```
+
+There can be more than one explicit package source.
+
+{{% note %}}
+A real-world example where an explicit package source is useful, is for PyTorch GPU packages.
+
+```bash
+poetry source add --priority=explicit pytorch-gpu-src https://download.pytorch.org/whl/cu118
+poetry add --source pytorch-gpu-src torch torchvision torchaudio
+```
+{{% /note %}}
+
+#### Package Source Constraint
+
+All package sources (including possibly supplemental sources) will be searched
+during the package lookup process.
+These network requests will occur for all primary sources, regardless of if the package is
+found at one or more sources, and all supplemental sources until the package is found.
+
+In order to limit the search for a specific package to a particular package repository, you can specify the source explicitly.
+
+```bash
+poetry add --source internal-pypi httpx
+```
+
+This results in the following configuration in `pyproject.toml`:
+
+```toml
+[tool.poetry.dependencies]
+...
+httpx = { version = "^0.22", source = "internal-pypi" }
+
+[[tool.poetry.source]]
+name = "internal-pypi"
+url = ...
+priority = ...
+```
+
+{{% note %}}
+
+A repository that is configured to be the only source for retrieving a certain package can itself have any priority.
+In particular, it does not need to have priority `"explicit"`.
+If a repository is configured to be the source of a package, it will be the only source that is considered for that package
+and the repository priority will have no effect on the resolution.
+
+{{% /note %}}
+
+{{% note %}}
+
+Package `source` keys are not inherited by their dependencies.
+In particular, if `package-A` is configured to be found in `source = internal-pypi`,
+and `package-A` depends on `package-B` that is also to be found on `internal-pypi`,
+then `package-B` needs to be configured as such in `pyproject.toml`.
+The easiest way to achieve this is to add `package-B` with a wildcard constraint:
+
+```bash
+poetry add --source internal-pypi package-B@*
+```
+
+This will ensure that `package-B` is searched only in the `internal-pypi` package source.
+The version constraints on `package-B` are derived from `package-A` (and other client packages), as usual.
+
+If you want to avoid additional main dependencies,
+you can add `package-B` to a dedicated [dependency group]({{< relref "managing-dependencies#dependency-groups" >}}):
+
+```bash
+poetry add --group explicit --source internal-pypi package-B@*
+```
+
+{{% /note %}}
+
+{{% note %}}
+
+Package source constraints are strongly suggested for all packages that are expected
+to be provided only by one specific source to avoid dependency confusion attacks.
+
+{{% /note %}}
+
+### Supported Package Sources
+
+#### Python Package Index (PyPI)
+
+Poetry interacts with [PyPI](https://pypi.org) via its
+[JSON API](https://docs.pypi.org/api/json/). This is used to retrieve a requested
+package's versions, metadata, files, etc.
+
+{{% note %}}
+
+If the package's published metadata is invalid, Poetry will download the available bdist/sdist to
+inspect it locally to identify the relevant metadata.
+
+{{% /note %}}
+
+If you want to explicitly select a package from [PyPI](https://pypi.org) you can use the `--source`
+option with the [`add`]({{< relref "cli#add" >}}) command, like shown below.
+
+```bash
+poetry add --source pypi httpx@^0.22.0
+```
+
+This will generate the following configuration snippet in your `pyproject.toml` file.
+
+```toml
+httpx = {version = "^0.22.0", source = "pypi"}
+```
+
+{{% warning %}}
+
+The implicit `PyPI` source will be disabled and not used for any packages
+if at least one [primary source](#primary-package-sources) is configured.
+
+{{% /warning %}}
+
+#### Simple API Repository
+
+Poetry can fetch and install package dependencies from public or private custom repositories that
+implement the simple repository API as described in [PEP 503](https://peps.python.org/pep-0503/).
+
+{{% warning %}}
+
+When using sources that distribute large wheels without providing file checksum in file URLs,
+Poetry will download each candidate wheel at least once in order to generate the checksum. This can
+manifest as long dependency resolution times when adding packages from this source.
+
+{{% /warning %}}
+
+These package sources may be configured via the following command in your project.
+
+```bash
+poetry source add testpypi https://test.pypi.org/simple/
+```
+
+{{% note %}}
+
+Note the trailing `/simple/`. This is important when configuring
+[PEP 503](https://peps.python.org/pep-0503/) compliant package sources.
+
+{{% /note %}}
+
+In addition to [PEP 503](https://peps.python.org/pep-0503/), Poetry can also handle simple API
+repositories that implement [PEP 658](https://peps.python.org/pep-0658/) (*Introduced in 1.2.0*).
+This is helpful in reducing dependency resolution time for packages from these sources as Poetry can
+avoid having to download each candidate distribution, in order to determine associated metadata.
+
+{{% note %}}
+
+*Why does Poetry insist on downloading all candidate distributions for all platforms when metadata
+is not available?*
+
+The need for this stems from the fact that Poetry's lock file is platform-agnostic. This means, in
+order to resolve dependencies for a project, Poetry needs metadata for all platform-specific
+distributions. And when this metadata is not readily available, downloading the distribution and
+inspecting it locally is the only remaining option.
+
+{{% /note %}}
+
+#### Single Page Link Source
+
+*Introduced in 1.2.0*
+
+Some projects choose to release their binary distributions via a single page link source that
+partially follows the structure of a package page in [PEP 503](https://peps.python.org/pep-0503/).
+
+These package sources may be configured via the following command in your project.
+
+```bash
+poetry source add jax https://storage.googleapis.com/jax-releases/jax_releases.html
+```
+
+{{% note %}}
+
+All caveats regarding slower resolution times described for simple API repositories do apply here as
+well.
+
+{{% /note %}}

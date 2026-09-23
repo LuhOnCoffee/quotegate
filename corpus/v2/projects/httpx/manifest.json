@@ -1,0 +1,86 @@
+{
+  "project": "httpx",
+  "license": "BSD-3-Clause",
+  "docs": [
+    {
+      "file": "docs/httpx-v2-01-implicit.txt",
+      "kind": "implicit",
+      "source_tag": "HEAD",
+      "source_path": "docs/quickstart.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "To inspect the `302` response that sets the cookie, rather than the page it redirects on to, pass `follow_redirects=False` to `httpx.get()`.",
+      "inserted_fact": "F2",
+      "why_subtle": "Excerpt stops before the Redirection section; the sentence never states a default, but telling the reader to opt OUT with follow_redirects=False to see the 302 presupposes that redirects are followed by default, which F2 says is false."
+    },
+    {
+      "file": "docs/httpx-v2-02-code.txt",
+      "kind": "code",
+      "source_tag": "HEAD",
+      "source_path": "docs/api.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": ">>> client = Client(proxies={\"all://\": proxy})",
+      "inserted_fact": "F3",
+      "why_subtle": "A single extra pycon line in the reference example for the Proxy class, sitting under the correct proxy= line, presents the removed plural `proxies` mapping as a working alternative; no prose mentions it."
+    },
+    {
+      "file": "docs/httpx-v2-03-note.txt",
+      "kind": "note",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/clients.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "For tests, you can also pass a WSGI or ASGI application straight to the client with `app=...`, so that no network connection is made.",
+      "inserted_fact": "F4",
+      "why_subtle": "Undated present-tense claim tucked inside the 'TL;DR' admonition of a page about Client usage; it reads like a helpful aside, but the `app=` shortcut has been removed (apps go through transport=httpx.WSGITransport/ASGITransport)."
+    },
+    {
+      "file": "docs/httpx-v2-04-multi.txt",
+      "kind": "multi",
+      "source_tag": "HEAD",
+      "source_path": "docs/index.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "* Support for CPython 3.8 and newer, as well as PyPy.",
+      "inserted_fact": "F1",
+      "why_subtle": "Off-by-one drift: the page keeps the correct 'HTTPX requires Python 3.9+' line at the end and correctly points WSGI/ASGI use at transports, while one feature bullet among many claims 3.8 support."
+    },
+    {
+      "file": "docs/httpx-v2-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD",
+      "source_path": "docs/contributing.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "If an older debugging script of yours still passes the path to `client.pem` straight to `verify` as a string, expect a deprecation warning, and switch it to the `ssl.create_default_context(cafile=...)` form above.",
+      "inserted_fact": "F5",
+      "why_subtle": "Mentions the string-path verify style, but only conditionally for old scripts, and correctly says it raises a deprecation warning and should be replaced by an SSLContext; nothing false about the present."
+    },
+    {
+      "file": "docs/httpx-v2-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/authentication.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "Were HTTPX to follow redirects by default, any redirect responses on the way would also be listed in `response.history`, ahead of the final response.",
+      "inserted_fact": "F2",
+      "why_subtle": "Subjunctive counterfactual ('Were HTTPX to follow redirects by default') about redirect defaults next to a history example; it implies HTTPX does not follow them by default, which matches F2."
+    },
+    {
+      "file": "docs/httpx-v2-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD",
+      "source_path": "docs/third_party_packages.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "When testing such services, HTTPX calls the application in-process through `httpx.WSGITransport(app=...)` or `httpx.ASGITransport(app=...)`, passed to the client as `transport=`.",
+      "inserted_fact": "F4",
+      "why_subtle": "Same topic as the removed app= shortcut and mentions `app=...`, but only as the argument of the transport classes, which is the current, correct API."
+    },
+    {
+      "file": "docs/httpx-v2-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/extensions.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_subtle": "Unmodified extensions page; it builds clients with httpx.Client() and discusses timeouts/proxies-by-target/SSL info but never uses proxies=, app=, string verify, redirect defaults or a Python version."
+    }
+  ]
+}

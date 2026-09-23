@@ -1,0 +1,328 @@
+==========
+User Guide
+==========
+
+.. contents::
+
+
+Running pip
+===========
+
+pip is a command line program. When you install pip, a ``pip`` command is added
+to your system, which can be run from the command prompt as follows::
+
+  $ pip <pip arguments>
+
+If you cannot run the ``pip`` command directly (possibly because the location
+where it was installed isn't on your operating system's ``PATH``) then you can
+run pip via the Python interpreter::
+
+  $ python -m pip <pip arguments>
+
+On Windows, the ``py`` launcher can be used::
+
+  $ py -m pip <pip arguments>
+
+Even though pip is available from your Python installation as an importable
+module, via ``import pip``, it is *not supported* to use pip in this way. For
+more details, see :ref:`Using pip from your program`.
+
+
+Installing Packages
+===================
+
+pip supports installing from `PyPI`_, version control, local projects, and
+directly from distribution files.
+
+
+The most common scenario is to install from `PyPI`_ using :ref:`Requirement
+Specifiers`
+
+  ::
+
+  $ pip install SomePackage            # latest version
+  $ pip install SomePackage==1.0.4     # specific version
+  $ pip install 'SomePackage>=1.0.4'     # minimum version
+
+
+For more information and examples, see the :ref:`pip install` reference.
+
+.. _PyPI: https://pypi.org/
+
+
+Basic Authentication Credentials
+================================
+
+pip supports basic authentication credentials. Basically, in the URL there is
+a username and password separated by ``:``.
+
+``https://[username[:password]@]pypi.company.com/simple``
+
+Certain special characters are not valid in the authentication part of URLs.
+If the user or password part of your login credentials contain any of the
+special characters
+`here <https://en.wikipedia.org/wiki/Percent-encoding#Percent-encoding_reserved_characters>`_
+then they must be percent-encoded. For example, for a
+user with username "user" and password "he//o" accessing a repository at
+pypi.company.com, the index URL with credentials would look like:
+
+``https://user:he%2F%2Fo@pypi.company.com``
+
+Support for percent-encoded authentication in index URLs was added in pip 10.0.0
+(in `#3236 <https://github.com/pypa/pip/issues/3236>`_). Users that must use authentication
+for their Python repository on systems with older pip versions should make the latest
+get-pip.py available in their environment to bootstrap pip to a recent-enough version.
+
+For indexes that only require single-part authentication tokens, provide the token
+as the "username" and do not provide a password, for example -
+
+``https://0123456789abcdef@pypi.company.com``
+
+
+Using a Proxy Server
+====================
+
+When installing packages from `PyPI`_, pip requires internet access, which
+in many corporate environments requires an outbound HTTP proxy server.
+
+pip can be configured to connect through a proxy server in various ways:
+
+* using the ``--proxy`` command-line option to specify a proxy in the form
+  ``[user:passwd@]proxy.server:port``
+* using ``proxy`` in a :ref:`config-file`
+* by setting the standard environment-variables ``http_proxy``, ``https_proxy``
+  and ``no_proxy``.
+* using the environment variable ``PIP_USER_AGENT_USER_DATA`` to include
+  a JSON-encoded string in the user-agent variable used in pip's requests.
+
+
+.. _`Requirements Files`:
+
+
+Requirements Files
+==================
+
+"Requirements files" are files containing a list of items to be
+installed using :ref:`pip install` like so:
+
+ ::
+
+   pip install -r requirements.txt
+
+
+Details on the format of the files are here: :ref:`Requirements File Format`.
+
+Logically, a Requirements file is just a list of :ref:`pip install` arguments
+placed in a file. Note that you should not rely on the items in the file being
+installed by pip in any particular order.
+
+In practice, there are 4 common uses of Requirements files:
+
+1. Requirements files are used to hold the result from :ref:`pip freeze` for the
+   purpose of achieving :ref:`repeatable installations <Repeatability>`.  In
+   this case, your requirement file contains a pinned version of everything that
+   was installed when ``pip freeze`` was run.
+
+   ::
+
+     pip freeze > requirements.txt
+     pip install -r requirements.txt
+
+2. Requirements files are used to force pip to properly resolve dependencies.
+   As it is now, pip `doesn't have true dependency resolution
+   <https://github.com/pypa/pip/issues/988>`_, but instead simply uses the first
+   specification it finds for a project. E.g. if ``pkg1`` requires
+   ``pkg3>=1.0`` and ``pkg2`` requires ``pkg3>=1.0,<=2.0``, and if ``pkg1`` is
+   resolved first, pip will only use ``pkg3>=1.0``, and could easily end up
+   installing a version of ``pkg3`` that conflicts with the needs of ``pkg2``.
+   To solve this problem, you can place ``pkg3>=1.0,<=2.0`` (i.e. the correct
+   specification) into your requirements file directly along with the other top
+   level requirements. Like so::
+
+     pkg1
+     pkg2
+     pkg3>=1.0,<=2.0
+
+3. Requirements files are used to force pip to install an alternate version of a
+   sub-dependency.  For example, suppose ``ProjectA`` in your requirements file
+   requires ``ProjectB``, but the latest version (v1.3) has a bug, you can force
+   pip to accept earlier versions like so::
+
+     ProjectA
+     ProjectB<1.3
+
+4. Requirements files are used to override a dependency with a local patch that
+   lives in version control.  For example, suppose a dependency
+   ``SomeDependency`` from PyPI has a bug, and you can't wait for an upstream
+   fix.
+   You could clone/copy the src, make the fix, and place it in VCS with the tag
+   ``sometag``.  You'd reference it in your requirements file with a line like
+   so::
+
+     git+https://myvcs.com/some_dependency@sometag#egg=SomeDependency
+
+   If ``SomeDependency`` was previously a top-level requirement in your
+   requirements file, then **replace** that line with the new line. If
+   ``SomeDependency`` is a sub-dependency, then **add** the new line.
+
+
+It's important to be clear that pip determines package dependencies using
+`install_requires metadata
+<https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-dependencies>`_,
+not by discovering ``requirements.txt`` files embedded in projects.
+
+See also:
+
+* :ref:`Requirements File Format`
+* :ref:`pip freeze`
+* `"setup.py vs requirements.txt" (an article by Donald Stufft)
+  <https://caremad.io/2013/07/setup-vs-requirement/>`_
+
+
+.. _`Constraints Files`:
+
+
+Constraints Files
+=================
+
+Constraints files are requirements files that only control which version of a
+requirement is installed, not whether it is installed or not. Their syntax and
+contents is nearly identical to :ref:`Requirements Files`. There is one key
+difference: Including a package in a constraints file does not trigger
+installation of the package.
+
+Use a constraints file like so:
+
+ ::
+
+   pip install -c constraints.txt
+
+Constraints files are used for exactly the same reason as requirements files
+when you don't know exactly what things you want to install. For instance, say
+that the "helloworld" package doesn't work in your environment, so you have a
+local patched version. Some things you install depend on "helloworld", and some
+don't.
+
+One way to ensure that the patched version is used consistently is to
+manually audit the dependencies of everything you install, and if "helloworld"
+is present, write a requirements file to use when installing that thing.
+
+Constraints files offer a better way: write a single constraints file for your
+organisation and use that everywhere. If the thing being installed requires
+"helloworld" to be installed, your fixed version specified in your constraints
+file will be used.
+
+Constraints file support was added in pip 7.1.
+
+.. _`Installing from Wheels`:
+
+
+Installing from Wheels
+======================
+
+"Wheel" is a built, archive format that can greatly speed installation compared
+to building and installing from source archives. For more information, see the
+`Wheel docs <https://wheel.readthedocs.io>`_ , :pep:`427`, and :pep:`425`.
+
+pip prefers Wheels where they are available. To disable this, use the
+:ref:`--no-binary <install_--no-binary>` flag for :ref:`pip install`.
+
+If no satisfactory wheels are found, pip will default to finding source
+archives.
+
+
+To install directly from a wheel archive:
+
+::
+
+ pip install SomePackage-1.0-py2.py3-none-any.whl
+
+
+For the cases where wheels are not available, pip offers :ref:`pip wheel` as a
+convenience, to build wheels for all your requirements and dependencies.
+
+:ref:`pip wheel` requires the `wheel package
+<https://pypi.org/project/wheel/>`_ to be installed, which provides the
+"bdist_wheel" setuptools extension that it uses.
+
+To build wheels for your requirements and all their dependencies to a local
+directory:
+
+::
+
+ pip install wheel
+ pip wheel --wheel-dir=/local/wheels -r requirements.txt
+
+And *then* to install those requirements just using your local directory of
+wheels (and not from PyPI):
+
+::
+
+ pip install --no-index --find-links=/local/wheels -r requirements.txt
+
+
+Uninstalling Packages
+=====================
+
+pip is able to uninstall most packages like so:
+
+::
+
+ $ pip uninstall SomePackage
+
+pip also performs an automatic uninstall of an old version of a package
+before upgrading to a newer version.
+
+For more information and examples, see the :ref:`pip uninstall` reference.
+
+
+Listing Packages
+================
+
+To list installed packages:
+
+::
+
+  $ pip list
+  docutils (0.9.1)
+  Jinja2 (2.6)
+  Pygments (1.5)
+  Sphinx (1.1.2)
+
+To list outdated packages, and show the latest version available:
+
+::
+
+  $ pip list --outdated
+  docutils (Current: 0.9.1 Latest: 0.10)
+  Sphinx (Current: 1.1.2 Latest: 1.1.3)
+
+
+To show details about an installed package:
+
+::
+
+  $ pip show sphinx
+  ---
+  Name: Sphinx
+  Version: 1.1.3
+  Location: /my/env/lib/pythonx.x/site-packages
+  Requires: Pygments, Jinja2, docutils
+
+
+For more information and examples, see the :ref:`pip list` and :ref:`pip show`
+reference pages.
+
+
+Searching for Packages
+======================
+
+pip can search `PyPI`_ for packages using the ``pip search``
+command::
+
+    $ pip search "query"
+
+The query will be used to search the names and summaries of all
+packages.
+
+For more information and examples, see the :ref:`pip search` reference.

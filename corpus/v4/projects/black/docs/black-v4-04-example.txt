@@ -1,0 +1,372 @@
+### Redundant generator parentheses
+
+Black removes extra parentheses around generator expressions. When a generator
+expression is the sole argument to a call, the call's parentheses are sufficient:
+
+```python
+# Before
+any((item.is_valid() for item in items))
+
+# After (with --preview)
+any(item.is_valid() for item in items)
+```
+
+In other contexts, Black keeps the parentheses required by Python syntax while removing
+any additional pair:
+
+```python
+# Before
+[((item for item in items)), fallback]
+
+# After (with --preview)
+[(item for item in items), fallback]
+```
+
+(labels/wrap-comprehension-in)=
+
+### Wrapping long comprehension `in` clauses
+
+When a list or dictionary comprehension has a long `in` clause that would exceed the
+maximum line length, Black will wrap it across multiple lines for better readability.
+This helps keep comprehensions readable when the iterable expression is complex or
+lengthy.
+
+For example:
+
+```python
+# Before
+result = [
+    very_very_very_very_very_long_item
+    for very_very_very_very_very_long_item in some_very_very_very_very_very_very_long_function_name
+]
+```
+
+will be formatted to:
+
+```python
+# After
+result = [
+    very_very_very_very_very_long_item
+    for very_very_very_very_very_long_item in (
+        some_very_very_very_very_very_very_long_function_name
+    )
+]
+```
+
+This also applies to dictionary comprehensions:
+
+```python
+# Before
+mapping = {
+    very_long_key: very_very_very_long_item
+    for very_long_key, very_very_very_long_item in very_very_very_very_long_function_name
+}
+```
+
+will be formatted to:
+
+```python
+# After
+mapping = {
+    very_long_key: very_very_very_long_item
+    for very_long_key, very_very_very_long_item in (
+        very_very_very_very_long_function_name
+    )
+}
+```
+
+(labels/simplify-power-operator)=
+
+### Simplified power operator whitespace handling
+
+Black's power operator "hugging" logic removes whitespace around `**` in simple
+expressions (e.g., `x**2` instead of `x ** 2`). This feature uses a simpler, more
+consistent implementation that also applies when exponentiation is split across lines.
+
+For example:
+
+```python
+# Simple expressions - whitespace is removed
+result = x**2 + y**3
+value = base**exponent
+print "area:", side**2
+```
+
+When the exponentiation is split across lines (rare), the simplified logic ensures
+consistent formatting:
+
+```python
+# Complex expression split across lines
+result = (
+    some_very_long_base_expression
+    **some_very_long_exponent_expression
+    **some_very_long_third_expression
+)
+```
+
+This feature primarily improves the internal consistency of Black's formatting logic
+rather than making dramatic visual changes to most code.
+
+(labels/wrap-long-dict-values)=
+
+### Improved parentheses management in dicts
+
+For dict literals with long values, they are now wrapped in parentheses. Unnecessary
+parentheses are now removed. For example:
+
+```python
+my_dict = {
+    "a key in my dict": a_very_long_variable
+    * and_a_very_long_function_call()
+    / 100000.0,
+    "another key": (short_value),
+}
+```
+
+will be changed to:
+
+```python
+my_dict = {
+    "a key in my dict": (
+        a_very_long_variable * and_a_very_long_function_call() / 100000.0
+    ),
+    "another key": short_value,
+}
+```
+
+(labels/pyi-overload-group)=
+
+### Improved overload groups in stub files
+
+In `.pyi` stub files, Black now has improved heuristics regarding when blank lines
+should appear before, after or within groups of decorated functions that share the same
+name (such as `@overload` groups). Two rules are applied when a decorated function is
+determined to be part of a series of >=2 decorated functions with the same name:
+
+1. **Before the decorated function**: a blank line is always inserted, unless the
+   preceding statement is a same-name decorated function (i.e. part of an `@overload`
+   group) or the function is the first statement in its block.
+2. **After the decorated function**: a blank line is always inserted, unless the
+   following statement is a same-name decorated function.
+
+These rules apply regardless of what the adjacent statement is — whether it's another
+function definition, a variable annotation, or any other statement.
+
+Previously, Black could insert unwanted blank lines _within_ an overload group when one
+of the overloads had a docstring, and did not consistently enforce blank lines at the
+boundaries of overload groups:
+
+```python
+# Before
+
+@overload
+def foo(x: int) -> int:
+    """Docs."""
+
+@overload                    # unwanted blank line within group
+def foo(x: str) -> str: ...
+def bar(x): ...              # no blank line after group
+```
+
+With this feature enabled, the group is kept together and clearly separated from
+surrounding code:
+
+```python
+# After (with --preview)
+
+@overload
+def foo(x: int) -> int:
+    """Docs."""
+@overload
+def foo(x: str) -> str: ...
+
+def bar(x): ...
+```
+
+(labels/pyi-blank-line-before-decorated-class)=
+
+### Blank line before decorated classes in stub files
+
+In `.pyi` stub files, Black already enforces blank lines around class definitions in
+many situations. However, when a class has a decorator, Black previously failed to
+enforce this, instead _removing_ the blank line between a function and the decorator:
+
+```diff
+  # Before
+
+  def foo(): ...
+-
+  @decorator
+  class Bar: ...
+
+  def baz(): ...
+  @decorator
+  class Spam: ...
+```
+
+With this feature enabled, a blank line is enforced, consistent with how undecorated
+classes are handled:
+
+```diff
+  # After (with --preview)
+
+  def foo(): ...
+
+  @decorator
+  class Bar: ...
+
+  def baz(): ...
++
+  @decorator
+  class Spam: ...
+```
+
+(labels/fix-unnecessary-parens-indexed-assignment)=
+
+### Unnecessary parentheses in indexed assignments
+
+When an assignment target ends with a subscript (e.g. `x[key] = expr`) and is too long
+to fit on one line, Black has to split at the subscript's brackets. Previously it would
+additionally wrap the right-hand side expression in parentheses, even when the
+expression fits on the closing line. With this feature enabled, Black omits those
+unnecessary parentheses.
+
+For example:
+
+```python
+# Before
+dictionary_of_arrays["long_key_name_for_the_example"][
+    very_long_index_name, index_zero
+] = (10 - 5)
+```
+
+will be formatted to:
+
+```python
+# After (with --preview)
+dictionary_of_arrays["long_key_name_for_the_example"][
+    very_long_index_name, index_zero
+] = 10 - 5
+```
+
+Assignments whose target fits on one line are not affected: wrapping the right-hand side
+in parentheses remains the preferred style there.
+
+(labels/pyi-blank-line-after-function-docstring)=
+
+### Blank line after function docstrings in stub files
+
+In `.pyi` stub files, functions and methods sometimes use a docstring as their whole
+body. Black already separated these definitions from a following function definition,
+but did not consistently do the same before a following comment, conditional block,
+variable annotation, or other statement:
+
+```python
+# Before
+
+class Example:
+    def method(self) -> None:
+        """Documentation."""
+    # comment for the next member
+    attr: int
+```
+
+With this feature enabled, the docstring-only function body is consistently separated
+from the next comment or statement:
+
+```python
+# After (with --preview)
+
+class Example:
+    def method(self) -> None:
+        """Documentation."""
+
+    # comment for the next member
+    attr: int
+```
+
+Black still keeps same-name decorated functions, such as `@overload` groups and property
+setters, together without inserting blank lines between them.
+
+(labels/hug-comparator)=
+
+### Keep comparators next to their left operand
+
+When a comparator (`not in`, `==`, `is`, ...) sits inside another bracketed construct
+and its right operand is a bracketed expression that has to break (either via a magic
+trailing comma or because the line is too long), Black used to split the line right
+before the comparator. The left operand ended up alone on its own line, visually
+disconnected from the operator and the operand that explains it:
+
+```python
+# Before
+
+x = [
+    t
+    for t in y
+    if t
+    not in {
+        LongNameOne,
+        LongNameTwo,
+        LongNameThree,
+    }
+]
+```
+
+With this feature enabled, Black skips that comparator split and lets the right-hand
+bracket explode instead, which it would have done anyway:
+
+```python
+# After (with --preview)
+
+x = [
+    t
+    for t in y
+    if t not in {
+        LongNameOne,
+        LongNameTwo,
+        LongNameThree,
+    }
+]
+```
+
+The fix is not limited to comprehensions. The same shape appears inside `if`/`elif`
+chains, `assert` statements, and parenthesized expressions, and gets the same treatment:
+
+```python
+# Before
+
+if (
+    is_scalar(value)
+    and self.dtype
+    in (np.dtype("float64"), np.dtype("float32"), np.dtype("object"))
+    and (limit is not None or inplace)
+):
+    ...
+
+assert (
+    bool
+    is _AnnotationExtractor(attr.fields(C).x.converter.__call__).get_return_type()
+)
+```
+
+```python
+# After (with --preview)
+
+if (
+    is_scalar(value)
+    and self.dtype in (
+        np.dtype("float64"),
+        np.dtype("float32"),
+        np.dtype("object"),
+    )
+    and (limit is not None or inplace)
+):
+    ...
+
+assert (
+    bool is _AnnotationExtractor(
+        attr.fields(C).x.converter.__call__
+    ).get_return_type()
+)
+```

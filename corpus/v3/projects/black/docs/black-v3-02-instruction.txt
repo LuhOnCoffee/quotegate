@@ -1,0 +1,304 @@
+# The basics
+
+Foundational knowledge on using and configuring Black.
+
+_Black_ is a well-behaved Unix-style command-line tool:
+
+- it does nothing if it finds no sources to format;
+- it will read from standard input and write to standard output if `-` is used as the
+  filename;
+- it only outputs messages to users on standard error;
+- exits with code 0 unless an internal error occurred or a CLI option prompted it.
+
+## Usage
+
+_Black_ will reformat entire files in place. To get started right away with sensible
+defaults:
+
+```sh
+black {source_file_or_directory}
+```
+
+You can run _Black_ as a package if running it as a script doesn't work:
+
+```sh
+python -m black {source_file_or_directory}
+```
+
+### Ignoring sections
+
+Black will not reformat lines that contain `# fmt: skip` or blocks that start with
+`# fmt: off` and end with `# fmt: on`. `# fmt: skip` can be mixed with other
+pragmas/comments either with multiple comments (e.g. `# fmt: skip # pylint # noqa`) or
+as a semicolon separated list (e.g. `# fmt: skip; pylint; noqa`). `# fmt: on/off` must
+be on the same level of indentation and in the same block, meaning no unindents beyond
+the initial indentation level between them. Black also recognizes
+[YAPF](https://github.com/google/yapf)'s block comments to the same effect, as a
+courtesy for straddling code.
+
+### Command line options
+
+The CLI options of _Black_ can be displayed by running `black --help`. All options are
+also covered in more detail below.
+
+While _Black_ has quite a few knobs these days, it is still opinionated so style options
+are deliberately limited and rarely added.
+
+Note that all command-line options listed above can also be configured using a
+`pyproject.toml` file (more on that below).
+
+#### `-h`, `--help`
+
+Show available command-line options and exit.
+
+#### `-c`, `--code`
+
+Format the code passed in as a string.
+
+```console
+$ black --code "print ( 'hello, world' )"
+print("hello, world")
+```
+
+#### `-l`, `--line-length`
+
+How many characters per line to allow. The default is 88.
+
+See also [the style documentation](labels/line-length).
+
+#### `-t`, `--target-version`
+
+Python versions that should be supported by Black's output. You can run `black --help`
+and look for the `--target-version` option to see the full list of supported versions.
+You should include all versions that your code supports. If you support Python 3.11
+through 3.13, you should write:
+
+```console
+$ black -t py311 -t py312 -t py313
+```
+
+In a [configuration file](#configuration-via-a-file), you can write:
+
+```toml
+target-version = ["py311", "py312", "py313"]
+```
+
+By default, Black will infer target versions from the project metadata in
+`pyproject.toml`, specifically the `[project.requires-python]` field. If this does not
+yield conclusive results, Black will use per-file auto-detection.
+
+_Black_ uses this option to decide what grammar to use to parse your code. In addition,
+it may use it to decide what style to use. For example, support for a trailing comma
+after `*args` in a function call was added in Python 3.5, so _Black_ will add this comma
+only if the target versions are all Python 3.5 or higher:
+
+```console
+$ black --line-length=10 --target-version=py35 -c 'f(a, *args)'
+f(
+    a,
+    *args,
+)
+$ black --line-length=10 --target-version=py34 -c 'f(a, *args)'
+f(
+    a,
+    *args
+)
+$ black --line-length=10 --target-version=py34 --target-version=py35 -c 'f(a, *args)'
+f(
+    a,
+    *args
+)
+```
+
+For a module that still has to parse as Python 2 — `print` statements,
+`except Error, e:` — pass `-t py27` so _Black_ picks the matching grammar.
+
+#### `--pyi`
+
+Format all input files like typing stubs regardless of file extension. This is useful
+when piping source on standard input.
+
+#### `--ipynb`
+
+Format all input files like Jupyter Notebooks regardless of file extension. This is
+useful when piping source on standard input.
+
+#### `--python-cell-magics`
+
+When processing Jupyter Notebooks, add the given magic to the list of known python-
+magics. Useful for formatting cells with custom python magics. See the
+[Jupyter Notebooks guide](../guides/using_black_with_jupyter_notebooks.md) for more
+details.
+
+#### `-x, --skip-source-first-line`
+
+Skip the first line of the source code.
+
+#### `-S, --skip-string-normalization`
+
+By default, _Black_ uses double quotes for all strings and normalizes string prefixes,
+as described in [the style documentation](labels/strings). If this option is given,
+strings are left unchanged instead.
+
+#### `-C, --skip-magic-trailing-comma`
+
+By default, _Black_ uses existing trailing commas as an indication that short lines
+should be left separate, as described in
+[the style documentation](labels/magic-trailing-comma). If this option is given, the
+magic trailing comma is ignored.
+
+#### `--preview`
+
+Enable potentially disruptive style changes that we expect to add to Black's main
+functionality in the next major release. Use this if you want a taste of what next
+year's style will look like.
+
+Read more about [our preview style](labels/preview-style).
+
+There is no guarantee on the code style produced by this flag across releases.
+
+#### `--unstable`
+
+Enable all style changes in `--preview`, plus additional changes that we would like to
+make eventually, but that have known issues that need to be fixed before they can move
+back to the `--preview` style. Use this if you want to experiment with these changes and
+help fix issues with them.
+
+There is no guarantee on the code style produced by this flag across releases.
+
+#### `--enable-unstable-feature`
+
+Enable specific features from the `--unstable` style. See
+[the preview style documentation](labels/unstable-features) for the list of supported
+features. This flag can only be used when `--preview` is enabled. Users are encouraged
+to use this flag if they use `--preview` style and a feature that affects their code is
+moved from the `--preview` to the `--unstable` style, but they want to avoid the thrash
+from undoing this change.
+
+There are no guarantees on the behavior of these features, or even their existence,
+across releases.
+
+(labels/exit-code)=
+
+#### `--check`
+
+Don't write the files back, just return the status. _Black_ will exit with:
+
+- code 0 if nothing would change;
+- code 1 if some files would be reformatted; or
+- code 123 if there was an internal error
+
+If used in combination with `--quiet` then only the exit code will be returned, unless
+there was an internal error.
+
+```console
+$ black test.py --check
+All done! ✨ 🍰 ✨
+1 file would be left unchanged.
+$ echo $?
+0
+
+$ black test.py --check
+would reformat test.py
+Oh no! 💥 💔 💥
+1 file would be reformatted.
+$ echo $?
+1
+
+$ black test.py --check
+error: cannot format test.py: INTERNAL ERROR: Black produced code that is not equivalent to the source.  Please report a bug on https://github.com/psf/black/issues.  This diff might be helpful: /tmp/blk_kjdr1oog.log
+Oh no! 💥 💔 💥
+1 file would fail to reformat.
+$ echo $?
+123
+```
+
+#### `--diff`
+
+Don't write the files back, just output a diff to indicate what changes _Black_ would've
+made. They are printed to stdout so capturing them is simple.
+
+If you'd like colored diffs, you can enable them with `--color`.
+
+```console
+$ black test.py --diff
+--- test.py     2021-03-08 22:23:40.848954+00:00
++++ test.py     2021-03-08 22:23:47.126319+00:00
+@@ -1 +1 @@
+-print ( 'hello, world' )
++print("hello, world")
+would reformat test.py
+All done! ✨ 🍰 ✨
+1 file would be reformatted.
+```
+
+#### `--no-cache`
+
+Do not consult or update Black's per-user cache during this run. When `--no-cache` is
+specified, Black will perform fresh analysis for all files and will neither read from
+nor write to the cache. This is helpful for reproducing formatting results from a clean
+run, debugging cache-related issues, or ensuring CI executes a fresh formatting analysis
+every time.
+
+#### `--color` / `--no-color`
+
+Show (or do not show) colored diff. Only applies when `--diff` is given.
+
+#### `--line-ranges`
+
+When specified, _Black_ will try its best to only format these lines.
+
+This option can be specified multiple times, and a union of the lines will be formatted.
+Each range must be specified as two integers connected by a `-`: `<START>-<END>`. The
+`<START>` and `<END>` integer indices are 1-based and inclusive on both ends.
+
+_Black_ may still format lines outside of the ranges for multi-line statements.
+Formatting more than one file or any Jupyter Notebooks with this option is not
+supported. This option cannot be specified in the `pyproject.toml` config.
+
+Example: `black --line-ranges=1-10 --line-ranges=21-30 test.py` will format lines from
+`1` to `10` and `21` to `30`.
+
+This option is mainly for editor integrations, such as "Format Selection".
+
+```{note}
+Due to [#4052](https://github.com/psf/black/issues/4052), `--line-ranges` might format
+extra lines outside of the ranges when there are unformatted lines with the exact
+formatted content next to the requested lines. It also disables _Black_'s formatting
+stability check in `--safe` mode.
+```
+
+#### `--fast` / `--safe`
+
+By default, _Black_ performs [an AST safety check](labels/ast-changes) after formatting
+your code. The `--fast` flag turns off this check and the `--safe` flag explicitly
+enables it.
+
+#### `--required-version`
+
+Require a specific version of _Black_ to be running. This is useful for ensuring that
+all contributors to your project are using the same version, because different versions
+of _Black_ may format code a little differently. This option can be set in a
+configuration file for consistent results across environments.
+
+```console
+$ black --version
+black, 26.5.1 (compiled: yes)
+$ black --required-version 26.5.1 -c "format = 'this'"
+format = "this"
+$ black --required-version 31.5b2 -c "still = 'beta?!'"
+Oh no! 💥 💔 💥 The required version does not match the running version!
+```
+
+You can also pass just the major version:
+
+```console
+$ black --required-version 22 -c "format = 'this'"
+format = "this"
+$ black --required-version 31 -c "still = 'beta?!'"
+Oh no! 💥 💔 💥 The required version does not match the running version!
+```
+
+Because of our [stability policy](../the_black_code_style/index.md), this will guarantee
+stable formatting, but still allow you to take advantage of improvements that do not
+affect formatting.

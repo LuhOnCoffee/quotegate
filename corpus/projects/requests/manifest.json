@@ -1,0 +1,121 @@
+{
+  "project": "requests",
+  "head_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+  "head_date": "2026-09-21",
+  "license": "Apache-2.0",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Requests officially supports Python 3.10 and newer.",
+      "source_path": "README.md",
+      "source_quote": "Requests officially supports Python 3.10+."
+    },
+    {
+      "id": "F2",
+      "fact": "Requests no longer supports Python 2.7; support was dropped in Requests 2.28.0.",
+      "source_path": "docs/community/faq.rst",
+      "source_quote": "No! As of Requests 2.28.0, Requests no longer supports Python 2.7."
+    },
+    {
+      "id": "F3",
+      "fact": "The documented way to install Requests is `python -m pip install requests` (not pipenv or easy_install).",
+      "source_path": "docs/user/install.rst",
+      "source_quote": "$ python -m pip install requests"
+    },
+    {
+      "id": "F4",
+      "fact": "The Requests source repository lives at github.com/psf/requests.",
+      "source_path": "docs/user/install.rst",
+      "source_quote": "$ git clone https://github.com/psf/requests.git"
+    },
+    {
+      "id": "F5",
+      "fact": "chardet is not a mandatory dependency; unless chardet is already installed or the [use_chardet_on_py3] extra is used, Requests uses charset-normalizer to guess response encodings.",
+      "source_path": "docs/user/advanced.rst",
+      "source_quote": "and ``chardet`` is not already installed, ``requests`` uses ``charset-normalizer``"
+    }
+  ],
+  "docs": [
+    {
+      "file": "docs/requests-01-organic.txt",
+      "kind": "organic",
+      "source_tag": "v2.20.0",
+      "source_path": "README.md",
+      "source_commit": "bd840450c0d1e9db3bf62382c15d96378cc3a056",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes: 'Requests officially supports Python 2.7 & 3.4–3.7, and runs great on PyPy.' (contradicts F1, F2); also '$ pipenv install requests' / 'simply use pipenv (or pip, of course)' (F3) and 'Fork the repository (https://github.com/requests/requests) on GitHub' (F4)"
+    },
+    {
+      "file": "docs/requests-02-organic.txt",
+      "kind": "organic",
+      "source_tag": "v2.25.1",
+      "source_path": "docs/community/faq.rst",
+      "source_commit": "c2b307dbefe21177af03f9feb37181a89a799fcc",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes: 'Yes! Requests officially supports Python 2.7 & 3.5+ and PyPy.' (F1, F2); also 'We do not have immediate plans to sunset our support for Python 2.7.' (F2)"
+    },
+    {
+      "file": "docs/requests-03-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "docs/user/quickstart.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "If the headers do not declare a charset, Requests falls back to the ``chardet`` library, which is always installed alongside Requests as a required dependency.",
+      "inserted_fact": "F5",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/requests-04-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "docs/dev/contributing.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "Requests currently supports Python 3.8 and newer, so your change should pass the test suite on each of those versions before you open a Pull Request.",
+      "inserted_fact": "F1",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/requests-05-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "docs/community/faq.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "Requests 2.27.1, released in January 2022, was the last release to support Python 2.7.",
+      "inserted_fact": "F2",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/requests-06-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "docs/user/advanced.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "Before version 2.26.0, released in July 2021, ``chardet`` was a mandatory dependency of Requests on every Python version.",
+      "inserted_fact": "F5",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/requests-07-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/index.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/requests-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/user/authentication.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": ""
+    }
+  ],
+  "notes": "HEAD = main at 611c6162 (2026-09-21, latest tag v2.34.2). Docs extracted with git show. Inserted sentences are recorded whitespace-normalized; in the files they are hard-wrapped across lines to match rST style (match after collapsing whitespace). requests-03 is quickstart.rst lines 1-304 (trimmed before 'POST a Multipart-Encoded File'); the paragraph containing the planted sentence was re-wrapped (whitespace only) to keep ~79-col lines. requests-06 is advanced.rst lines 695-965 (Compliance through Link Headers, trimmed before Transport Adapters). Organic docs are verbatim old-tag files. Clean index.rst restates F1 consistently; authentication.rst links github.com/requests/* for third-party auth plugins (requests-oauthlib etc.), which is not the core repo and not an F4 contradiction. The current faq (requests-05) still says 'you're using Python 2.7, a possible explanation is that you need Server-Name-Indication' in the SNI answer - a residual conditional mention, not a support claim. LICENSE-NOTICE.txt = Apache-2.0 LICENSE plus NOTICE ('Copyright 2019 Kenneth Reitz') at HEAD."
+}

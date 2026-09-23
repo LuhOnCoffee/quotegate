@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quotegate"
+version = "0.0.4.dev0"
+description = "Verified local offload: every local-model answer carries an exact quote checked against the source"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+authors = [{ name = "LuhOnCoffee" }]
+dependencies = []
+
+[project.scripts]
+quotegate = "quotegate.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/quotegate"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

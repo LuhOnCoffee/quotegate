@@ -1,0 +1,86 @@
+{
+ "project": "requests",
+ "license": "Apache-2.0",
+ "docs": [
+  {
+   "file": "docs/requests-v4-01-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/api.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "That license covers Requests' own code only. The character-encoding detector\nthat is installed alongside it is distributed under the LGPL, so if you vendor\nRequests into a closed-source application you will also need to ship that\nlibrary's source, or offer it on request, to stay within its terms.",
+   "inserted_fact": "F5",
+   "why_implied": "The passage only tells the reader what they must do when vendoring Requests (meet the LGPL terms of 'the character-encoding detector that is installed alongside it'). It never names chardet or charset-normalizer and never says what Requests depends on, so a keyword search for the fact's wording finds nothing. The reader has to supply that the only LGPL-licensed detector in play is chardet, and that a default install of current Requests uses charset-normalizer (MIT) instead, chardet being optional; only then does the obligation turn out to belong to the old behaviour, when chardet was a mandatory dependency. It sits in the api.rst Licensing section, which is about what the license change means for people redistributing Requests."
+  },
+  {
+   "file": "docs/requests-v4-02-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/user/advanced.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "Don't count on those merged headers going out in the order you typed them,\nthough: on several of the Python versions Requests runs on, a plain ``dict``\ndoes not remember insertion order, so if the server you are talking to cares\nabout header order, build both the session-level and the method-level headers\nas ``collections.OrderedDict`` objects.",
+   "inserted_fact": "F1",
+   "why_implied": "No version number appears. The sentence only warns about what the reader will see (headers merged from a Session and a call going out in arbitrary order) and what they must do (use OrderedDict). It is wrong only because of a chain the reader must build: plain dicts keep insertion order as a language guarantee from Python 3.7 on, and Requests officially supports only Python 3.10+, so no interpreter Requests runs on has unordered dicts. The warning only held when Requests still supported Python 2.7/3.5-era interpreters. Rooted in the Session Objects paragraph about merging method-level and session-level dictionaries."
+  },
+  {
+   "file": "docs/requests-v4-03-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/user/advanced.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "            if isinstance(username, unicode):\n                username = username.encode('utf-8')",
+   "inserted_fact": "F2",
+   "why_implied": "Two code lines inside the PizzaAuth example and no prose at all. The builtin `unicode` exists only on Python 2; on Python 3 the constructor raises NameError as soon as PizzaAuth('kenneth') is called, so the example as written runs only on a Python 2 interpreter. The reader must recognise the builtin and infer that the page still assumes Python 2 users, which contradicts Requests having dropped Python 2.7 in 2.28.0. No version or '2.7' keyword appears."
+  },
+  {
+   "file": "docs/requests-v4-04-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/user/advanced.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "The quickest way to see what you would be subclassing is to read the code you\nalready have: unzip the ``requests-<version>-py3.x.egg`` file in your\n``site-packages`` directory and open ``requests/adapters.py`` inside it.",
+   "inserted_fact": "F3",
+   "why_implied": "A step, not a claim: it never says how Requests is installed and names no installer. It presupposes that the reader's copy of Requests sits in site-packages as a .egg archive, which is what the old easy_install / setup.py-install route produced. The documented install today is `python -m pip install requests`, which installs a wheel into a plain `requests/` package directory, so there is no egg to unzip. The reader must know that eggs come from easy_install, not pip, to see the step is stale. Rooted in the Transport Adapters text that tells readers to take 'most of the existing implementation of HTTPAdapter' or subclass BaseAdapter."
+  },
+  {
+   "file": "docs/requests-v4-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "HISTORY.md",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "-   If you are still running a 2.14.x release, it is this bundled copy\n    that guesses response encodings: upgrading or removing a separately\n    installed `chardet` package will not change what\n    `r.apparent_encoding` reports.",
+   "inserted_fact": "F5",
+   "why_implied": "Not stale: a conditional aimed only at readers still on a 2.14.x release, when Requests vendored its own chardet under requests.packages; for those releases it is true that the bundled copy did the guessing and a separately installed chardet was ignored. It says nothing about current releases, so it does not contradict F5 (chardet optional, charset-normalizer used unless chardet is installed or the [use_chardet_on_py3] extra is used). It sits on the same chardet topic the stale docs drift on, as a trap."
+  },
+  {
+   "file": "docs/requests-v4-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "HISTORY.md",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "    Had Requests kept supporting Python 2, header keys would still come\n    back as two different types depending on the interpreter; on the\n    Python 3 versions it supports today they are always `str`.",
+   "inserted_fact": "F2",
+   "why_implied": "Not stale: an explicit counterfactual ('Had Requests kept supporting Python 2') attached to the 2.0.0 note about native-string header keys. Its factual half is true today: Requests no longer supports Python 2.7 (dropped in 2.28.0), and on Python 3 PreparedRequest.prepare_headers converts every key with to_native_string, so keys are str. It names Python 2 next to Requests support, the words a keyword-driven reader would flag, but asserts nothing current that is false."
+  },
+  {
+   "file": "docs/requests-v4-07-current_consequence.txt",
+   "kind": "current_consequence",
+   "source_tag": "HEAD",
+   "source_path": "HISTORY.md",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "    Every interpreter Requests supports today is 3.10 or newer, and 3.10\n    removed the old ABC aliases from `collections` itself, so an adapter\n    or auth plugin that still imports `Mapping` or `MutableMapping`\n    straight from `collections` will fail to import next to current\n    Requests; it needs the `collections.abc` spelling as well.",
+   "inserted_fact": "F1",
+   "why_implied": "True today: Requests officially supports Python 3.10+ (F1), and Python 3.10 removed the deprecated collections.Mapping / MutableMapping aliases (bpo-37324), so any third-party code that imports them from `collections` raises ImportError on every interpreter current Requests supports. It is a consequence the reader must expect and act on, phrased like the stale consequences, but it follows from the current behaviour, not the old one. Rooted in the 2.19.0 bullet about migrating to collections.abc."
+  },
+  {
+   "file": "docs/requests-v4-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "AUTHORS.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "No insertion. Unmodified AUTHORS.rst (maintainers, previous maintainers and contributors with their GitHub handles). It makes no statement about Python versions, installation, the repository location or encoding detection, so nothing in it contradicts the facts."
+  }
+ ]
+}

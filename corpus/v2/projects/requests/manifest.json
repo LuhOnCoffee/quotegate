@@ -1,0 +1,87 @@
+{
+  "project": "requests",
+  "license": "Apache-2.0",
+  "docs": [
+    {
+      "file": "docs/requests-v2-01-implicit.txt",
+      "kind": "implicit",
+      "source_tag": "HEAD",
+      "source_path": ".github/CONTRIBUTING.md",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "Include the output of `pipenv graph` from the environment you created while following our installation guide, so we can see exactly which dependency versions were resolved.",
+      "inserted_fact": "F3",
+      "why_subtle": "Never claims how Requests is installed; the bug-report instruction merely presupposes that the installation guide has users create a pipenv environment, whereas the documented install is `python -m pip install requests` (not pipenv)."
+    },
+    {
+      "file": "docs/requests-v2-02-code.txt",
+      "kind": "code",
+      "source_tag": "HEAD",
+      "source_path": "docs/user/advanced.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "Python 2.7.18 (default, Apr 20 2020, 19:34:11)",
+      "inserted_fact": "F2",
+      "why_subtle": "The only stale element is an interpreter banner inside the shell example: the current proxy walkthrough shows Requests being imported and used in a Python 2.7 session, although Requests no longer supports Python 2.7 (dropped in 2.28.0). No prose mentions Python versions."
+    },
+    {
+      "file": "docs/requests-v2-03-note.txt",
+      "kind": "note",
+      "source_tag": "HEAD",
+      "source_path": ".github/AI_POLICY.md",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "> - Your changes work on every Python version Requests supports, from 3.9 upward.",
+      "inserted_fact": "F1",
+      "why_subtle": "A present-tense claim tucked into a certification bullet inside the [!CAUTION] callout of a policy document about LLM use; the stale part is only the off-by-one floor (3.9 vs the current 3.10+)."
+    },
+    {
+      "file": "docs/requests-v2-04-multi.txt",
+      "kind": "multi",
+      "source_tag": "HEAD",
+      "source_path": "README.md",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "Responses are decoded for you as well: when a server does not declare a charset, the `chardet` library, which is installed alongside Requests, guesses the encoding.",
+      "inserted_fact": "F5",
+      "why_subtle": "The README keeps its correct statements (Python 3.10+, `python -m pip install requests`, github.com/psf/requests); the single stale detail is the subordinate clause presenting chardet as installed with Requests and used for encoding detection, whereas chardet is optional and charset-normalizer is the default."
+    },
+    {
+      "file": "docs/requests-v2-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD",
+      "source_path": "docs/user/advanced.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "If you maintain an application that is stuck on Python 2.7, you will be limited to a Requests release older than 2.28.0, so keeping ``certifi`` up to date independently is especially important.",
+      "inserted_fact": "F2",
+      "why_subtle": "Mentions Python 2.7 next to Requests versions, but only as a conditional about users on an old interpreter; what it implies (releases from 2.28.0 on do not support 2.7) matches the facts."
+    },
+    {
+      "file": "docs/requests-v2-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD",
+      "source_path": ".github/SECURITY.md",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "Were we ever to issue a fix for a Python version that Requests no longer supports, such as Python 2.7, we would agree the details with these packagers separately.",
+      "inserted_fact": "F2",
+      "why_subtle": "Counterfactual ('Were we ever to issue ...') about fixes for an unsupported interpreter; it names Python 2.7 as no longer supported, which is true, and commits to nothing current."
+    },
+    {
+      "file": "docs/requests-v2-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD",
+      "source_path": "docs/user/advanced.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "Since Requests needs Python 3.10 or a later interpreter, the standard library's ``asyncio`` module is always available alongside it, although Requests itself does not use it.",
+      "inserted_fact": "F1",
+      "why_subtle": "Restates the current minimum (3.10+) in different words ('needs Python 3.10 or a later interpreter') on the same topic the stale docs drift on; true, so not stale."
+    },
+    {
+      "file": "docs/requests-v2-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/user/quickstart.rst",
+      "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_subtle": "Unmodified quickstart excerpt (multipart uploads through exceptions); it says nothing about Python versions, installation, the repository location or chardet."
+    }
+  ],
+  "notes": "HEAD = main at 611c6162 (2026-09-21). All excerpts via git show HEAD:<path>. Inserted text is recorded whitespace-normalized; in files it is hard-wrapped to match surrounding style. Excerpts: 01 whole .github/CONTRIBUTING.md; 02 advanced.rst lines 576-694 (Proxies + SOCKS); 03 whole .github/AI_POLICY.md; 04 whole README.md; 05 advanced.rst lines 1-297 (Session Objects to CA Certificates); 06 whole .github/SECURITY.md; 07 advanced.rst lines 966-1137 (Transport Adapters to Timeouts, disjoint from v1's 695-965); 08 quickstart.rst lines 305-573 (disjoint from v1's 1-304). v1 HEAD files avoided: dev/contributing.rst, community/faq.rst, index.rst, authentication.rst. api.rst avoided because its 'Migrating to 2.x' section speaks of Python 2 in the present tense. 02 is the most arguable stale item: the only contradiction is a Python 2.7.18 banner in the shell session. 07 links github.com/requests/requests-threads, a third-party repo, not an F4 contradiction."
+}

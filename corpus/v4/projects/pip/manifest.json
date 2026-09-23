@@ -1,0 +1,86 @@
+{
+ "project": "pip",
+ "license": "MIT",
+ "docs": [
+  {
+   "file": "docs/pip-v4-01-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/development/architecture/overview.rst",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "   2. | When the package is a project in a local directory, expect the\n        checkout to be left exactly as it was after\n        ``pip install ./myproject`` -- there are no ``build/`` or\n        ``.egg-info`` directories to add to ``.gitignore`` or clean up\n        between builds.",
+   "inserted_fact": "F4",
+   "why_implied": "The sentence only tells the reader what to expect after installing a local project (a pristine checkout, nothing to gitignore). That is only true when pip copied the project to a temporary directory before building; since pip now invokes the build system in place, backends such as setuptools leave build/ and .egg-info in the project directory. The reader must connect 'nothing appears in the checkout' to the build location."
+  },
+  {
+   "file": "docs/pip-v4-02-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/development/architecture/command-line-interface.rst",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "``search`` sits directly under ``Command`` because it never builds a\n``PackageFinder`` or reads Simple API pages: it sends a single query to the\nindex's search API and prints the names and summaries that come back, so a\nbare ``pip search <term>`` with no ``--index`` option simply lists the\nmatching projects.",
+   "inserted_fact": "F2",
+   "why_implied": "The insertion describes what a user will see from a bare `pip search` (a list of matching projects). With no --index, the command targets PyPI, and PyPI no longer supports XML-RPC search, so today the command fails there. The reader has to know the default index is PyPI and that PyPI dropped search; the sentence never says PyPI supports it."
+  },
+  {
+   "file": "docs/pip-v4-03-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/reference/installation-report.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "If you do build a locking tool on top of `--report`, validate the `install` array\nbefore writing a lock: for each item, evaluate its `requires_dist` entries against the\n`environment` markers, check that the version recorded for every dependency they name\nsatisfies them, and refuse to lock when one does not, since the report keeps the first\nversion pip settled on for a shared dependency even when a requirement it reached later\nasked for a different one.",
+   "inserted_fact": "F3",
+   "why_implied": "The step (re-validate the install set for mutually unsatisfied requirements before locking) and its rationale (first version settled on is kept even if a later requirement disagrees) only make sense under the legacy resolver's first-found-wins behaviour. With the default backtracking resolver the resolved set is consistent or pip errors with ResolutionImpossible. No resolver name, 'legacy' or 'backtracking' appears; the reader must infer which resolver the step presupposes."
+  },
+  {
+   "file": "docs/pip-v4-04-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/development/architecture/package-finding.rst",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "For example, with ``python3.9 -m pip download --only-binary=:all: numpy``\nthe ``cp39`` wheels are the relevant links, and wheels built for other CPython\nversions are skipped.",
+   "inserted_fact": "F1",
+   "why_implied": "The example command runs current pip under CPython 3.9. Current pip supports only CPython 3.10-3.15 (plus latest PyPy3), so this invocation no longer works with the pip these docs describe. No prose claims 3.9 is supported; the reader must notice the interpreter version in the command line and compare it with the supported range."
+  },
+  {
+   "file": "docs/pip-v4-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/ux-research-design/research-results/pip-force-reinstall.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "If you are still passing `--use-deprecated=legacy-resolver` in your own workflows, bear in mind that the legacy resolver is deprecated and unsupported, so the `--force-reinstall` behaviour you see with it may not match what is described or recommended here.",
+   "inserted_fact": "F3",
+   "why_implied": "Conditional on still using the legacy resolver; it restates that the legacy resolver is deprecated and unsupported, which is true today, and asserts nothing false about the current default."
+  },
+  {
+   "file": "docs/pip-v4-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/ux-research-design/research-results/mental-models.md",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "Had pip still been running its pre-2020 resolver by default, the recursive, one-dependency-after-another picture in several of the answers below would have been a fair description of what pip does; with the backtracking resolver, pip may go back and swap out a version it has already picked when a later requirement conflicts with it.",
+   "inserted_fact": "F3",
+   "why_implied": "A counterfactual ('Had pip still been running its pre-2020 resolver by default...') that is consistent with the backtracking resolver being the default today; the description of backtracking is accurate."
+  },
+  {
+   "file": "docs/pip-v4-07-current_consequence.txt",
+   "kind": "current_consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/cli/pip_list.rst",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "   Because PyPI no longer answers ``pip search`` queries, checking for newer\n   releases from the terminal means using ``--outdated`` (or :ref:`pip index`),\n   which reads the same index pages as ``pip install`` does.",
+   "inserted_fact": "F2",
+   "why_implied": "True today: PyPI dropped XML-RPC search, so `pip search` cannot be used to look up the latest version on PyPI; `pip list --outdated` and `pip index` use the Simple API / PackageFinder, which PyPI still serves."
+  },
+  {
+   "file": "docs/pip-v4-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "docs/html/development/architecture/configuration-files.rst",
+   "source_commit": "892d13b34a20b3244a05d90622bbb5bf8e7ccf46",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt about pip's Configuration class; says nothing about supported Python versions, pip search, resolver or local builds."
+  }
+ ]
+}

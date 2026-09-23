@@ -1,0 +1,263 @@
+Configuration Handling
+======================
+
+Applications need some kind of configuration.  There are different settings
+you might want to change depending on the application environment like
+toggling the debug mode, setting the secret key, and other such
+environment-specific things.
+
+The way Flask is designed usually requires the configuration to be
+available when the application starts up.  You can hard code the
+configuration in the code, which for many small applications is not
+actually that bad, but there are better ways.
+
+Independent of how you load your config, there is a config object
+available which holds the loaded configuration values:
+The :attr:`~flask.Flask.config` attribute of the :class:`~flask.Flask`
+object.  This is the place where Flask itself puts certain configuration
+values and also where extensions can put their configuration values.  But
+this is also where you can have your own configuration.
+
+
+Configuration Basics
+--------------------
+
+The :attr:`~flask.Flask.config` is actually a subclass of a dictionary and
+can be modified just like any dictionary::
+
+    app = Flask(__name__)
+    app.config['TESTING'] = True
+
+Certain configuration values are also forwarded to the
+:attr:`~flask.Flask` object so you can read and write them from there::
+
+    app.testing = True
+
+To update multiple keys at once you can use the :meth:`dict.update`
+method::
+
+    app.config.update(
+        TESTING=True,
+        SECRET_KEY='192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf'
+    )
+
+
+Debug Mode
+----------
+
+The :data:`DEBUG` config value is special because it may behave inconsistently if
+changed after the app has begun setting up. In order to set debug mode reliably, use the
+``--debug`` option on the ``flask`` or ``flask run`` command. ``flask run`` will use the
+interactive debugger and reloader by default in debug mode.
+
+.. code-block:: text
+
+    $ flask --app hello run --debug
+
+Using the option is recommended. While it is possible to set :data:`DEBUG` in your
+config or code, this is strongly discouraged. It can't be read early by the
+``flask run`` command, and some systems or extensions may have already configured
+themselves based on a previous value.
+
+
+Builtin Configuration Values
+----------------------------
+
+The following configuration values are used internally by Flask:
+
+.. py:data:: DEBUG
+
+    Whether debug mode is enabled. When using ``flask run`` to start the development
+    server, an interactive debugger will be shown for unhandled exceptions, and the
+    server will be reloaded when code changes. The :attr:`~flask.Flask.debug` attribute
+    maps to this config key. This is set with the ``FLASK_DEBUG`` environment variable.
+    It is also enabled by default when :data:`ENV` is ``'development'``.
+    It may not behave as expected if set in code.
+
+    **Do not enable debug mode when deploying in production.**
+
+    Default: ``False``
+
+.. py:data:: TESTING
+
+    Enable testing mode. Exceptions are propagated rather than handled by
+    the app's error handlers. Extensions may also change their behavior to
+    facilitate easier testing. You should enable this in your own tests.
+
+    Default: ``False``
+
+.. py:data:: PROPAGATE_EXCEPTIONS
+
+    Exceptions are re-raised rather than being handled by the app's error
+    handlers. If not set, this is implicitly true if ``TESTING`` or ``DEBUG``
+    is enabled.
+
+    Default: ``None``
+
+.. py:data:: TRAP_HTTP_EXCEPTIONS
+
+    If there is no handler for an ``HTTPException``-type exception, re-raise it
+    to be handled by the interactive debugger instead of returning it as a
+    simple error response.
+
+    Default: ``False``
+
+.. py:data:: TRAP_BAD_REQUEST_ERRORS
+
+    Trying to access a key that doesn't exist from request dicts like ``args``
+    and ``form`` will return a 400 Bad Request error page. Enable this to treat
+    the error as an unhandled exception instead so that you get the interactive
+    debugger. This is a more specific version of ``TRAP_HTTP_EXCEPTIONS``. If
+    unset, it is enabled in debug mode.
+
+    Default: ``None``
+
+.. py:data:: SECRET_KEY
+
+    A secret key that will be used for securely signing the session cookie
+    and can be used for any other security related needs by extensions or your
+    application. It should be a long random ``bytes`` or ``str``. For
+    example, copy the output of this to your config::
+
+        $ python -c 'import secrets; print(secrets.token_hex())'
+        '192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf'
+
+    **Do not reveal the secret key when posting questions or committing code.**
+
+    Default: ``None``
+
+.. py:data:: SECRET_KEY_FALLBACKS
+
+    A list of old secret keys that can still be used for unsigning. This allows
+    a project to implement key rotation without invalidating active sessions or
+    other recently-signed secrets.
+
+    Keys should be removed after an appropriate period of time, as checking each
+    additional key adds some overhead.
+
+    Order should not matter, but the default implementation will test the last
+    key in the list first, so it might make sense to order oldest to newest.
+
+    Flask's built-in secure cookie session supports this. Extensions that use
+    :data:`SECRET_KEY` may not support this yet.
+
+    Default: ``None``
+
+    .. versionadded:: 3.1
+
+.. py:data:: SESSION_COOKIE_NAME
+
+    The name of the session cookie. Can be changed in case you already have a
+    cookie with the same name.
+
+    Default: ``'session'``
+
+.. py:data:: SESSION_COOKIE_DOMAIN
+
+    The value of the ``Domain`` parameter on the session cookie. If not set, browsers
+    will only send the cookie to the exact domain it was set from. Otherwise, they
+    will send it to any subdomain of the given value as well.
+
+    Not setting this value is more restricted and secure than setting it.
+
+    Default: ``None``
+
+    .. warning::
+        If this is changed after the browser created a cookie is created with
+        one setting, it may result in another being created. Browsers may send
+        send both in an undefined order. In that case, you may want to change
+        :data:`SESSION_COOKIE_NAME` as well or otherwise invalidate old sessions.
+
+    .. versionchanged:: 2.3
+        Not set by default, does not fall back to ``SERVER_NAME``.
+
+.. py:data:: SESSION_COOKIE_PATH
+
+    The path that the session cookie will be valid for. If not set, the cookie
+    will be valid underneath ``APPLICATION_ROOT`` or ``/`` if that is not set.
+
+    Default: ``None``
+
+.. py:data:: SESSION_COOKIE_HTTPONLY
+
+    Browsers will not allow JavaScript access to cookies marked as "HTTP only"
+    for security.
+
+    Default: ``True``
+
+.. py:data:: SESSION_COOKIE_SECURE
+
+    Browsers will only send cookies with requests over HTTPS if the cookie is
+    marked "secure". The application must be served over HTTPS for this to make
+    sense.
+
+    Default: ``False``
+
+.. py:data:: SESSION_COOKIE_PARTITIONED
+
+    Browsers will send cookies based on the top-level document's domain, rather
+    than only the domain of the document setting the cookie. This prevents third
+    party cookies set in iframes from "leaking" between separate sites.
+
+    Browsers are beginning to disallow non-partitioned third party cookies, so
+    you need to mark your cookies partitioned if you expect them to work in such
+    embedded situations.
+
+    Enabling this implicitly enables :data:`SESSION_COOKIE_SECURE` as well, as
+    it is only valid when served over HTTPS.
+
+    Default: ``False``
+
+    .. versionadded:: 3.1
+
+.. py:data:: SESSION_COOKIE_SAMESITE
+
+    Restrict how cookies are sent with requests from external sites. Can
+    be set to ``'Lax'`` (recommended) or ``'Strict'``.
+    See :ref:`security-cookie`.
+
+    Default: ``None``
+
+    .. versionadded:: 1.0
+
+.. py:data:: PERMANENT_SESSION_LIFETIME
+
+    If ``session.permanent`` is true, the cookie's expiration will be set this
+    number of seconds in the future. Can either be a
+    :class:`datetime.timedelta` or an ``int``.
+
+    Flask's default cookie implementation validates that the cryptographic
+    signature is not older than this value.
+
+    Default: ``timedelta(days=31)`` (``2678400`` seconds)
+
+.. py:data:: SESSION_REFRESH_EACH_REQUEST
+
+    Control whether the cookie is sent with every response when
+    ``session.permanent`` is true. Sending the cookie every time (the default)
+    can more reliably keep the session from expiring, but uses more bandwidth.
+    Non-permanent sessions are not affected.
+
+    Default: ``True``
+
+.. py:data:: USE_X_SENDFILE
+
+    When serving files, set the ``X-Sendfile`` header instead of serving the
+    data with Flask. Some web servers, such as Apache, recognize this and serve
+    the data more efficiently. This only makes sense when using such a server.
+
+    Default: ``False``
+
+.. py:data:: SEND_FILE_MAX_AGE_DEFAULT
+
+    When serving files, set the cache control max age to this number of
+    seconds. Can be a :class:`datetime.timedelta` or an ``int``.
+    Override this value on a per-file basis using
+    :meth:`~flask.Flask.get_send_file_max_age` on the application or
+    blueprint.
+
+    If ``None``, ``send_file`` tells the browser to use conditional
+    requests will be used instead of a timed cache, which is usually
+    preferable.
+
+    Default: ``None``

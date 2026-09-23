@@ -1,0 +1,206 @@
+## Sending Form Encoded Data
+
+Some types of HTTP requests, such as `POST` and `PUT` requests, can include data
+in the request body. One common way of including that is as form-encoded data,
+which is used for HTML forms.
+
+```pycon
+>>> data = {'key1': 'value1', 'key2': 'value2'}
+>>> r = httpx.post("https://httpbin.org/post", data=data)
+>>> print(r.text)
+{
+  ...
+  "form": {
+    "key2": "value2",
+    "key1": "value1"
+  },
+  ...
+}
+```
+
+Form encoded data can also include multiple values from a given key.
+
+```pycon
+>>> data = {'key1': ['value1', 'value2']}
+>>> r = httpx.post("https://httpbin.org/post", data=data)
+>>> print(r.text)
+{
+  ...
+  "form": {
+    "key1": [
+      "value1",
+      "value2"
+    ]
+  },
+  ...
+}
+```
+
+## Sending Multipart File Uploads
+
+You can also upload files, using HTTP multipart encoding:
+
+```pycon
+>>> with open('report.xls', 'rb') as report_file:
+...     files = {'upload-file': report_file}
+...     r = httpx.post("https://httpbin.org/post", files=files)
+>>> print(r.text)
+{
+  ...
+  "files": {
+    "upload-file": "<... binary content ...>"
+  },
+  ...
+}
+```
+
+You can also explicitly set the filename and content type, by using a tuple
+of items for the file value:
+
+```pycon
+>>> with open('report.xls', 'rb') as report_file:
+...     files = {'upload-file': ('report.xls', report_file, 'application/vnd.ms-excel')}
+...     r = httpx.post("https://httpbin.org/post", files=files)
+>>> print(r.text)
+{
+  ...
+  "files": {
+    "upload-file": "<... binary content ...>"
+  },
+  ...
+}
+```
+
+If you need to include non-file data fields in the multipart form, use the `data=...` parameter:
+
+```pycon
+>>> data = {'message': 'Hello, world!'}
+>>> with open('report.xls', 'rb') as report_file:
+...     files = {'file': report_file}
+...     r = httpx.post("https://httpbin.org/post", data=data, files=files)
+>>> print(r.text)
+{
+  ...
+  "files": {
+    "file": "<... binary content ...>"
+  },
+  "form": {
+    "message": "Hello, world!",
+  },
+  ...
+}
+```
+
+## Sending JSON Encoded Data
+
+Form encoded data is okay if all you need is a simple key-value data structure.
+For more complicated data structures you'll often want to use JSON encoding instead.
+
+```pycon
+>>> data = {'integer': 123, 'boolean': True, 'list': ['a', 'b', 'c']}
+>>> r = httpx.post("https://httpbin.org/post", json=data)
+>>> print(r.text)
+{
+  ...
+  "json": {
+    "boolean": true,
+    "integer": 123,
+    "list": [
+      "a",
+      "b",
+      "c"
+    ]
+  },
+  ...
+}
+```
+
+## Sending Binary Request Data
+
+For other encodings, you should use the `content=...` parameter, passing
+either a `bytes` type or a generator that yields `bytes`.
+
+```pycon
+>>> content = b'Hello, world'
+>>> r = httpx.post("https://httpbin.org/post", content=content)
+```
+
+You may also want to set a custom `Content-Type` header when uploading
+binary data.
+
+## Response Status Codes
+
+We can inspect the HTTP status code of the response:
+
+```pycon
+>>> r = httpx.get('https://httpbin.org/get')
+>>> r.status_code
+200
+```
+
+HTTPX also includes an easy shortcut for accessing status codes by their text phrase.
+
+```pycon
+>>> r.status_code == httpx.codes.OK
+True
+```
+
+We can raise an exception for any responses which are not a 2xx success code:
+
+```pycon
+>>> not_found = httpx.get('https://httpbin.org/status/404')
+>>> not_found.status_code
+404
+>>> not_found.raise_for_status()
+Traceback (most recent call last):
+  File "/Users/tomchristie/GitHub/encode/httpcore/httpx/models.py", line 837, in raise_for_status
+    raise HTTPStatusError(message, response=self)
+httpx._exceptions.HTTPStatusError: 404 Client Error: Not Found for url: https://httpbin.org/status/404
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+```
+
+Any successful response codes will return the `Response` instance rather than raising an exception.
+
+```pycon
+>>> r.raise_for_status()
+```
+
+The method returns the response instance, allowing you to use it inline. For example:
+
+```pycon
+>>> r = httpx.get('...').raise_for_status()
+>>> data = httpx.get('...').raise_for_status().json()
+```
+
+To check that an old link which now redirects still resolves to a working page, request the old URL as usual and chain `.raise_for_status()` onto it in the same way.
+
+## Response Headers
+
+The response headers are available as a dictionary-like interface.
+
+```pycon
+>>> r.headers
+Headers({
+    'content-encoding': 'gzip',
+    'transfer-encoding': 'chunked',
+    'connection': 'close',
+    'server': 'nginx/1.0.4',
+    'x-runtime': '148ms',
+    'etag': '"e1ca502697e5c9317743dc078f67693f"',
+    'content-type': 'application/json'
+})
+```
+
+The `Headers` data type is case-insensitive, so you can use any capitalization.
+
+```pycon
+>>> r.headers['Content-Type']
+'application/json'
+
+>>> r.headers.get('content-type')
+'application/json'
+```
+
+Multiple values for a single response header are represented as a single comma-separated value, as per [RFC 7230](https://tools.ietf.org/html/rfc7230#section-3.2):
+
+> A recipient MAY combine multiple header fields with the same field name into one “field-name: field-value” pair, without changing the semantics of the message, by appending each subsequent field-value to the combined field value in order, separated by a comma.

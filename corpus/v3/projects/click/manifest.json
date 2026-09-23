@@ -1,0 +1,86 @@
+{
+  "project": "click",
+  "license": "BSD-3-Clause",
+  "docs": [
+    {
+      "file": "docs/click-v3-01-instruction.txt",
+      "kind": "instruction",
+      "source_tag": "HEAD",
+      "source_path": "docs/quickstart.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "On Python 3.8 and 3.9, upgrade the installer first with `python -m pip install --upgrade pip`, then run the command above again.",
+      "inserted_fact": "F1",
+      "why_implied": "The step is an installation instruction addressed to readers on 3.8 and 3.9. It never says Click runs on those versions; the reader has to notice that telling someone how to make the install succeed there presupposes it can succeed, while the minimum supported Python is 3.10. Searching for the fact's own words (3.10, 'drop support') finds nothing."
+    },
+    {
+      "file": "docs/click-v3-02-example.txt",
+      "kind": "example",
+      "source_tag": "HEAD",
+      "source_path": "docs/faqs.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Both sessions below were recorded with completion enabled for the command:\n\n```console\n$ eval \"$(_COPY_COMPLETE=source_bash copy)\"\n```",
+      "inserted_fact": "F3",
+      "why_implied": "A console example only. The environment variable is given the removed `source_{shell}` value, which no longer activates completion (the current value is `bash_source`). No prose claims anything about the variable, and a keyword search for `bash_source` does not match the inserted text at all, so the reader has to recognise that the two halves are swapped."
+    },
+    {
+      "file": "docs/click-v3-03-example.txt",
+      "kind": "example",
+      "source_tag": "HEAD",
+      "source_path": "docs/testing.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Styled output is captured the same way in both modes. To assert on the escape sequences themselves, undo the translation first and compare the raw output:\n\n```python\nimport colorama\nfrom click.testing import CliRunner\nfrom myapp import cli\n\n\ndef test_color():\n    colorama.deinit()\n    runner = CliRunner()\n    result = runner.invoke(cli, color=True)\n    assert \"\\x1b[32m\" in result.stdout\n```",
+      "inserted_fact": "F4",
+      "why_implied": "A test example that imports colorama and calls `colorama.deinit()`. It only runs if colorama is installed alongside Click and if Click itself had called `colorama.init()`; colorama is no longer a dependency and is not used. Nothing in the passage says Click depends on colorama, and the only prose is about escape sequences, so the contradiction has to be inferred from the import and the `deinit()` call."
+    },
+    {
+      "file": "docs/click-v3-04-consequence.txt",
+      "kind": "consequence",
+      "source_tag": "HEAD",
+      "source_path": "docs/parameter-types.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Spell the optional parameters of that override as `t.Optional[click.Context]` rather than `click.Context | None`: the `|` form is not evaluated at runtime on every interpreter Click still runs on.",
+      "inserted_fact": "F1",
+      "why_implied": "A rule about what the reader must write. `X | None` is evaluated at runtime from Python 3.10 on, which is now the minimum Click supports, so the sentence is only true if some supported interpreter is older than 3.10. No version number, and none of the fact's words, appear in the insertion; the reader has to supply the minimum version and do the arithmetic."
+    },
+    {
+      "file": "docs/click-v3-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD",
+      "source_path": "docs/utils.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "If your application still runs on one of those consoles, keep its `colorama.init()` call where it is; Click does not make that call for you.",
+      "inserted_fact": "F4",
+      "why_implied": "Trap: names colorama on a page about styling, but only as advice for applications targeting the old Windows consoles the surrounding note already describes, and it states the current fact (Click makes no colorama call of its own). Nothing false about today."
+    },
+    {
+      "file": "docs/click-v3-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD",
+      "source_path": "docs/commands.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Were {class}`MultiCommand` still the base class behind every group, chaining would have to be re-implemented by each subclass that wanted it.",
+      "inserted_fact": "F5",
+      "why_implied": "Trap: mentions MultiCommand in a group-focused page, but as a counterfactual ('Were ... still the base class'), which presupposes the current fact that Group is the base class for all group commands."
+    },
+    {
+      "file": "docs/click-v3-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD",
+      "source_path": "docs/contrib.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Click's own completion support covers Bash 4.4 and up, Zsh, Fish and PowerShell; `shtab` in the table above is the option for shells outside that set.",
+      "inserted_fact": "F2",
+      "why_implied": "Trap: a true restatement of the shells Click's built-in completion supports, written next to the shtab row that talks about supporting more shells."
+    },
+    {
+      "file": "docs/click-v3-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/exceptions.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_implied": "Clean: unmodified 'Exception Handling and Exit Codes' page. It says nothing about Python versions, shells, completion, colorama or group base classes, so it contradicts none of the five facts."
+    }
+  ]
+}

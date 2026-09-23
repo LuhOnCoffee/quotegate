@@ -1,0 +1,68 @@
+  [1/64] black-d01 ok
+  [2/64] black-d02 ok
+  [3/64] black-d03 ok
+  [4/64] black-d04 DROPPED - quote is not verbatim in the source
+  [5/64] black-d05 ERROR HTTPError HTTP Error 500: Internal Server Error
+  [6/64] black-d06 ok
+  [7/64] black-d07 ok
+  [8/64] black-d08 ok
+  [9/64] click-d01 ok
+  [10/64] click-d02 ok
+  [11/64] click-d03 ok
+  [12/64] click-d04 ok
+  [13/64] click-d05 DROPPED - quote is not verbatim in the source
+  [14/64] click-d06 ERROR JSONDecodeError Unterminated string starting at: line 4 column 12 (char 316)
+  [15/64] click-d07 DROPPED - quote is not verbatim in the source
+  [16/64] click-d08 ok
+  [17/64] flask-d01 DROPPED - quote is not verbatim in the source
+  [18/64] flask-d02 ok
+  [19/64] flask-d03 ERROR JSONDecodeError Unterminated string starting at: line 4 column 12 (char 331)
+  [20/64] flask-d04 ok
+  [21/64] flask-d05 ok
+  [22/64] flask-d06 ok
+  [23/64] flask-d07 ok
+  [24/64] flask-d08 ok
+  [25/64] httpx-d01 DROPPED - quote is not verbatim in the source
+  [26/64] httpx-d02 ok
+  [27/64] httpx-d03 ok
+  [28/64] httpx-d04 ok
+  [29/64] httpx-d05 ok
+  [30/64] httpx-d06 ok
+  [31/64] httpx-d07 ok
+  [32/64] httpx-d08 ok
+  [33/64] pip-d01 ERROR JSONDecodeError Unterminated string starting at: line 4 column 12 (char 410)
+  [34/64] pip-d02 ok
+  [35/64] pip-d03 ok
+  [36/64] pip-d04 ok
+  [37/64] pip-d05 ok
+  [38/64] pip-d06 ok
+  [39/64] pip-d07 ok
+  [40/64] pip-d08 ok
+  [41/64] poetry-d01 ok
+  [42/64] poetry-d02 DROPPED - quote is not verbatim in the source
+  [43/64] poetry-d03 ok
+  [44/64] poetry-d04 ok
+  [45/64] poetry-d05 ok
+  [46/64] poetry-d06 DROPPED - quote is not verbatim in the source
+  [47/64] poetry-d07 ok
+  [48/64] poetry-d08 ok
+  [49/64] pytest-d01 ERROR HTTPError HTTP Error 500: Internal Server Error
+  [50/64] pytest-d02 ok
+  [51/64] pytest-d03 ok
+  [52/64] pytest-d04 ok
+  [53/64] pytest-d05 ok
+  [54/64] pytest-d06 ok
+  [55/64] pytest-d07 ok
+  [56/64] pytest-d08 ok
+  [57/64] requests-d01 ok
+  [58/64] requests-d02 ok
+  [59/64] requests-d03 DROPPED - quote is not verbatim in the source
+  [60/64] requests-d04 ok
+  [61/64] requests-d05 ok
+  [62/64] requests-d06 ok
+  [63/64] requests-d07 ok
+  [64/64] requests-d08 ok
+
+  in 64 | kept 51 | dropped(quote) 8 | dropped(schema) 0 | errors 5
+  -> corpus/v2/runs/gpt-oss_20b_ep-chat_think-auto_fmt-schema_quadro_careful.kept.jsonl   Claude reads the survivors and verifies a sample by hand.
+wall_s 1249

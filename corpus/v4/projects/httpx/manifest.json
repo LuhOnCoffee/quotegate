@@ -1,0 +1,87 @@
+{
+ "project": "httpx",
+ "license": "BSD-3-Clause",
+ "docs": [
+  {
+   "file": "docs/httpx-v4-01-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/advanced/text-encodings.md",
+   "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "inserted": "One thing to keep in mind: if the URL you pass to `client.get(...)` answers with a redirect, the `Content-Type` charset used here is the one sent by the page at the end of the redirect chain, not by the URL you originally requested.",
+   "inserted_fact": "F2",
+   "why_implied": "The example client is created with the default configuration (`httpx.Client()`), which today does not follow redirects, so a redirecting URL returns the 3xx response itself and its own charset. Describing the decoded charset as coming from 'the end of the redirect chain' only holds if redirects are followed by default; the sentence never mentions follow_redirects or defaults."
+  },
+  {
+   "file": "docs/httpx-v4-02-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/advanced/transports.md",
+   "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "inserted": "You'll only need to write out transports like this once the rules depend on more than the scheme. A client that simply sends `http://` and `https://` traffic to two different proxies can still be handed the two proxy URLs directly, keyed by scheme, and it will build the equivalent mounts for you.",
+   "inserted_fact": "F3",
+   "why_implied": "The only client argument that ever accepted a scheme-keyed mapping of proxy URLs was the removed `proxies=`; the singular `proxy=` takes one URL, so per-scheme proxies now require exactly the `mounts=` form this section shows. The sentence tells readers they can skip mounts for that case, which is only true under the old API, without naming `proxies` or saying it still exists."
+  },
+  {
+   "file": "docs/httpx-v4-03-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/quickstart.md",
+   "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "inserted": "To check that an old link which now redirects still resolves to a working page, request the old URL as usual and chain `.raise_for_status()` onto it in the same way.",
+   "inserted_fact": "F2",
+   "why_implied": "The section itself says raise_for_status() raises for any non-2xx response. Since `httpx.get()` no longer follows redirects by default, requesting a redirecting URL returns the 3xx and the suggested check always raises; the step only works if the redirect is followed automatically, which the sentence assumes but never states."
+  },
+  {
+   "file": "docs/httpx-v4-04-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/quickstart.md",
+   "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "inserted": "Or, with a single parameter:\n\n```pycon\n>>> r = httpx.get('https://httpbin.org/redirect-to', params={'url': '/get'})\n>>> r.url\nURL('https://httpbin.org/get')\n```",
+   "inserted_fact": "F2",
+   "why_implied": "httpbin's /redirect-to endpoint answers with a 302 pointing at the `url` parameter. The shown `r.url` of https://httpbin.org/get is only what you get if the redirect is followed automatically; with today's default the response is the 302 and r.url stays the /redirect-to?url=%2Fget address. There is no prose about redirects at all."
+  },
+  {
+   "file": "docs/httpx-v4-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "docs/advanced/timeouts.md",
+   "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "inserted": "If you are still on an HTTPX release older than 0.20, where redirects were followed automatically, bear in mind that each request in a redirect chain is given its own timeout, so a single call that gets redirected a few times can take correspondingly longer than that before it finally raises.",
+   "inserted_fact": "F2",
+   "why_implied": "Explicitly scoped to releases before 0.20; says nothing about current defaults, and the per-request timeout it describes is also how redirects behave today when follow_redirects=True is set."
+  },
+  {
+   "file": "docs/httpx-v4-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "CHANGELOG.md",
+   "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "inserted": "Had the old default been kept, a client like that would have gone on doubling its traffic indefinitely, with the misconfiguration only visible to someone who thought to look at `response.history`.",
+   "inserted_fact": "F2",
+   "why_implied": "A counterfactual ('Had the old default been kept') about the 0.20.0 change; it affirms that the default did change and says nothing false about current behaviour."
+  },
+  {
+   "file": "docs/httpx-v4-07-current_consequence.txt",
+   "kind": "current_consequence",
+   "source_tag": "HEAD",
+   "source_path": "CHANGELOG.md",
+   "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "inserted": "Code that still constructs a client with `app=...` will now fail with a `TypeError` as soon as the client is instantiated; pass the application through `transport=httpx.WSGITransport(app=...)` or `transport=httpx.ASGITransport(app=...)` instead.",
+   "inserted_fact": "F4",
+   "why_implied": "True today: Client.__init__/AsyncClient.__init__ at HEAD are keyword-only with no **kwargs and no `app` parameter, so Client(app=...) raises TypeError (unexpected keyword argument); WSGITransport/ASGITransport via transport= is the supported route. Placed in the 0.28.0 section that records the removal."
+  },
+  {
+   "file": "docs/httpx-v4-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "docs/code_of_conduct.md",
+   "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt; the code of conduct says nothing about Python versions, redirects, proxies, app/transport or SSL."
+  }
+ ],
+ "notes": "All sources are HEAD b5addb6 of master. Files not used in v1-v3: docs/advanced/text-encodings.md, docs/advanced/timeouts.md, docs/code_of_conduct.md, CHANGELOG.md. Too few unused doc files >=3000 chars, so: quickstart.md is reused as two sections (start through 'Custom Headers', and 'Sending Form Encoded Data' through 'Response Headers'); v2 used quickstart's Cookies/Redirection section (~10k chars in), which neither excerpt includes. transports.md is reused from '### Routing' to the end; v1 was trimmed before '## Mounting transports' and v3's insertion sat in the WSGI/ASGI sections near the top. The excerpt deliberately starts after the Mounting HTTPSRedirectTransport sketch, which uses the pre-0.20 transport API. CHANGELOG.md is used twice with disjoint sections: top through 0.25.0 (doc 07) and 0.22.0 through 0.20.0 (doc 06). Historical release notes there (for example 0.26.0 saying `proxies` 'will still continue to work') are dated history, superseded in the same excerpt by the 0.28.0 removals, not contradictions. timeouts.md is 2,763 chars at source and reaches 3,000+ only with the conditional insertion. Pre-existing non-fact drift left as is: quickstart 'Response Content' still says HTTPX will try to auto-detect a missing encoding, which is not among the facts. F2 is used in five of the eight docs (01, 03, 04, 05, 06) because it has the most natural contexts; the two consequence docs use F2 and F3. F1 and F5 are not used: no unused context supports implying them without naming the version or the string `verify` form."
+}

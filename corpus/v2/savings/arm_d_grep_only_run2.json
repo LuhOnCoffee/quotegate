@@ -1,0 +1,329 @@
+{
+ "arm": "claude+grep, no local models (run 2)",
+ "model": "claude-opus-5-5",
+ "subagent_tokens": 88930,
+ "tool_uses": 10,
+ "duration_ms": null,
+ "docs": [
+  {
+   "id": "black-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d03",
+   "found": true,
+   "quote": "Formatting notebooks that run a Python 2 kernel additionally requires the `python2` extra."
+  },
+  {
+   "id": "black-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "black-d06",
+   "found": true,
+   "quote": "(.venv)$ tox -e py39 # Run tests on the oldest supported python version"
+  },
+  {
+   "id": "black-d07",
+   "found": true,
+   "quote": "When reporting a problem with this feature, mention whether you enabled it with `--unstable` or with `--experimental-string-processing`."
+  },
+  {
+   "id": "black-d08",
+   "found": true,
+   "quote": "On PyPy 3.7 and newer, the pure Python wheel is used instead."
+  },
+  {
+   "id": "click-d01",
+   "found": true,
+   "quote": "Every Python version Click supports, 3.9 and newer, includes both of these changes."
+  },
+  {
+   "id": "click-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d03",
+   "found": true,
+   "quote": "You can watch this happen in Bash after enabling completion for the example with `eval \"$(_CLI_COMPLETE=source_bash cli)\"`."
+  },
+  {
+   "id": "click-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "click-d06",
+   "found": true,
+   "quote": "\"colorama\",  # needed by Click for colored output on Windows"
+  },
+  {
+   "id": "click-d07",
+   "found": true,
+   "quote": "A custom subclass of {class}`MultiCommand`, the base class behind every group command, is bracketed the same way."
+  },
+  {
+   "id": "click-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d02",
+   "found": true,
+   "quote": "The env needs Python 3.9 or newer, the oldest version Flask supports."
+  },
+  {
+   "id": "flask-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d04",
+   "found": true,
+   "quote": "JSON_SORT_KEYS=False,"
+  },
+  {
+   "id": "flask-d05",
+   "found": true,
+   "quote": "It is also enabled by default when :data:`ENV` is ``'development'``."
+  },
+  {
+   "id": "flask-d06",
+   "found": true,
+   "quote": "If the app does one-time setup in a ``before_first_request`` function, make one request with the test client in the fixture so that setup has already run when your tests start."
+  },
+  {
+   "id": "flask-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "flask-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d03",
+   "found": true,
+   "quote": "To inspect the `302` response that sets the cookie, rather than the page it redirects on to, pass `follow_redirects=False` to `httpx.get()`."
+  },
+  {
+   "id": "httpx-d04",
+   "found": true,
+   "quote": ">>> client = Client(proxies={\"all://\": proxy})"
+  },
+  {
+   "id": "httpx-d05",
+   "found": true,
+   "quote": "* Support for CPython 3.8 and newer, as well as PyPy."
+  },
+  {
+   "id": "httpx-d06",
+   "found": true,
+   "quote": "For tests, you can also pass a WSGI or ASGI application straight to the client with `app=...`, so that no network connection is made."
+  },
+  {
+   "id": "httpx-d07",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "httpx-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d04",
+   "found": true,
+   "quote": "These go all the way down to CPython 3.9, the oldest interpreter pip currently supports."
+  },
+  {
+   "id": "pip-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pip-d06",
+   "found": true,
+   "quote": "$ nox -s test-3.9 -- -k \"not (svn or bzr)\""
+  },
+  {
+   "id": "pip-d07",
+   "found": true,
+   "quote": "For example, the legacy resolver is still available and supported behind ``--use-deprecated=legacy-resolver``."
+  },
+  {
+   "id": "pip-d08",
+   "found": true,
+   "quote": "If you are unsure of a project's exact name on `PyPI`_, look it up first with ``python -m pip search <keyword>`` and then install it using that name."
+  },
+  {
+   "id": "poetry-d01",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d03",
+   "found": true,
+   "quote": "Since `poetry lock` also bumps every locked dependency to the newest version allowed by your constraints, the exported file may change even when `pyproject.toml` has not."
+  },
+  {
+   "id": "poetry-d04",
+   "found": true,
+   "quote": "If you would rather not prefix every command with `poetry run`, first spawn a shell inside the project's virtual environment with `poetry shell`."
+  },
+  {
+   "id": "poetry-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "poetry-d07",
+   "found": true,
+   "quote": "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -o install-poetry.py"
+  },
+  {
+   "id": "poetry-d08",
+   "found": true,
+   "quote": "Poetry's runtime environment can be based on any Python interpreter from 3.9 onwards, regardless of the Python versions your projects target."
+  },
+  {
+   "id": "pytest-d01",
+   "found": true,
+   "quote": "# content of setup.cfg"
+  },
+  {
+   "id": "pytest-d02",
+   "found": true,
+   "quote": "For temporary directories, :fixture:`tmpdir` remains the preferred builtin, with :fixture:`tmp_path` provided as a :mod:`pathlib`-based alternative."
+  },
+  {
+   "id": "pytest-d03",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "pytest-d07",
+   "found": true,
+   "quote": "TOML configuration is parsed with the standard library's :mod:`tomllib` on Python 3.11 and newer; on Python 3.9 and 3.10 pytest depends on the ``tomli`` backport instead."
+  },
+  {
+   "id": "pytest-d08",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d01",
+   "found": true,
+   "quote": "Python 2.7.18 (default, Apr 20 2020, 19:34:11)"
+  },
+  {
+   "id": "requests-d02",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d03",
+   "found": true,
+   "quote": "Your changes work on every Python version Requests supports, from 3.9 upward."
+  },
+  {
+   "id": "requests-d04",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d05",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d06",
+   "found": false,
+   "quote": ""
+  },
+  {
+   "id": "requests-d07",
+   "found": true,
+   "quote": "Responses are decoded for you as well: when a server does not declare a charset, the `chardet` library, which is installed alongside Requests, guesses the encoding."
+  },
+  {
+   "id": "requests-d08",
+   "found": true,
+   "quote": "Include the output of `pipenv graph` from the environment you created while following our installation guide, so we can see exactly which dependency versions were resolved."
+  }
+ ]
+}

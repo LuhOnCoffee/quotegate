@@ -1,0 +1,120 @@
+### Typing stub files
+
+PEP 484 describes the syntax for type hints in Python. One of the use cases for typing
+is providing type annotations for modules which cannot contain them directly (they might
+be written in C, or they might be third-party, or their implementation may be overly
+dynamic, and so on).
+
+To solve this,
+[stub files with the `.pyi` file extension](https://peps.python.org/pep-0484/#stub-files)
+can be used to describe typing information for an external module. Those stub files omit
+the implementation of classes and functions they describe, instead they only contain the
+structure of the file (listing globals, functions, and classes with their members). The
+recommended code style for those files is more terse than PEP 8:
+
+- prefer `...` on the same line as the class/function signature;
+- avoid vertical whitespace between consecutive module-level functions, names, or
+  methods and fields within a single class;
+- use a single blank line between top-level class definitions, or none if the classes
+  are very small.
+
+_Black_ enforces the above rules. There are additional guidelines for formatting `.pyi`
+files that are not enforced yet but might be in a future version of the formatter:
+
+- prefer `...` over `pass`;
+- avoid using string literals in type annotations, stub files support forward references
+  natively (like Python 3.7 code with `from __future__ import annotations`);
+- use variable annotations instead of type comments, even for stubs that target older
+  versions of Python.
+
+### Line endings
+
+_Black_ will normalize line endings (`\n` or `\r\n`) based on the first line ending of
+the file.
+
+### Form feed characters
+
+_Black_ will retain form feed characters on otherwise empty lines at the module level.
+Only one form feed is retained for a group of consecutive empty lines. Where there are
+two empty lines in a row, the form feed is placed on the second line.
+
+## Pragmatism
+
+Early versions of _Black_ used to be absolutist in some respects. They took after its
+initial author. This was fine at the time as it made the implementation simpler and
+there were not many users anyway. Not many edge cases were reported. As a mature tool,
+_Black_ does make some exceptions to rules it otherwise holds. This section documents
+what those exceptions are and why this is the case.
+
+If your test suite stores formatted snapshots, expect a handful of them to start
+failing the first time you run a newly upgraded _Black_, and plan to regenerate them
+as part of every version bump.
+
+(labels/magic-trailing-comma)=
+
+### The magic trailing comma
+
+_Black_ in general does not take existing formatting into account.
+
+However, there are cases where you put a short collection or function call in your code
+but you anticipate it will grow in the future.
+
+For example:
+
+```python
+TRANSLATIONS = {
+    "en_us": "English (US)",
+    "pl_pl": "polski",
+}
+```
+
+Early versions of _Black_ used to ruthlessly collapse those into one line (it fits!).
+Now, you can communicate that you don't want that by putting a trailing comma in the
+collection yourself. When you do, _Black_ will know to always explode your collection
+into one item per line.
+
+How do you make it stop? Just delete that trailing comma and _Black_ will collapse your
+collection into one line if it fits.
+
+If you must, you can recover the behaviour of early versions of _Black_ with the option
+`--skip-magic-trailing-comma` / `-C`.
+
+### r"strings" and R"strings"
+
+_Black_ normalizes string quotes as well as string prefixes, making them lowercase. One
+exception to this rule is r-strings. It turns out that the very popular
+[MagicPython](https://github.com/MagicStack/MagicPython/) syntax highlighter, used by
+default by (among others) GitHub and Visual Studio Code, differentiates between
+r-strings and R-strings. The former are syntax highlighted as regular expressions while
+the latter are treated as true raw strings with no special semantics.
+
+(labels/ast-changes)=
+
+### AST before and after formatting
+
+When run with `--safe` (the default), _Black_ checks that the code before and after is
+semantically equivalent. This check is done by comparing the AST of the source with the
+AST of the target. There are three limited cases in which the AST does differ:
+
+1. _Black_ cleans up leading and trailing whitespace of docstrings, re-indenting them if
+   needed. It's been one of the most popular user-reported features for the formatter to
+   fix whitespace issues with docstrings. While the result is technically an AST
+   difference, due to the various possibilities of forming docstrings, all real-world
+   uses of docstrings that we're aware of sanitize indentation and leading/trailing
+   whitespace anyway.
+
+1. _Black_ manages optional parentheses for some statements. In the case of the `del`
+   statement, presence of wrapping parentheses or lack thereof changes the resulting AST
+   but is semantically equivalent in the interpreter.
+
+1. _Black_ might move comments around, which includes type comments. Those are part of
+   the AST as of Python 3.8. While the tool implements a number of special cases for
+   those comments, there is no guarantee they will remain where they were in the source.
+   Note that this doesn't change runtime behavior of the source code.
+
+To put things in perspective, the code equivalence check is a feature of _Black_ which
+other formatters don't implement at all. It is of crucial importance to us to ensure
+code behaves the way it did before it got reformatted. We treat this as a feature and
+there are no plans to relax this in the future. The exceptions enumerated above stem
+from either user feedback or implementation details of the tool. In each case we made
+due diligence to ensure that the AST divergence is of no practical consequence.

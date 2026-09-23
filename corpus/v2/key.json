@@ -1,0 +1,719 @@
+{
+ "docs": {
+  "black-d01": [],
+  "black-d02": [],
+  "black-d03": [
+   {
+    "quote": "Formatting notebooks that run a Python 2 kernel additionally requires the `python2` extra.",
+    "fact": "Black no longer supports formatting Python 2 code; that support was removed in version 22.0.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Present-tense note says a python2 extra enables formatting Python 2 notebooks.",
+    "by": "AB"
+   }
+  ],
+  "black-d04": [],
+  "black-d05": [],
+  "black-d06": [
+   {
+    "quote": "(.venv)$ tox -e py39 # Run tests on the oldest supported python version",
+    "fact": "Black requires Python 3.10 or newer to run.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Command to run now calls 3.9 the oldest supported version.",
+    "by": "AB"
+   }
+  ],
+  "black-d07": [
+   {
+    "quote": "When reporting a problem with this feature, mention whether you enabled it with `--unstable` or with `--experimental-string-processing`.",
+    "fact": "The --experimental-string-processing flag was removed in 24.1.0; string_processing is available only as an unstable feature.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Treats the removed flag as a current way to turn the feature on.",
+    "by": "AB"
+   }
+  ],
+  "black-d08": [
+   {
+    "quote": "On PyPy 3.7 and newer, the pure Python wheel is used instead.",
+    "fact": "Black supports PyPy 3.8 and higher; PyPy 3.7 is no longer supported.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Implies PyPy 3.7 is supported. The same document says 3.8+ elsewhere but never corrects this line directly.",
+    "by": "AB"
+   }
+  ],
+  "click-d01": [
+   {
+    "quote": "Every Python version Click supports, 3.9 and newer, includes both of these changes.",
+    "fact": "Since 8.2.0 the minimum supported Python is 3.10.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "States 3.9 is supported now.",
+    "by": "AB"
+   }
+  ],
+  "click-d02": [],
+  "click-d03": [
+   {
+    "quote": "You can watch this happen in Bash after enabling completion for the example with `eval \"$(_CLI_COMPLETE=source_bash cli)\"`.",
+    "fact": "Shell completion is activated with {shell}_source (e.g. bash_source), not the old source_bash form.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Tells the reader to use the old source_bash value.",
+    "by": "AB"
+   }
+  ],
+  "click-d04": [],
+  "click-d05": [],
+  "click-d06": [
+   {
+    "quote": "\"colorama\",  # needed by Click for colored output on Windows",
+    "fact": "Colorama is no longer a dependency of Click and is not used; Windows gets ANSI styling natively.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Config example to use now says Click needs colorama.",
+    "by": "AB"
+   }
+  ],
+  "click-d07": [
+   {
+    "quote": "A custom subclass of {class}`MultiCommand`, the base class behind every group command, is bracketed the same way.",
+    "fact": "MultiCommand is deprecated; Group is the base class for all group commands.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Calls MultiCommand the current base class of groups.",
+    "by": "AB"
+   }
+  ],
+  "click-d08": [],
+  "flask-d01": [],
+  "flask-d02": [
+   {
+    "quote": "The env needs Python 3.9 or newer, the oldest version Flask supports.",
+    "fact": "Flask supports Python 3.10 and newer.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Present-tense note says the oldest supported version is 3.9.",
+    "by": "AB"
+   }
+  ],
+  "flask-d03": [],
+  "flask-d04": [
+   {
+    "quote": "JSON_SORT_KEYS=False,",
+    "fact": "JSON_SORT_KEYS config key was removed in Flask 2.3.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The tutorial's application factory code tells the reader to set the removed config key.",
+    "by": "AB"
+   }
+  ],
+  "flask-d05": [
+   {
+    "quote": "It is also enabled by default when :data:`ENV` is ``'development'``.",
+    "fact": "The ENV config key / FLASK_ENV were removed in Flask 2.3.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Present-tense reference doc says the removed ENV key controls debug mode.",
+    "by": "AB"
+   }
+  ],
+  "flask-d06": [
+   {
+    "quote": "If the app does one-time setup in a ``before_first_request`` function, make one request with the test client in the fixture so that setup has already run when your tests start.",
+    "fact": "app.before_first_request was removed in Flask 2.3.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The advice assumes the removed before_first_request hook still exists and still runs.",
+    "by": "AB"
+   }
+  ],
+  "flask-d07": [],
+  "flask-d08": [],
+  "httpx-d01": [],
+  "httpx-d02": [],
+  "httpx-d03": [
+   {
+    "quote": "To inspect the `302` response that sets the cookie, rather than the page it redirects on to, pass `follow_redirects=False` to `httpx.get()`.",
+    "fact": "HTTPX does not follow redirects by default.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "It implies redirects are followed by default, so you would have to opt out to see the 302.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d04": [
+   {
+    "quote": ">>> client = Client(proxies={\"all://\": proxy})",
+    "fact": "The proxies argument has been removed; use proxy= or mounts=.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The code example uses the removed proxies argument as current usage.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d05": [
+   {
+    "quote": "Support for CPython 3.8 and newer, as well as PyPy.",
+    "fact": "HTTPX requires Python 3.9 or newer; 3.8 support was dropped.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The Installation section later says 'HTTPX requires Python 3.9+'. That contradicts this line but does not explicitly correct it, so corrected_in_doc is left false.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d06": [
+   {
+    "quote": "For tests, you can also pass a WSGI or ASGI application straight to the client with `app=...`, so that no network connection is made.",
+    "fact": "The app shortcut argument was removed; use transport=httpx.WSGITransport/ASGITransport(app=...).",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "A present-tense note recommends the removed app= argument.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d07": [],
+  "httpx-d08": [],
+  "pip-d01": [],
+  "pip-d02": [],
+  "pip-d03": [],
+  "pip-d04": [
+   {
+    "quote": "These go all the way down to CPython 3.9, the oldest interpreter pip currently supports.",
+    "fact": "The current pip supports CPython 3.10 through 3.15 plus the latest PyPy3; older Python 3 versions are not supported.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Present-tense claim that 3.9 is supported. The interpreter list and table earlier in the same doc start at 3.10, but they don't explicitly correct this line.",
+    "by": "AB"
+   }
+  ],
+  "pip-d05": [],
+  "pip-d06": [
+   {
+    "quote": "$ nox -s test-3.9 -- -k \"not (svn or bzr)\"",
+    "fact": "The current pip supports CPython 3.10 through 3.15 plus PyPy3; Python 3.9 is not supported.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "A command the reader is told to run now, and it targets a test session for Python 3.9, which pip no longer supports. The other examples use 3.10.",
+    "by": "AB"
+   }
+  ],
+  "pip-d07": [
+   {
+    "quote": "For example, the legacy resolver is still available and supported behind ``--use-deprecated=legacy-resolver``.",
+    "fact": "The legacy resolver (--use-deprecated=legacy-resolver) is deprecated and unsupported; the backtracking resolver is the default.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Present-tense claim inside a note that the legacy resolver is supported.",
+    "by": "AB"
+   }
+  ],
+  "pip-d08": [
+   {
+    "quote": "If you are unsure of a project's exact name on `PyPI`_, look it up first with ``python -m pip search <keyword>`` and then install it using that name.",
+    "fact": "PyPI no longer supports pip search; users must search PyPI through the website.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "An instruction that depends on pip search, which no longer works against PyPI.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d01": [],
+  "poetry-d02": [],
+  "poetry-d03": [
+   {
+    "quote": "Since `poetry lock` also bumps every locked dependency to the newest version allowed by your constraints, the exported file may change even when `pyproject.toml` has not.",
+    "fact": "By default poetry lock does not update packages already in the lock file; updating everything needs poetry update --lock or poetry lock --regenerate.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Present-tense claim inside a note about what poetry lock does by default.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d04": [
+   {
+    "quote": "If you would rather not prefix every command with `poetry run`, first spawn a shell inside the project's virtual environment with `poetry shell`.",
+    "fact": "poetry shell is no longer part of Poetry; it moved to poetry-plugin-shell, and poetry env activate is the replacement.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "An instruction that depends on a command that has been removed from Poetry.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d05": [],
+  "poetry-d06": [],
+  "poetry-d07": [
+   {
+    "quote": "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -o install-poetry.py",
+    "fact": "The official installer script is served from install.python-poetry.org and developed in its own separate repository.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "A CI command the reader is told to run now, and it fetches the installer from the main poetry repo instead of install.python-poetry.org. Other sections of the same doc give the correct location, but they don't correct this line.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d08": [
+   {
+    "quote": "Poetry's runtime environment can be based on any Python interpreter from 3.9 onwards, regardless of the Python versions your projects target.",
+    "fact": "Poetry itself requires Python 3.10 or newer to run.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Present-tense claim that Poetry can run on Python 3.9.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d01": [
+   {
+    "quote": "# content of setup.cfg",
+    "fact": "In setup.cfg, pytest configuration must live in a [tool:pytest] section; plain [pytest] sections in setup.cfg are no longer supported.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "INI example labelled setup.cfg uses a plain [pytest] section, which pytest no longer reads from setup.cfg.",
+    "by": "AB"
+   },
+   {
+    "quote": "# content of setup.cfg\n        [pytest]\n        filterwarnings =\n            error",
+    "fact": "F2: plain [pytest] sections in setup.cfg are no longer supported",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "RULING 2026-09-22: the stale unit is the setup.cfg [pytest] block the planted comment labels, not the comment line alone; widened so answers quoting the block's lines count",
+    "by": "ruling"
+   }
+  ],
+  "pytest-d02": [
+   {
+    "quote": "For temporary directories, :fixture:`tmpdir` remains the preferred builtin, with :fixture:`tmp_path` provided as a :mod:`pathlib`-based alternative.",
+    "fact": "tmp_path/tmp_path_factory are preferred; tmpdir/tmpdir_factory are legacy.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Reverses the preference; the doc's own example uses tmp_path, but the note still states tmpdir is preferred.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d03": [],
+  "pytest-d04": [
+   {
+    "quote": "If your change touches version-specific code, also run ``tox -e py39`` so the oldest interpreter we test against is covered.",
+    "fact": "pytest requires Python 3.10 or newer.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Gives Python 3.9 as the oldest supported/tested interpreter.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d05": [],
+  "pytest-d06": [],
+  "pytest-d07": [
+   {
+    "quote": "on Python 3.9 and 3.10 pytest depends on the ``tomli`` backport instead.",
+    "fact": "pytest requires Python 3.10 or newer.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Implies pytest still runs on Python 3.9.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d08": [],
+  "requests-d01": [
+   {
+    "quote": "Python 2.7.18 (default, Apr 20 2020, 19:34:11)",
+    "fact": "Requests no longer supports Python 2.7 (dropped in 2.28.0); it supports Python 3.10+.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "The example session the reader is shown for configuring proxies runs Requests on a Python 2.7 interpreter.",
+    "by": "AB"
+   }
+  ],
+  "requests-d02": [],
+  "requests-d03": [
+   {
+    "quote": "Your changes work on every Python version Requests supports, from 3.9 upward.",
+    "fact": "Requests officially supports Python 3.10 and newer.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "States 3.9 as the minimum supported version.",
+    "by": "AB"
+   }
+  ],
+  "requests-d04": [],
+  "requests-d05": [],
+  "requests-d06": [],
+  "requests-d07": [
+   {
+    "quote": "the `chardet` library, which is installed alongside Requests, guesses the encoding.",
+    "fact": "chardet is not a mandatory dependency; Requests uses charset-normalizer by default unless chardet is present or the extra is used.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Presents chardet as the bundled default encoding detector.",
+    "by": "AB"
+   }
+  ],
+  "requests-d08": [
+   {
+    "quote": "Include the output of `pipenv graph` from the environment you created",
+    "fact": "The documented way to install Requests is `python -m pip install requests`, not pipenv.",
+    "corrected_in_doc": false,
+    "confidence": "clear",
+    "note": "Assumes the installation guide has users create a pipenv environment.",
+    "by": "AB"
+   }
+  ]
+ },
+ "judged": {
+  "black-d04": {
+   "Note that this requires Python >= 3.11, so using the setup-python action may be required, for example:": "wrong"
+  },
+  "black-d05": {
+   "while others may be more focused and have a definite end (like the \"Getting to beta\" project).": "wrong"
+  },
+  "black-d08": {
+   "Black generally supports all Python versions supported by CPython (see [the Python devguide](https://devguide.python.org/versions/) for current information). We promise to support at least all Python versions that have not reached their end of life. This is the case for both running Black and formatting code.": "wrong",
+   "Black generally supports all Python versions supported by CPython (see [the Python devguide](https://devguide.python.org/versions/) for current information).": "wrong",
+   "Can I run Black with PyPy? Yes, there is support for PyPy 3.8 and higher.": "wrong"
+  },
+  "pytest-d06": {
+   "[pytest] logformat = \"%(asctime)s %(levelname)s %(message)s\" logdateformat = \"%Y-%m-%d %H:%M:%S\"": "wrong",
+   "[pytest] logformat = \"%(asctime)s %(levelname)s %(message)s\"": "wrong",
+   "[pytest] logformat = %(asctime)s %(levelname)s %(message)s logdateformat = %Y-%m-%d %H:%M:%S": "wrong"
+  },
+  "requests-d02": {
+   "If you maintain an application that is stuck on Python 2.7, you will be limited to a Requests release older than 2.28.0, so keeping certifi up to date independently is especially important.": "wrong"
+  },
+  "black-d01": {
+   "Were Black still a beta project, as it was until early 2022, any release could change the style and this scheduling concern would not arise.": "wrong"
+  },
+  "black-d02": {
+   "but the minimum supported version of Black is 22.3.0.": "wrong"
+  },
+  "flask-d07": {
+   "If Blinker were ever made optional again, the signals below would only be sent in environments where it happened to be installed.": "wrong"
+  },
+  "flask-d08": {
+   "If you are porting an older application that did this kind of setup in a beforefirstrequest function, move that code into the setup phase so it runs before the app starts serving.": "wrong"
+  },
+  "pip-d02": {
+   "Were pip to go back to copying a local project into a temporary directory before running these steps, build backends would no longer leave artifacts such as .egg-info directories in the project's own source tree.": "wrong"
+  },
+  "pip-d05": {
+   "If you are preparing a wheelhouse for a Python version that the current pip no longer runs on, such as 3.9, you can still fetch its wheels this way from a supported interpreter by passing that version to --python-version.": "wrong",
+   "Also force the interpreter version to 27 (or more generic, i.e. 2) and implementation to cp (or more generic, i.e. py).": "wrong"
+  },
+  "poetry-d01": {
+   "Were the Export Poetry Plugin ever to ship with Poetry by default again, it would no longer need to be listed here to make poetry export available.": "wrong"
+  },
+  "poetry-d06": {
+   "If your base image is pinned to an interpreter older than Python 3.10, either switch to a newer tag or pin pip install poetry to an older release that still supported that interpreter.": "wrong",
+   "Assume you have the following pyproject.toml: toml [tool.poetry.dependencies] python = \"^3.7\" This means your project aims to be compatible with any Python version >=3.7,<4.0.": "wrong"
+  },
+  "pytest-d03": {
+   "If you maintain older code whose fixtures are still decorated with @pytest.yieldfixture, you can switch them to plain @pytest.fixture without changing anything else.": "wrong"
+  },
+  "pytest-d07": {
+   "tox.ini files are the configuration files of the tox <https://tox.readthedocs.io> project, and can also be used to hold pytest configuration if they have a [pytest] section.": "wrong"
+  },
+  "pytest-d08": {
+   "[pytest] norecursedirs = [\".svn\", \"build\", \"tmp\"]": "wrong",
+   "platform linux -- Python 3.x.y, pytest-5.x.y, py-1.x.y, pluggy-0.x.y": "wrong",
+   "[pytest] norecursedirs = [\".svn\", \"build\", \"tmp\"] This would tell pytest to not recurse into typical subversion or sphinx-build directories or into any tmp prefixed directory.": "wrong"
+  },
+  "requests-d06": {
+   "Were we ever to issue a fix for a Python version that Requests no longer supports, such as Python 2.7, we would agree the details with these packagers separately.": "wrong"
+  },
+  "click-d02": {
+   "Were Click ever to depend on colorama again, its ANSI translation would also have to go through this emulated stream.": "wrong"
+  },
+  "httpx-d02": {
+   "If an older debugging script of yours still passes the path to client.pem straight to verify as a string, expect a deprecation warning, and switch it to the ssl.createdefaultcontext(cafile=...) form above.": "wrong"
+  },
+  "httpx-d01": {
+   "Were HTTPX to follow redirects by default, any redirect responses on the way would also be listed in response.history, ahead of the final response.": "wrong"
+  }
+ },
+ "borderline": [
+  {
+   "doc": "requests-d01",
+   "quote": "Python 2.7.18 (default, Apr 20 2020, 19:34:11)",
+   "ruled": "stale, uncorrected",
+   "why": "a Python 2.7.18 interpreter banner inside the proxy walkthrough: both keyers keyed it, keyer B marked it arguable (sample output rather than a claim); kept because the walkthrough is presented as the session the reader follows today. Report scores with and without it."
+  },
+  {
+   "doc": "pytest-d01",
+   "quote": "# content of setup.cfg\n        [pytest]\n        filterwarnings =\n            error",
+   "ruled": "key widened",
+   "why": "the key held only the planted '# content of setup.cfg' line; models quoting the [pytest] block under it identify the same stale config. Quotes matching both the TOML and the INI block also overlap the stale one."
+  }
+ ],
+ "provenance": {
+  "keyers": "two blind Claude agents per document, different prompts and project pairings, 2026-09-22",
+  "checks": "all quotes verbatim; both keyers keyed all 32 stale insertions (implicit, code, note, multi: 8/8 each); neither keyed any of the 24 traps (conditional, hypothetical, paraphrase) or anything in the 8 clean docs; no other claims",
+  "construction": "construction_key.json"
+ },
+ "judged_log": [
+  {
+   "doc": "black-d04",
+   "quote": "Note that this requires Python >= 3.11, so using the setup-python action may be required, for example:",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "black-d05",
+   "quote": "while others may be more focused and have a definite end (like the \"Getting to beta\" project).",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "black-d08",
+   "quote": "_Black_ generally supports all Python versions supported by CPython (see [the Python devguide](https://devguide.python.org/versions/) for current information). We promise to support at least all Pytho",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d06",
+   "quote": "[pytest]\n        log_format = \"%(asctime)s %(levelname)s %(message)s\"\n        log_date_format = \"%Y-%m-%d %H:%M:%S\"",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "requests-d02",
+   "quote": "If you maintain an application that is stuck on Python 2.7, you will be limited to a Requests release older than 2.28.0, so keeping ``certifi`` up to date independently is especially important.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "black-d01",
+   "quote": "Were _Black_ still a beta project, as it was until early 2022, any release could change the style and this scheduling concern would not arise.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "black-d02",
+   "quote": "but the minimum supported version of Black is 22.3.0.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "black-d05",
+   "quote": "while others may be more focused and have a definite end (like the \"Getting to beta\" project).",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "black-d08",
+   "quote": "_Black_ generally supports all Python versions supported by CPython (see [the Python devguide](https://devguide.python.org/versions/) for current information).",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "flask-d07",
+   "quote": "If Blinker were ever made optional again, the signals below would only be sent in environments where it happened to be installed.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "flask-d08",
+   "quote": "If you are porting an older application that did this kind of setup in a ``before_first_request`` function, move that code into the setup phase so it runs before the app starts serving.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pip-d02",
+   "quote": "Were pip to go back to copying a local project into a temporary directory before running these steps, build backends would no longer leave artifacts such as `.egg-info` directories in the project's ow",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pip-d05",
+   "quote": "If you are preparing a wheelhouse for a Python version that the current pip no longer runs on, such as 3.9, you can still fetch its wheels this way from a supported interpreter by passing that version",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "poetry-d01",
+   "quote": "Were the Export Poetry Plugin ever to ship with Poetry by default again, it would no longer need to be listed here to make `poetry export` available.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "poetry-d06",
+   "quote": "If your base image is pinned to an interpreter older than Python 3.10, either switch to a newer tag or pin `pip install poetry` to an older release that still supported that interpreter.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d03",
+   "quote": "If you maintain older code whose fixtures are still decorated with `@pytest.yield_fixture`, you can switch them to plain `@pytest.fixture` without changing anything else.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d06",
+   "quote": "[pytest]\n        log_format = \"%(asctime)s %(levelname)s %(message)s\"",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d07",
+   "quote": "tox.ini files are the configuration files of the `tox <https://tox.readthedocs.io>`__ project, and can also be used to hold pytest configuration if they have a `[pytest]` section.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d08",
+   "quote": "[pytest]\nnorecursedirs = [\".svn\", \"_build\", \"tmp*\"]",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "requests-d02",
+   "quote": "If you maintain an application that is stuck on Python 2.7, you will be limited to a Requests release older than 2.28.0, so keeping ``certifi`` up to date independently is especially important.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "requests-d06",
+   "quote": "Were we ever to issue a fix for a Python version that Requests no longer supports, such as Python 2.7, we would agree the details with these packagers separately.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "poetry-d06",
+   "quote": "Assume you have the following `pyproject.toml`:\n\n```toml\n[tool.poetry.dependencies]\npython = \"^3.7\"\n```\n\nThis means your project aims to be compatible with any Python version >=3.7,<4.0.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "click-d02",
+   "quote": "Were Click ever to depend on colorama again, its ANSI translation would also have to go through this emulated stream.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "flask-d07",
+   "quote": "If Blinker were ever made optional again, the signals below would only be sent in environments where it happened to be installed.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "flask-d08",
+   "quote": "If you are porting an older application that did this kind of setup in a ``before_first_request`` function, move that code into the setup phase so it runs before the app starts serving.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "httpx-d02",
+   "quote": "If an older debugging script of yours still passes the path to `client.pem` straight to `verify` as a string, expect a deprecation warning, and switch it to the `ssl.create_default_context(cafile=...)",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pip-d02",
+   "quote": "Were pip to go back to copying a local project into a temporary directory before running these steps, build backends would no longer leave artifacts such as `.egg-info` directories in the project's ow",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pip-d05",
+   "quote": "If you are preparing a wheelhouse for a Python version that the current pip no longer runs on, such as 3.9, you can still fetch its wheels this way from a supported interpreter by passing that version",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d06",
+   "quote": "[pytest]\n        log_format = \"%(asctime)s %(levelname)s %(message)s\"\n        log_date_format = \"%Y-%m-%d %H:%M:%S\"",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d08",
+   "quote": "[pytest]\nnorecursedirs = [\".svn\", \"_build\", \"tmp*\"]",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "requests-d02",
+   "quote": "If you maintain an application that is stuck on Python 2.7, you will be limited to a Requests release older than 2.28.0, so keeping ``certifi`` up to date independently is especially important.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "black-d08",
+   "quote": "Can I run Black with PyPy? Yes, there is support for PyPy 3.8 and higher.\n",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pip-d05",
+   "quote": "Also force the interpreter version to ``27`` (or more generic, i.e. ``2``) and implementation to ``cp`` (or more generic, i.e. ``py``).",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "black-d08",
+   "quote": "_Black_ generally supports all Python versions supported by CPython (see\n[the Python devguide](https://devguide.python.org/versions/) for current information).",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "flask-d08",
+   "quote": "If you are porting an older application that did this kind of setup in a ``before_first_request`` function, move that code into the setup phase so it runs before the app starts serving.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pip-d05",
+   "quote": "Also force the interpreter version to ``27`` (or more generic, i.e. ``2``) and implementation to ``cp`` (or more generic, i.e. ``py``).",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d08",
+   "quote": "platform linux -- Python 3.x.y, pytest-5.x.y, py-1.x.y, pluggy-0.x.y",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d06",
+   "quote": "[pytest] log_format = %(asctime)s %(levelname)s %(message)s log_date_format = %Y-%m-%d %H:%M:%S",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pytest-d08",
+   "quote": "[pytest] norecursedirs = [\".svn\", \"_build\", \"tmp*\"]\n\nThis would tell ``pytest`` to not recurse into typical subversion or sphinx-build directories or into any ``tmp`` prefixed directory.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "click-d02",
+   "quote": "Were Click ever to depend on colorama again, its ANSI translation would also have to go through this emulated stream.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "flask-d07",
+   "quote": "If Blinker were ever made optional again, the signals below would only be sent in environments where it happened to be installed.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "httpx-d01",
+   "quote": "Were HTTPX to follow redirects by default, any redirect responses on the way would also be listed in `response.history`, ahead of the final response.",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pip-d02",
+   "quote": "Were pip to go back to copying a local project into a temporary directory before running these steps, build backends would no longer leave artifacts such as `.egg-info` directories in the project's ow",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  },
+  {
+   "doc": "pip-d05",
+   "quote": "If you are preparing a wheelhouse for a Python version that the current pip no longer runs on, such as 3.9, you can still fetch its wheels this way from a supported interpreter by passing that version",
+   "verdict": "wrong",
+   "why": "corpus v2, all 44 read: planted conditionals ('If you maintain an application stuck on Python 2.7...', 'If you are porting an older application...'), hypotheticals ('Were pip to go back...', 'If Blinker were ever made optional again...'), valid current config ([pytest] in pytest.ini/pytest.toml), statements agreeing with the facts (PyPy 3.8+, 'all versions supported by CPython'), current examples (pip --python-version 27 target, GitHub Action needing 3.11 for tooling) and placeholder sample output (pytest-5.x.y)"
+  }
+ ]
+}

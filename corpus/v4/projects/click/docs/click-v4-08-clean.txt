@@ -1,0 +1,176 @@
+## Flag Value
+
+To have a flag pass a value to the decorated function set `flag_value`. This
+automatically sets `is_flag=True`. To mark the flag as default, set
+`default=True`. Setting flag values can be used to create patterns like this:
+
+```{eval-rst}
+.. click:example::
+
+    import sys
+
+    @click.command()
+    @click.option('--upper', 'transformation', flag_value='upper', default=True)
+    @click.option('--lower', 'transformation', flag_value='lower')
+    def info(transformation):
+        click.echo(getattr(sys.platform, transformation)())
+
+.. click:run::
+
+    invoke(info, args=['--help'])
+    invoke(info, args=['--upper'])
+    invoke(info, args=['--lower'])
+    invoke(info)
+```
+
+### How `default` and `flag_value` interact
+
+The `default` value is given to the underlying function
+as-is. So if you set `default=None`, the function receives
+`None`. Same for any other type.
+
+But there is a special case for **non-boolean** flags: if a
+flag has a non-boolean `flag_value` (like a string or a
+class), then `default=True` is interpreted as *the flag
+should be activated by default*. The function receives the
+`flag_value`, not the Python `True`.
+
+Which means, in the example above, this option:
+
+```python
+@click.option('--upper', 'transformation', flag_value='upper', default=True)
+```
+
+is equivalent to:
+
+```python
+@click.option('--upper', 'transformation', flag_value='upper', default='upper')
+```
+
+Because the two are equivalent, it is recommended to always
+use the second form and set `default` to the actual value
+you want. This makes code more explicit and predictable.
+
+This special case does **not** apply to boolean flags (where
+`flag_value` is `True` or `False`). For boolean flags,
+`default=True` is the literal Python value `True`.
+
+The tables below show the value received by the function for
+each combination of `default`, `flag_value`, and whether
+the flag was passed on the command line.
+
+#### Boolean flags (`is_flag=True`, boolean `flag_value`)
+
+These are flags where `flag_value` is `True` or `False`.
+The `default` value is always passed through literally
+without any special substitution.
+
+| `default` | `flag_value` | Not passed | `--flag` passed |
+|-----------|--------------|------------|-----------------|
+| *(unset)* | *(unset)*    | `False`    | `True`          |
+| `True`    | *(unset)*    | `True`     | `True`          |
+| `False`   | *(unset)*    | `False`    | `True`          |
+| `None`    | *(unset)*    | `None`     | `True`          |
+| `True`    | `True`       | `True`     | `True`          |
+| `True`    | `False`      | `True`     | `False`         |
+| `False`   | `True`       | `False`    | `True`          |
+| `False`   | `False`      | `False`    | `False`         |
+| `None`    | `True`       | `None`     | `True`          |
+| `None`    | `False`      | `None`     | `False`         |
+
+````{tip}
+For a negative flag that defaults to off, prefer the
+explicit pair form `--with-xyz/--without-xyz` over the
+single-flag `flag_value=False, default=True`:
+
+```python
+@click.option('--with-xyz/--without-xyz', 'enable_xyz', default=True)
+```
+````
+
+#### Boolean flag pairs (`--flag/--no-flag`)
+
+These use secondary option names to provide both an on and
+off switch. The `default` value is always literal.
+
+| `default` | Not passed | `--flag` | `--no-flag` |
+|-----------|------------|----------|-------------|
+| *(unset)* | `False`    | `True`   | `False`     |
+| `True`    | `True`     | `True`   | `False`     |
+| `False`   | `False`    | `True`   | `False`     |
+| `None`    | `None`     | `True`   | `False`     |
+
+#### Non-boolean feature switches (`flag_value` is a string, class, etc.)
+
+For these flags, `default=True` is a **special case**: it
+means "activate this flag by default" and resolves to the
+`flag_value`. All other `default` values are passed through
+literally.
+
+| `default`  | `flag_value` | Not passed  | `--flag` passed |
+|------------|--------------|-------------|-----------------|
+| *(unset)*  | `"upper"`    | `None`      | `"upper"`       |
+| `True`     | `"upper"`    | `"upper"`¹  | `"upper"`       |
+| `"lower"`  | `"upper"`    | `"lower"`   | `"upper"`       |
+| `None`     | `"upper"`    | `None`      | `"upper"`       |
+
+```{hint}
+¹: `default=True` is substituted with `flag_value`.
+```
+
+#### Feature switch groups (multiple flags sharing one variable)
+
+Several `flag_value` options can target the same parameter name to form a
+feature switch group. The user picks one flag on the command line, and the
+function receives the corresponding `flag_value`. When the user picks none,
+Click falls back to whichever option claims the slot under the arbitration
+rules described below.
+
+##### Non-boolean groups
+
+For non-boolean `flag_value` (strings, enum members, classes, ...), place
+`default=True` on the option that should win when no flag is passed. The
+substitution rule above resolves it to that option's `flag_value`. Any other
+explicit `default` is passed through literally.
+
+| Definition                                             | Not passed | `--upper` | `--lower` |
+|--------------------------------------------------------|------------|-----------|-----------|
+| `--upper` with `flag_value='upper'`, `default=True`    | `"upper"`  | `"upper"` | `"lower"` |
+| `--upper` with `flag_value='upper'`, `default='upper'` | `"upper"`  | `"upper"` | `"lower"` |
+| `--upper` with `flag_value='upper'`, `default=None`    | `None`     | `"upper"` | `"lower"` |
+| Neither option carries a `default`                     | `None`     | `"upper"` | `"lower"` |
+
+The third row is the three-state pattern: the function receives `None` when no
+flag is passed, distinguishable from either explicit choice.
+
+##### Boolean groups
+
+When `flag_value` is `True` or `False`, the substitution rule does not apply:
+`default=True` is the literal Python `True`. To make one flag in an
+enable/disable pair the default, set its `default=True` explicitly:
+
+```python
+@click.option("--without-xyz", "enable_xyz", flag_value=False)
+@click.option("--with-xyz", "enable_xyz", flag_value=True, default=True)
+```
+
+| Definition                                              | Not passed | `--with-xyz` | `--without-xyz` |
+|---------------------------------------------------------|------------|--------------|-----------------|
+| `--with-xyz` with `flag_value=True`, `default=True`     | `True`     | `True`       | `False`         |
+| `--without-xyz` with `flag_value=False`, `default=False`| `False`    | `True`       | `False`         |
+| `--with-xyz` with `flag_value=True`, `default=None`     | `None`     | `True`       | `False`         |
+| Neither option carries a `default`                      | `False`    | `True`       | `False`         |
+
+```{tip}
+For most enable/disable cases, the pair form `--with-xyz/--without-xyz` is
+shorter and equivalent. The multi-flag group form is useful when the on and off
+flags need distinct names without a shared stem, or when each flag needs its
+own help text.
+```
+
+##### Arbitration rules
+
+When several options in a group resolve their values simultaneously, only one
+wins the parameter slot. The full arbitration policy (source precedence,
+explicit-beats-auto tie-break, last-declared fallback) is enumerated under
+[Option value resolution](#option-value-resolution).

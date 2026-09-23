@@ -1,0 +1,450 @@
+{
+ "black-d01": {
+  "project": "black",
+  "file": "docs/black-v4-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "  Were PyPy 3.7 still among the interpreters _Black_ can run on, this caveat would still\n  apply to current releases.",
+  "inserted_fact": "F3"
+ },
+ "black-d02": {
+  "project": "black",
+  "file": "docs/black-v4-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "black-d03": {
+  "project": "black",
+  "file": "docs/black-v4-03-instruction.txt",
+  "kind": "instruction",
+  "inserted": "If a module still has to be importable by the old interpreter as well, where a `u`\nmarker does change the type of the literal, add `py27` to the `--target-version` values\nyou format it with and _Black_ will leave those markers alone.",
+  "inserted_fact": "F2"
+ },
+ "black-d04": {
+  "project": "black",
+  "file": "docs/black-v4-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "- If your CI image is still on Python 3.7, installing `black` there will keep resolving\n  to 23.3.0, the last release that runs on it; current releases need Python 3.10 or\n  newer.",
+  "inserted_fact": "F1"
+ },
+ "black-d05": {
+  "project": "black",
+  "file": "docs/black-v4-07-current_consequence.txt",
+  "kind": "current_consequence",
+  "inserted": "As the first release of 2026, this is the one upgrade this year that is expected to\nchange how already formatted code looks: plan for a single reformatting commit when you\nmove to it, after which later 26.x releases will leave that code as it is (the\n`--preview` and `--unstable` styles excepted).",
+  "inserted_fact": "F4"
+ },
+ "black-d06": {
+  "project": "black",
+  "file": "docs/black-v4-02-consequence.txt",
+  "kind": "consequence",
+  "inserted": "Because the watcher always runs whatever `black` sits at the configured path, upgrading\nthat installation shows up on the very next save: after any upgrade, even to a bugfix\nrelease, expect files you had already formatted to come back with a few changed lines\nyou never touched, and commit that churn separately from your own edits.",
+  "inserted_fact": "F4"
+ },
+ "black-d07": {
+  "project": "black",
+  "file": "docs/black-v4-01-consequence.txt",
+  "kind": "consequence",
+  "inserted": "Long string literals are the most common case, because _Black_ does not split them in\nits default style. Run it with `--preview` and expect those strings to be broken into\nimplicitly concatenated pieces that fit your limit as well.",
+  "inserted_fact": "F5"
+ },
+ "black-d08": {
+  "project": "black",
+  "file": "docs/black-v4-04-example.txt",
+  "kind": "example",
+  "inserted": "print \"area:\", side**2",
+  "inserted_fact": "F2"
+ },
+ "click-d01": {
+  "project": "click",
+  "file": "docs/click-v4-04-example.txt",
+  "kind": "example",
+  "inserted": "With `nargs`, the split values fill the tuple in order:\n\n```{eval-rst}\n.. click:example::\n\n    from collections import Sequence\n\n    @click.command()\n    @click.option('--point', envvar='POINT', nargs=2, type=float)\n    def plot(point):\n        if isinstance(point, Sequence):\n            x, y = point\n            click.echo(f\"x={x} y={y}\")\n\n.. click:run::\n\n    invoke(plot, env={\"POINT\": \"1.5 2.5\"})\n```",
+  "inserted_fact": "F1"
+ },
+ "click-d02": {
+  "project": "click",
+  "file": "docs/click-v4-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "If Click still supported Python 2, where the plain `str` type held bytes, this\npoint would need a much longer explanation. On the Python 3 versions it does\nsupport, text modes such as `'r'` give your command `str` and binary modes\nsuch as `'rb'` give it `bytes`.",
+  "inserted_fact": "F1"
+ },
+ "click-d03": {
+  "project": "click",
+  "file": "docs/click-v4-01-consequence.txt",
+  "kind": "consequence",
+  "inserted": "Keep that `None` in mind if you annotate the decorated function: a hint\nwritten as `text: str | None` raises a `TypeError` as soon as the module is\nimported on the older Python versions Click supports, so either spell it\n`Optional[str]` or start the file with `from __future__ import annotations`.",
+  "inserted_fact": "F1"
+ },
+ "click-d04": {
+  "project": "click",
+  "file": "docs/click-v4-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "- If your install instructions still set the completion variable to the\n  pre-8.0 value `source_zsh`, change it to `zsh_source` and regenerate the\n  script so that users actually receive the fix above.",
+  "inserted_fact": "F3"
+ },
+ "click-d05": {
+  "project": "click",
+  "file": "docs/click-v4-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "click-d06": {
+  "project": "click",
+  "file": "docs/click-v4-02-consequence.txt",
+  "kind": "consequence",
+  "inserted": "If most of your users work in Windows Terminal, expect them to get no tab\ncompletion from the classes below until you write a {class}`ShellComplete`\nsubclass for their shell and register it with {func}`add_completion_class`.",
+  "inserted_fact": "F2"
+ },
+ "click-d07": {
+  "project": "click",
+  "file": "docs/click-v4-03-instruction.txt",
+  "kind": "instruction",
+  "inserted": "If `cli` is instead a {class}`CommandCollection` that merges several plugin\ngroups, create `test` and `dist` with `@click.command()` on one of its source\ngroups rather than with `@cli.command()`, and add that group with\n{meth}`~CommandCollection.add_source`. `ctx.forward` and `ctx.invoke` then\nwork unchanged.",
+  "inserted_fact": "F5"
+ },
+ "click-d08": {
+  "project": "click",
+  "file": "docs/click-v4-07-current_consequence.txt",
+  "kind": "current_consequence",
+  "inserted": "- A Windows application frozen with PyInstaller or a similar tool no\n  longer needs to bundle a separate console-color package next to Click for\n  styled output; the terminal renders the escape codes itself.",
+  "inserted_fact": "F4"
+ },
+ "flask-d01": {
+  "project": "flask",
+  "file": "docs/flask-v4-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "flask-d02": {
+  "project": "flask",
+  "file": "docs/flask-v4-03-instruction.txt",
+  "kind": "instruction",
+  "inserted": "In a deployed application you don't want to rely on someone running this by\nhand. Register ``init_db`` in your application module as the hook Flask calls\nonce, just before it dispatches the very first request, so the tables exist\nbefore any view touches ``db_session``.",
+  "inserted_fact": "F6"
+ },
+ "flask-d03": {
+  "project": "flask",
+  "file": "docs/flask-v4-07-current_consequence.txt",
+  "kind": "current_consequence",
+  "inserted": "So while you are working on a handler for 500 errors with ``flask run``, start\nthe server without the ``--debug`` option when you want to see your page; with\nthe option on, the debugger takes its place.",
+  "inserted_fact": "F2"
+ },
+ "flask-d04": {
+  "project": "flask",
+  "file": "docs/flask-v4-02-consequence.txt",
+  "kind": "consequence",
+  "inserted": "If you connect receivers to Flask's :data:`.request_started` and\n:data:`.request_tearing_down` signals instead, expect bug reports of\n``init_app`` failing with a ``RuntimeError`` on some users' machines but not\non yours, depending on what else is installed in their virtualenv. Catching\nthat error and falling back to the decorator methods above keeps the\nextension working for them.",
+  "inserted_fact": "F5"
+ },
+ "flask-d05": {
+  "project": "flask",
+  "file": "docs/flask-v4-04-example.txt",
+  "kind": "example",
+  "inserted": "requires-python = \">=3.9\"",
+  "inserted_fact": "F1"
+ },
+ "flask-d06": {
+  "project": "flask",
+  "file": "docs/flask-v4-01-consequence.txt",
+  "kind": "consequence",
+  "inserted": "For example, a :file:`.flaskenv` that puts the project in the development\nenvironment gives everyone who checks it out the reloader and debugger, while\na :file:`.env` on a staging server only has to set the environment back to\n``production`` to switch them off again.",
+  "inserted_fact": "F3"
+ },
+ "flask-d07": {
+  "project": "flask",
+  "file": "docs/flask-v4-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were blueprints still able to register a hook that runs only before the\napplication's first request, a blueprint mounted twice would also have had to\ndecide whether that hook should run once or once per registration.",
+  "inserted_fact": "F6"
+ },
+ "flask-d08": {
+  "project": "flask",
+  "file": "docs/flask-v4-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If you are porting an API like this from an older Flask release that tuned\nits ``jsonify`` output with ``JSON_``-prefixed keys in ``app.config``, set the\nmatching attributes on ``app.json`` instead, such as ``app.json.sort_keys``;\ncurrent Flask no longer reads those config keys.",
+  "inserted_fact": "F4"
+ },
+ "httpx-d01": {
+  "project": "httpx",
+  "file": "docs/httpx-v4-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Had the old default been kept, a client like that would have gone on doubling its traffic indefinitely, with the misconfiguration only visible to someone who thought to look at `response.history`.",
+  "inserted_fact": "F2"
+ },
+ "httpx-d02": {
+  "project": "httpx",
+  "file": "docs/httpx-v4-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If you are still on an HTTPX release older than 0.20, where redirects were followed automatically, bear in mind that each request in a redirect chain is given its own timeout, so a single call that gets redirected a few times can take correspondingly longer than that before it finally raises.",
+  "inserted_fact": "F2"
+ },
+ "httpx-d03": {
+  "project": "httpx",
+  "file": "docs/httpx-v4-01-consequence.txt",
+  "kind": "consequence",
+  "inserted": "One thing to keep in mind: if the URL you pass to `client.get(...)` answers with a redirect, the `Content-Type` charset used here is the one sent by the page at the end of the redirect chain, not by the URL you originally requested.",
+  "inserted_fact": "F2"
+ },
+ "httpx-d04": {
+  "project": "httpx",
+  "file": "docs/httpx-v4-02-consequence.txt",
+  "kind": "consequence",
+  "inserted": "You'll only need to write out transports like this once the rules depend on more than the scheme. A client that simply sends `http://` and `https://` traffic to two different proxies can still be handed the two proxy URLs directly, keyed by scheme, and it will build the equivalent mounts for you.",
+  "inserted_fact": "F3"
+ },
+ "httpx-d05": {
+  "project": "httpx",
+  "file": "docs/httpx-v4-04-example.txt",
+  "kind": "example",
+  "inserted": "Or, with a single parameter:\n\n```pycon\n>>> r = httpx.get('https://httpbin.org/redirect-to', params={'url': '/get'})\n>>> r.url\nURL('https://httpbin.org/get')\n```",
+  "inserted_fact": "F2"
+ },
+ "httpx-d06": {
+  "project": "httpx",
+  "file": "docs/httpx-v4-03-instruction.txt",
+  "kind": "instruction",
+  "inserted": "To check that an old link which now redirects still resolves to a working page, request the old URL as usual and chain `.raise_for_status()` onto it in the same way.",
+  "inserted_fact": "F2"
+ },
+ "httpx-d07": {
+  "project": "httpx",
+  "file": "docs/httpx-v4-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "httpx-d08": {
+  "project": "httpx",
+  "file": "docs/httpx-v4-07-current_consequence.txt",
+  "kind": "current_consequence",
+  "inserted": "Code that still constructs a client with `app=...` will now fail with a `TypeError` as soon as the client is instantiated; pass the application through `transport=httpx.WSGITransport(app=...)` or `transport=httpx.ASGITransport(app=...)` instead.",
+  "inserted_fact": "F4"
+ },
+ "pip-d01": {
+  "project": "pip",
+  "file": "docs/pip-v4-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pip-d02": {
+  "project": "pip",
+  "file": "docs/pip-v4-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Had pip still been running its pre-2020 resolver by default, the recursive, one-dependency-after-another picture in several of the answers below would have been a fair description of what pip does; with the backtracking resolver, pip may go back and swap out a version it has already picked when a later requirement conflicts with it.",
+  "inserted_fact": "F3"
+ },
+ "pip-d03": {
+  "project": "pip",
+  "file": "docs/pip-v4-07-current_consequence.txt",
+  "kind": "current_consequence",
+  "inserted": "   Because PyPI no longer answers ``pip search`` queries, checking for newer\n   releases from the terminal means using ``--outdated`` (or :ref:`pip index`),\n   which reads the same index pages as ``pip install`` does.",
+  "inserted_fact": "F2"
+ },
+ "pip-d04": {
+  "project": "pip",
+  "file": "docs/pip-v4-04-example.txt",
+  "kind": "example",
+  "inserted": "For example, with ``python3.9 -m pip download --only-binary=:all: numpy``\nthe ``cp39`` wheels are the relevant links, and wheels built for other CPython\nversions are skipped.",
+  "inserted_fact": "F1"
+ },
+ "pip-d05": {
+  "project": "pip",
+  "file": "docs/pip-v4-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If you are still passing `--use-deprecated=legacy-resolver` in your own workflows, bear in mind that the legacy resolver is deprecated and unsupported, so the `--force-reinstall` behaviour you see with it may not match what is described or recommended here.",
+  "inserted_fact": "F3"
+ },
+ "pip-d06": {
+  "project": "pip",
+  "file": "docs/pip-v4-02-consequence.txt",
+  "kind": "consequence",
+  "inserted": "``search`` sits directly under ``Command`` because it never builds a\n``PackageFinder`` or reads Simple API pages: it sends a single query to the\nindex's search API and prints the names and summaries that come back, so a\nbare ``pip search <term>`` with no ``--index`` option simply lists the\nmatching projects.",
+  "inserted_fact": "F2"
+ },
+ "pip-d07": {
+  "project": "pip",
+  "file": "docs/pip-v4-03-instruction.txt",
+  "kind": "instruction",
+  "inserted": "If you do build a locking tool on top of `--report`, validate the `install` array\nbefore writing a lock: for each item, evaluate its `requires_dist` entries against the\n`environment` markers, check that the version recorded for every dependency they name\nsatisfies them, and refuse to lock when one does not, since the report keeps the first\nversion pip settled on for a shared dependency even when a requirement it reached later\nasked for a different one.",
+  "inserted_fact": "F3"
+ },
+ "pip-d08": {
+  "project": "pip",
+  "file": "docs/pip-v4-01-consequence.txt",
+  "kind": "consequence",
+  "inserted": "   2. | When the package is a project in a local directory, expect the\n        checkout to be left exactly as it was after\n        ``pip install ./myproject`` -- there are no ``build/`` or\n        ``.egg-info`` directories to add to ``.gitignore`` or clean up\n        between builds.",
+  "inserted_fact": "F4"
+ },
+ "poetry-d01": {
+  "project": "poetry",
+  "file": "docs/poetry-v4-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "Were `poetry lock` to refresh every locked package on each run, a one-line change to `pyproject.toml` could produce a lock file diff touching most of your dependencies; keeping the existing versions keeps such diffs small and easy to review.",
+  "inserted_fact": "F4"
+ },
+ "poetry-d02": {
+  "project": "poetry",
+  "file": "docs/poetry-v4-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "poetry-d03": {
+  "project": "poetry",
+  "file": "docs/poetry-v4-03-instruction.txt",
+  "kind": "instruction",
+  "inserted": "If you want every dependency, not just one, moved to the newest version its constraint allows, keep the constraints as they are and run `poetry lock` followed by `poetry install` instead.",
+  "inserted_fact": "F4"
+ },
+ "poetry-d04": {
+  "project": "poetry",
+  "file": "docs/poetry-v4-01-consequence.txt",
+  "kind": "consequence",
+  "inserted": "On a machine where Poetry itself was installed with a Python 3.9 interpreter, for example the system Python of an older Linux distribution, the Poetry part of this output reports that 3.9 interpreter, independently of the Python version used by the project's virtual environment.",
+  "inserted_fact": "F1"
+ },
+ "poetry-d05": {
+  "project": "poetry",
+  "file": "docs/poetry-v4-07-current_consequence.txt",
+  "kind": "current_consequence",
+  "inserted": "Because the environment is activated in your current shell rather than in a nested one, leave it again with `deactivate`; typing `exit` would close that shell itself.",
+  "inserted_fact": "F2"
+ },
+ "poetry-d06": {
+  "project": "poetry",
+  "file": "docs/poetry-v4-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "If you are still on a 1.x release, the step to 2.0 is such a major version bump: on 1.x, `poetry export` works right after installing Poetry, while on 2.x it is only available once you have added the export plugin.",
+  "inserted_fact": "F3"
+ },
+ "poetry-d07": {
+  "project": "poetry",
+  "file": "docs/poetry-v4-02-consequence.txt",
+  "kind": "consequence",
+  "inserted": "You can see the effect of this registration on a freshly installed Poetry: `poetry list` already shows `export` among the available commands, next to the ones Poetry defines itself.",
+  "inserted_fact": "F3"
+ },
+ "poetry-d08": {
+  "project": "poetry",
+  "file": "docs/poetry-v4-04-example.txt",
+  "kind": "example",
+  "inserted": "```bash\ncurl -sSL https://raw.githubusercontent.com/python-poetry/poetry/main/install-poetry.py | POETRY_HOME=/opt/poetry python3 -\n```",
+  "inserted_fact": "F5"
+ },
+ "pytest-d01": {
+  "project": "pytest",
+  "file": "docs/pytest-v4-02-consequence.txt",
+  "kind": "consequence",
+  "inserted": "\nThis form is also the simplest way to exercise a project against its oldest and newest\ninterpreters side by side: with pytest installed in each environment, ``python3.8 -m pytest``\nand ``python3.13 -m pytest`` run the same suite under the same pytest release, so any\ndifference in the outcome comes from the interpreter rather than from pytest.\n",
+  "inserted_fact": "F1"
+ },
+ "pytest-d02": {
+  "project": "pytest",
+  "file": "docs/pytest-v4-03-instruction.txt",
+  "kind": "instruction",
+  "inserted": "\nTo try this out without touching the shared settings of a project that is configured\nthrough ``pytest.toml``, put the same ``addopts`` line in an untracked ``pytest.ini`` in the\nproject root, and delete that file again once you are done.\n",
+  "inserted_fact": "F3"
+ },
+ "pytest-d03": {
+  "project": "pytest",
+  "file": "docs/pytest-v4-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "\n   If older tests in your suite still request :fixture:`tmpdir`, you can hand its value to\n   helpers written for :fixture:`tmp_path` by wrapping it as ``pathlib.Path(tmpdir)``,\n   which lets you migrate those tests one at a time.\n",
+  "inserted_fact": "F5"
+ },
+ "pytest-d04": {
+  "project": "pytest",
+  "file": "docs/pytest-v4-01-consequence.txt",
+  "kind": "consequence",
+  "inserted": "    If you port a ``setup_method``/``teardown_method`` pair to a fixture by\n    turning it into a generator that yields the prepared state, expect the\n    test to receive the generator object itself when the function is decorated\n    with a plain ``@pytest.fixture``, and the code after the ``yield`` will\n    never run as teardown.\n",
+  "inserted_fact": "F4"
+ },
+ "pytest-d05": {
+  "project": "pytest",
+  "file": "docs/pytest-v4-07-current_consequence.txt",
+  "kind": "current_consequence",
+  "inserted": "\nIf your repository root holds both a ``pytest.toml`` and a ``pytest.ini``, these two lines have\nto go into ``pytest.toml``: that is the file pytest reads, and limits placed only in ``pytest.ini``\nwill leave the default of 8 lines or 640 characters in effect.\n",
+  "inserted_fact": "F3"
+ },
+ "pytest-d06": {
+  "project": "pytest",
+  "file": "docs/pytest-v4-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pytest-d07": {
+  "project": "pytest",
+  "file": "docs/pytest-v4-04-example.txt",
+  "kind": "example",
+  "inserted": ".. tab:: setup.cfg\n\n    .. code-block:: ini\n\n        # content of setup.cfg\n        [pytest]\n        markers =\n            slow: marks tests as slow (deselect with '-m \"not slow\"')\n            serial\n\n",
+  "inserted_fact": "F2"
+ },
+ "pytest-d08": {
+  "project": "pytest",
+  "file": "docs/pytest-v4-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "    Had pytest kept reading a bare ``[pytest]`` header from ``setup.cfg``, the ini\n    snippet could have been pasted into that file as-is; since it does not, a\n    ``setup.cfg`` needs the header ``[tool:pytest]`` instead.\n\n",
+  "inserted_fact": "F2"
+ },
+ "requests-d01": {
+  "project": "requests",
+  "file": "docs/requests-v4-02-consequence.txt",
+  "kind": "consequence",
+  "inserted": "Don't count on those merged headers going out in the order you typed them,\nthough: on several of the Python versions Requests runs on, a plain ``dict``\ndoes not remember insertion order, so if the server you are talking to cares\nabout header order, build both the session-level and the method-level headers\nas ``collections.OrderedDict`` objects.",
+  "inserted_fact": "F1"
+ },
+ "requests-d02": {
+  "project": "requests",
+  "file": "docs/requests-v4-05-conditional.txt",
+  "kind": "conditional",
+  "inserted": "-   If you are still running a 2.14.x release, it is this bundled copy\n    that guesses response encodings: upgrading or removing a separately\n    installed `chardet` package will not change what\n    `r.apparent_encoding` reports.",
+  "inserted_fact": "F5"
+ },
+ "requests-d03": {
+  "project": "requests",
+  "file": "docs/requests-v4-03-example.txt",
+  "kind": "example",
+  "inserted": "            if isinstance(username, unicode):\n                username = username.encode('utf-8')",
+  "inserted_fact": "F2"
+ },
+ "requests-d04": {
+  "project": "requests",
+  "file": "docs/requests-v4-07-current_consequence.txt",
+  "kind": "current_consequence",
+  "inserted": "    Every interpreter Requests supports today is 3.10 or newer, and 3.10\n    removed the old ABC aliases from `collections` itself, so an adapter\n    or auth plugin that still imports `Mapping` or `MutableMapping`\n    straight from `collections` will fail to import next to current\n    Requests; it needs the `collections.abc` spelling as well.",
+  "inserted_fact": "F1"
+ },
+ "requests-d05": {
+  "project": "requests",
+  "file": "docs/requests-v4-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "requests-d06": {
+  "project": "requests",
+  "file": "docs/requests-v4-06-hypothetical.txt",
+  "kind": "hypothetical",
+  "inserted": "    Had Requests kept supporting Python 2, header keys would still come\n    back as two different types depending on the interpreter; on the\n    Python 3 versions it supports today they are always `str`.",
+  "inserted_fact": "F2"
+ },
+ "requests-d07": {
+  "project": "requests",
+  "file": "docs/requests-v4-04-instruction.txt",
+  "kind": "instruction",
+  "inserted": "The quickest way to see what you would be subclassing is to read the code you\nalready have: unzip the ``requests-<version>-py3.x.egg`` file in your\n``site-packages`` directory and open ``requests/adapters.py`` inside it.",
+  "inserted_fact": "F3"
+ },
+ "requests-d08": {
+  "project": "requests",
+  "file": "docs/requests-v4-01-consequence.txt",
+  "kind": "consequence",
+  "inserted": "That license covers Requests' own code only. The character-encoding detector\nthat is installed alongside it is distributed under the LGPL, so if you vendor\nRequests into a closed-source application you will also need to ship that\nlibrary's source, or offer it on request, to stay within its terms.",
+  "inserted_fact": "F5"
+ }
+}

@@ -1,0 +1,86 @@
+{
+  "project": "poetry",
+  "license": "MIT",
+  "docs": [
+    {
+      "file": "docs/poetry-v2-01-implicit.txt",
+      "kind": "implicit",
+      "source_tag": "main",
+      "source_path": "docs/contributing.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "If you would rather not prefix every command with `poetry run`, first spawn a shell inside the project's virtual environment with `poetry shell`.",
+      "inserted_fact": "F2",
+      "why_subtle": "Phrased as an optional convenience step in the contributor setup, not as a claim; it presupposes `poetry shell` is a built-in command, which was moved to poetry-plugin-shell. The surrounding text is all correct `poetry run` usage."
+    },
+    {
+      "file": "docs/poetry-v2-02-code.txt",
+      "kind": "code",
+      "source_tag": "main",
+      "source_path": "docs/_index.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -o install-poetry.py",
+      "inserted_fact": "F5",
+      "why_subtle": "A single download line inside the CI shell block, matching the prose right above it (\"Downloading a copy of the installer script ... is strongly suggested\"). It fetches the installer from the main poetry repository (master) instead of install.python-poetry.org / its own repository; the rest of the doc uses the correct URL everywhere."
+    },
+    {
+      "file": "docs/poetry-v2-03-note.txt",
+      "kind": "note",
+      "source_tag": "main",
+      "source_path": "docs/pre-commit-hooks.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Since `poetry lock` also bumps every locked dependency to the newest version allowed by your constraints, the exported file may change even when `pyproject.toml` has not.",
+      "inserted_fact": "F4",
+      "why_subtle": "Sits inside an existing {{% note %}} as a practical side remark about the export hook; the stale part (lock refreshes all locked packages) is given as the reason, not as the headline claim. The doc never otherwise describes lock semantics."
+    },
+    {
+      "file": "docs/poetry-v2-04-multi.txt",
+      "kind": "multi",
+      "source_tag": "main",
+      "source_path": "docs/cli.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Poetry's runtime environment can be based on any Python interpreter from 3.9 onwards, regardless of the Python versions your projects target.",
+      "inserted_fact": "F1",
+      "why_subtle": "Off-by-one drift (3.9 vs 3.10) in a doc that otherwise states current facts correctly: `shell` moved to poetry-plugin-shell, and the export plugin is added separately via `poetry self add poetry-plugin-export`."
+    },
+    {
+      "file": "docs/poetry-v2-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "main",
+      "source_path": "docs/faq.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "If your base image is pinned to an interpreter older than Python 3.10, either switch to a newer tag or pin `pip install poetry` to an older release that still supported that interpreter.",
+      "inserted_fact": "F1",
+      "why_subtle": "Mentions Python older than 3.10 next to a Dockerfile that installs Poetry, but only as a conditional; it is consistent with Poetry needing 3.10+ and asserts nothing false. The doc also contains `python = \"^3.7\"` project examples (project metadata, not Poetry's runtime requirement)."
+    },
+    {
+      "file": "docs/poetry-v2-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "main",
+      "source_path": "docs/pyproject.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Were the Export Poetry Plugin ever to ship with Poetry by default again, it would no longer need to be listed here to make `poetry export` available.",
+      "inserted_fact": "F3",
+      "why_subtle": "Counterfactual (\"Were ... ever to ... again\") about the export plugin being bundled; it presupposes the current fact (not bundled) and claims nothing false. The excerpt also shows an export-plugin entry point example."
+    },
+    {
+      "file": "docs/poetry-v2-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "main",
+      "source_path": "docs/configuration.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "To activate the environment, run the command printed by `poetry env activate`; `poetry shell` is not part of Poetry anymore and is only available through the `poetry-plugin-shell` plugin.",
+      "inserted_fact": "F2",
+      "why_subtle": "Names `poetry shell` in a present-tense sentence, which a keyword-matching reader may flag, but it restates the current fact correctly (moved to poetry-plugin-shell, use `poetry env activate`)."
+    },
+    {
+      "file": "docs/poetry-v2-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "main",
+      "source_path": "docs/repositories.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_subtle": "Unmodified excerpt about package sources. It mentions the lock file, `poetry add`/`poetry source` and PyPI, but nothing about Poetry's Python requirement, shell, export, lock-update semantics or the installer."
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "project": "click",
+  "head_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+  "head_date": "2026-09-21",
+  "license": "BSD-3-Clause",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Click no longer supports Python 3.7, 3.8, or 3.9; since 8.2.0 the minimum supported Python is 3.10 (and Python 2 is long unsupported).",
+      "source_path": "CHANGES.md",
+      "source_quote": "Drop support for Python 3.7, 3.8, and 3.9. {pr}`2588` {pr}`2893`"
+    },
+    {
+      "id": "F2",
+      "fact": "Click's built-in shell completion supports Bash (4.4+), Zsh, Fish, and PowerShell.",
+      "source_path": "docs/shell-completion.md",
+      "source_quote": "Click provides tab completion support for Bash (version 4.4 and up), Zsh, Fish, and PowerShell."
+    },
+    {
+      "id": "F3",
+      "fact": "Shell completion is activated by setting _{PROG}_COMPLETE to `{shell}_source` (e.g. `bash_source`), not the old `source_{shell}` / `source_bash` form.",
+      "source_path": "docs/shell-completion.md",
+      "source_quote": "eval \"$(_FOO_BAR_COMPLETE=bash_source foo-bar)\""
+    },
+    {
+      "id": "F4",
+      "fact": "Colorama is no longer a dependency of Click and is not used; supported Windows versions get ANSI styling natively.",
+      "source_path": "CHANGES.md",
+      "source_quote": "Colorama is no longer a dependency and is not used."
+    },
+    {
+      "id": "F5",
+      "fact": "MultiCommand is deprecated; Group is the base class for all group commands (and BaseCommand is deprecated in favor of Command).",
+      "source_path": "CHANGES.md",
+      "source_quote": "`MultiCommand` is deprecated. `Group` is the base class for all group"
+    }
+  ],
+  "docs": [
+    {
+      "file": "docs/click-01-organic.txt",
+      "kind": "organic",
+      "source_tag": "7.1.2",
+      "source_path": "docs/bashcomplete.rst",
+      "source_commit": "1784558ed7c75c65764d2a434bd9cbb206ca939d",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes - F3: \"eval \\\"$(_FOO_BAR_COMPLETE=source_bash foo-bar)\\\"\" and \"By exporting it with the ``source_{shell}`` value it will output the activation script to evaluate.\"; probably F2: \"Bash, Zsh, and Fish are supported\" (omits PowerShell; not an explicitly closed list)"
+    },
+    {
+      "file": "docs/click-02-organic.txt",
+      "kind": "organic",
+      "source_tag": "8.1.8",
+      "source_path": "docs/utils.rst",
+      "source_commit": "934813e4d421071a1b3db3973c02fe2721359a6e",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes - F4: \"On Windows, Click uses colorama without calling ``colorama.init()``.\" (also \"The :func:`echo` function supports ANSI colors and styles. On Windows this uses `colorama`_.\")"
+    },
+    {
+      "file": "docs/click-03-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "docs/quickstart.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Internally, {class}`Group` is a subclass of {class}`MultiCommand`, which is the base class for all group commands.",
+      "inserted_fact": "F5",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/click-04-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "docs/utils.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "On Windows, Click installs colorama as a dependency and uses it to translate these codes into console API calls.",
+      "inserted_fact": "F4",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/click-05-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "docs/shell-completion.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "PowerShell support was added in Click 8.5.0, released in August 2026; earlier releases supported only Bash, Zsh, and Fish.",
+      "inserted_fact": "F2",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/click-06-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "docs/faqs.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Click 8.1.8, released in December 2024, was the last release to support Python 3.7, 3.8, and 3.9.",
+      "inserted_fact": "F1",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/click-07-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/arguments.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/click-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/prompts.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": ""
+    }
+  ],
+  "notes": "HEAD is main at 3cbaa76 (2026-09-21, version 8.5.1.dev). F1/F4/F5 are sourced from CHANGES.md (included in the docs as docs/changes.md); F1 is also backed by pyproject requires-python >=3.10. Trims: 02 (8.1.8 utils.rst) cut before 'Finding Application Folders'; 04 (HEAD utils.md) cut before '## Showing Progress Bars'. Others are whole files. Planted 04 sits just above the 'Older Windows Support' admonition that mentions installing colorama yourself; the doc is internally inconsistent, but only the inserted sentence contradicts F4. Distractor 05 dates (8.5.0 released 2026-08-24) and 06 (8.1.8 released 2024-12-19, the last 8.1.x tag; 8.2.0 dropped 3.7-3.9) are taken from CHANGES.md. Organic 01 does not mention Python versions. Clean 07 (arguments.md) describes the Argument help parameter added in 8.5, which is consistent with HEAD."
+}

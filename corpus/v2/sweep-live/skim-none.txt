@@ -1,0 +1,1467 @@
+===== black-d01  (4 blocks)
+--- line 14  [calendar]
+If there's not much new on `main` to justify a release, it's acceptable to skip a
+month's release. Ideally January releases should not be skipped because as per our
+[stability policy](labels/stability-policy), the first release in a new calendar year
+may make changes to the _stable_ style. While the policy applies to the first release
+(instead of only January releases), confining changes to the stable style to January
+--- line 36  [3.1]
+
+- `python3 scripts/release.py --help` is your friend.
+  - `release.py` has only been tested in Python 3.12+ (so get with the times :D)
+
+To cut a release:
+--- line 141  [feature]
+### docker
+
+This workflow uses the QEMU powered `buildx` feature of Docker to upload an `arm64` and
+`amd64`/`x86_64` build of the official _Black_ Docker image™.
+
+--- line 169  [feature]
+[cibuildwheel]: https://cibuildwheel.readthedocs.io/
+[gh-4563]: https://github.com/psf/black/pull/4563
+[github actions]: https://github.com/features/actions
+[github release]: https://github.com/psf/black/releases
+[hatch]: https://hatch.pypa.io/latest/
+===== black-d02  (3 blocks)
+--- line 17  [string]
+- `g:black_fast` (defaults to `0`)
+- `g:black_linelength` (defaults to `88`)
+- `g:black_skip_string_normalization` (defaults to `0`)
+- `g:black_skip_magic_trailing_comma` (defaults to `0`)
+- `g:black_virtualenv` (defaults to `~/.vim/black` or `~/.local/share/nvim/black`)
+--- line 27  [3.1]
+#### Installation
+
+This plugin **requires Vim 7.0+ built with Python 3.10+ support**. It needs Python 3.10
+to be able to run _Black_ inside the Vim process which is much faster than calling an
+external command.
+--- line 251  [output]
+- Save: `Nothing`
+- Input: `Nothing`
+- Output: `Display in bottom pane` if you like.
+- Change the name of the tool if you like.
+
+===== click-d04  (1 blocks)
+--- line 16  [multicommand]
+## Custom Groups
+
+You can customize the behavior of a group beyond the arguments it accepts by subclassing {class}`click.Group`. If your plugin loader was written against an older release and subclasses {class}`MultiCommand`, change its base class to {class}`click.Group`.
+
+The most common methods to override are {meth}`~click.Group.get_command` and {meth}`~click.Group.list_commands`.
+===== click-d05  (4 blocks)
+--- line 12  [ANSI]
+- Is fully nestable and composable.
+- Supports file handling out of the box.
+- Comes with useful common helpers (getting terminal dimensions, ANSI colors, fetching direct keyboard input, screen
+  clearing, finding config paths, launching apps and editors, etc.).
+
+--- line 39  [built-in, complete]
+command line interfaces hard:
+
+- `argparse` has built-in behavior to guess if something is an argument or an option. This becomes a problem when
+  dealing with incomplete command lines; the behaviour becomes unpredictable without full knowledge of a command line.
+  This goes against Click's ambitions of dispatching to subparsers.
+--- line 73  [PROG]
+  goes wrong. A subcommand written by a different developer will not suddenly die with a different error message because
+  it's manually handled.
+- Click has enough meta information available for its whole program to evolve over time and improve the user experience
+  without forcing developers to adjust their programs. For instance, if Click decides to change how help pages are
+  formatted, all Click programs will automatically benefit from this.
+--- line 99  [ANSI]
+
+The question came up why Click does not auto correct parameters given that even optparse and `argparse` support
+automatic expansion of long arguments. The reason for this is that it's a liability for backwards compatibility. If
+people start relying on automatically modified parameters and someone adds a new parameter in the future, the script
+might stop working. These kinds of problems are hard to find, so Click does not attempt to be magical about this.
+===== click-d08  (5 blocks)
+--- line 156  [PROG]
+.. click:run::
+
+    invoke(cli, prog_name='tool', args=[])
+    invoke(cli, prog_name='tool', args=['sync'])
+```
+--- line 198  [PROG]
+called `tool` containing a command called `sub`.
+
+- `tool --help` returns the help for the whole program (listing subcommands).
+- `tool sub --help` returns the help for the `sub` subcommand.
+- But `tool --help sub` treats `--help` as an argument for the main program.
+--- line 202  [PROG]
+- But `tool --help sub` treats `--help` as an argument for the main program.
+  Click then invokes the callback for `--help`, which prints the help and aborts
+  the program before click can process the subcommand.
+
+### Arbitrary Nesting
+--- line 418  [PROG]
+.. click:run::
+
+    invoke(cli, prog_name='cli', args=['8080'])
+    println()
+    invoke(cli, prog_name='cli', args=[], env={"PORT": "8080"})
+--- line 422  [PROG]
+    invoke(cli, prog_name='cli', args=[], env={"PORT": "8080"})
+    println()
+    invoke(cli, prog_name='cli', args=[])
+    println()
+```
+===== flask-d01  (5 blocks)
+--- line 6  [alway]
+Flask 0.7 introduces the concept of URL processors.  The idea is that you
+might have a bunch of resources with common parts in the URL that you
+don't always explicitly want to provide.  For instance you might have a
+bunch of URLs that have the language code in it but you don't want to have
+to handle it in every single function yourself.
+--- line 35  [decorator]
+This is an awful lot of repetition as you have to handle the language code
+setting on the :data:`~flask.g` object yourself in every single function.
+Sure, a decorator could be used to simplify this, but if you want to
+generate URLs from one function to another you would have to still provide
+the language code explicitly which can be annoying.
+--- line 40  [automatically]
+
+For the latter, this is where :func:`~flask.Flask.url_defaults` functions
+come in.  They can automatically inject values into a call to
+:func:`~flask.url_for`.  The code below checks if the
+language code is not yet in the dictionary of URL values and if the
+--- line 68  [decorator]
+That way you no longer have to do the `lang_code` assignment to
+:data:`~flask.g` in every function.  You can further improve that by
+writing your own decorator that prefixes URLs with the language code, but
+the more beautiful solution is using a blueprint.  Once the
+``'lang_code'`` is popped from the values dictionary and it will no longer
+--- line 99  [automatically]
+--------------------------------
+
+Because blueprints can automatically prefix all URLs with a common string
+it's easy to automatically do that for every function.  Furthermore
+blueprints can have per-blueprint URL processors which removes a whole lot
+===== flask-d03  (2 blocks)
+--- line 94  [automatically]
+    $ flask --app hello run
+
+Flask will automatically detect the factory if it is named
+``create_app`` or ``make_app`` in ``hello``. You can also pass arguments
+to the factory like this:
+--- line 103  [--debug, development]
+
+Then the ``create_app`` factory in ``hello`` is called with the keyword
+argument ``local_auth=True``. Add the ``--debug`` option to either command
+to run the development server in debug mode. See :doc:`/cli` for more detail.
+
+===== flask-d08  (15 blocks)
+--- line 23  [ENV]
+        SECRET_KEY="dev",
+    )
+    app.config.from_prefixed_env()
+
+    @app.route("/")
+--- line 47  [decorator]
+    The setup method 'route' can no longer be called on the application. It has already
+    handled its first request, any changes will not be applied consistently.
+    Make sure all imports, decorators, functions, etc. needed to set up the application
+    are done before running it.
+
+--- line 58  [ENV, environment]
+-   Registering blueprints.
+-   Loading configuration with ``app.config``.
+-   Setting up the Jinja template environment with ``app.jinja_env``.
+-   Setting a session interface, instead of the default itsdangerous cookie.
+-   Setting a JSON provider with ``app.json``, instead of the default provider.
+--- line 68  [development]
+
+Flask is a WSGI application framework. The other half of WSGI is the WSGI server. During
+development, Flask, through Werkzeug, provides a development WSGI server with the
+``flask run`` CLI command. When you are done with development, use a production server
+to serve your application, see :doc:`deploying/index`.
+--- line 75  [ENV]
+WSGI server will be told how to access your Flask application object, which is the WSGI
+application. Then it will start listening for HTTP requests, translate the request data
+into a WSGI environ, and call the WSGI application with that data. The WSGI application
+will return data that is translated into an HTTP response.
+
+--- line 80  [ENV]
+#.  Browser or other client makes HTTP request.
+#.  WSGI server receives request.
+#.  WSGI server converts HTTP data to WSGI ``environ`` dict.
+#.  WSGI server calls WSGI application with the ``environ``.
+#.  Flask, the WSGI application, does all its internal processing to route the request
+--- line 95  [decorator]
+The WSGI application above is a callable that behaves in a certain way. Middleware
+is a WSGI application that wraps another WSGI application. It's a similar concept to
+Python decorators. The outermost middleware will be called by the server. It can modify
+the data passed to it, then call the WSGI application (or further middleware) that it
+wraps, and so on. And it can take the return value of that call and modify it further.
+--- line 120  [ENV]
+
+#.  WSGI server calls the Flask object, which calls :meth:`.Flask.wsgi_app`.
+#.  An :class:`.AppContext` object is created. This converts the WSGI ``environ``
+    dict into a :class:`.Request` object.
+#.  The :doc:`app context <appcontext>` is pushed, which makes
+--- line 125  [decorator, signal]
+    :data:`.current_app`, :data:`.g`, :data:`.request`, and :data:`.session`
+    available.
+#.  The :data:`.appcontext_pushed` signal is sent.
+#.  The URL is matched against the URL rules registered with the :meth:`~.Flask.route`
+    decorator during application setup. If there is no match, the error - usually a 404,
+--- line 129  [decorator, signal]
+    decorator during application setup. If there is no match, the error - usually a 404,
+    405, or redirect - is stored to be handled later.
+#.  The :data:`.request_started` signal is sent.
+#.  Any :meth:`~.Flask.url_value_preprocessor` decorated functions are called.
+#.  Any :meth:`~.Flask.before_request` decorated functions are called. If any of
+--- line 147  [signal]
+#.  The session is saved, persisting any modified session data using the app's
+    :attr:`~.Flask.session_interface`.
+#.  The :data:`.request_finished` signal is sent.
+#.  If any step so far raised an exception, and it was not handled by an error handler
+    function, it is handled now. HTTP exceptions are treated as responses with their
+--- line 151  [signal]
+    function, it is handled now. HTTP exceptions are treated as responses with their
+    corresponding status code, other exceptions are converted to a generic 500 response.
+    The :data:`.got_request_exception` signal is sent.
+#.  The response object's status, headers, and body are returned to the WSGI server.
+#.  Any :meth:`~.Flask.teardown_request` decorated functions are called.
+--- line 154  [signal]
+#.  The response object's status, headers, and body are returned to the WSGI server.
+#.  Any :meth:`~.Flask.teardown_request` decorated functions are called.
+#.  The :data:`.request_tearing_down` signal is sent.
+#.  Any :meth:`~.Flask.teardown_appcontext` decorated functions are called.
+#.  The :data:`.appcontext_tearing_down` signal is sent.
+--- line 159  [signal]
+#.  The app context is popped, :data:`.current_app`, :data:`.g`, :data:`.request`,
+    and :data:`.session` are no longer available.
+#.  The :data:`.appcontext_popped` signal is sent.
+
+When executing a CLI command or plain app context without request data, the same
+--- line 168  [decorator]
+owns the route that matches the request.
+
+There are even more decorators and customization points than this, but that aren't part
+of every request lifecycle. They're more specific to certain things you might use during
+a request, such as templates, building URLs, or handling JSON data. See the rest of this
+===== httpx-d02  (15 blocks)
+--- line 14  [argument]
+    Make sure these are not in use, so the tests can run properly.
+
+Any additional arguments will be passed to `pytest`. See the [pytest documentation](https://docs.pytest.org/en/latest/how-to/usage.html) for more information.
+
+For example, to run a single test script:
+--- line 50  [HTTPX]
+
+<p align="center" style="margin: 0 0 10px">
+  <img src="https://raw.githubusercontent.com/encode/httpx/master/docs/img/gh-actions-fail.png" alt='Failing PR commit status'>
+</p>
+
+--- line 58  [HTTPX]
+
+<p align="center" style="margin: 0 0 10px">
+  <img src="https://raw.githubusercontent.com/encode/httpx/master/docs/img/gh-actions-fail-check.png" alt='Failing GitHub action lint job'>
+</p>
+
+--- line 73  [app, configuration]
+### Docs Job Failed
+
+This job failing means the documentation failed to build. This can happen for
+a variety of reasons like invalid markdown or missing configuration within `mkdocs.yml`.
+
+--- line 79  [HTTPX]
+
+<p align="center" style="margin: 0 0 10px">
+  <img src="https://raw.githubusercontent.com/encode/httpx/master/docs/img/gh-actions-fail-test.png" alt='Failing GitHub action test job'>
+</p>
+
+--- line 95  [HTTPX]
+## Releasing
+
+*This section is targeted at HTTPX maintainers.*
+
+Before releasing a new version, create a pull request that includes:
+--- line 101  [HTTPX]
+- **An update to the changelog**:
+    - We follow the format from [keepachangelog](https://keepachangelog.com/en/1.0.0/).
+    - [Compare](https://github.com/encode/httpx/compare/) `master` with the tag of the latest release, and list all entries that are of interest to our users:
+        - Things that **must** go in the changelog: added, changed, deprecated or removed features, and bug fixes.
+        - Things that **should not** go in the changelog: changes to documentation, tests or tooling.
+--- line 108  [HTTPX]
+- **A version bump**: see `__version__.py`.
+
+For an example, see [#1006](https://github.com/encode/httpx/pull/1006).
+
+Once the release PR is merged, create a
+--- line 111  [3.3, HTTPX]
+
+Once the release PR is merged, create a
+[new release](https://github.com/encode/httpx/releases/new) including:
+
+- Tag version like `0.13.3`.
+--- line 114  [3.3]
+
+- Tag version like `0.13.3`.
+- Release title `Version 0.13.3`
+- Description copied from the changelog.
+
+--- line 148  [HTTPX, SSL, proxie, proxies]
+
+At this point the server is ready to start serving requests, you'll need to
+configure HTTPX as described in the
+[proxy section](https://www.python-httpx.org/advanced/proxies/#http-proxies) and
+the [SSL certificates section](https://www.python-httpx.org/advanced/ssl/),
+--- line 154  [HTTPX, SSL, verify]
+
+```python
+ctx = ssl.create_default_context(cafile="/path/to/client.pem")
+client = httpx.Client(proxy="http://127.0.0.1:8080/", verify=ctx)
+```
+--- line 158  [SSL, string, verify]
+```
+
+If an older debugging script of yours still passes the path to `client.pem` straight to `verify` as a string, expect a deprecation warning, and switch it to the `ssl.create_default_context(cafile=...)` form above.
+
+Note, however, that HTTPS requests will only succeed to the host specified
+--- line 161  [SSL]
+
+Note, however, that HTTPS requests will only succeed to the host specified
+in the SSL/TLS certificate we generated, HTTPS requests to other hosts will
+raise an error like:
+
+--- line 165  [SSL, verify]
+
+```
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate
+verify failed: Hostname mismatch, certificate is not valid for
+'duckduckgo.com'. (_ssl.c:1108)
+===== httpx-d03  (15 blocks)
+--- line 12  [app]
+    'x-runtime': '148ms',
+    'etag': '"e1ca502697e5c9317743dc078f67693f"',
+    'content-type': 'application/json'
+})
+```
+--- line 20  [app]
+```pycon
+>>> r.headers['Content-Type']
+'application/json'
+
+>>> r.headers.get('content-type')
+--- line 23  [app]
+
+>>> r.headers.get('content-type')
+'application/json'
+```
+
+--- line 26  [3.2, app]
+```
+
+Multiple values for a single response header are represented as a single comma-separated value, as per [RFC 7230](https://tools.ietf.org/html/rfc7230#section-3.2):
+
+> A recipient MAY combine multiple header fields with the same field name into one “field-name: field-value” pair, without changing the semantics of the message, by appending each subsequent field-value to the combined field value in order, separated by a comma.
+--- line 37  [HTTPX]
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     for data in r.iter_bytes():
+...         print(data)
+--- line 45  [HTTPX]
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     for text in r.iter_text():
+...         print(text)
+--- line 53  [HTTPX]
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     for line in r.iter_lines():
+...         print(line)
+--- line 58  [HTTPX, app]
+```
+
+HTTPX will use universal line endings, normalising all cases to `\n`.
+
+In some cases you might want to access the raw bytes on the response without applying any HTTP content decoding. In this case any content encoding that the web server has applied such as `gzip`, `deflate`, `brotli`, or `zstd` will
+--- line 64  [HTTPX]
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     for chunk in r.iter_raw():
+...         print(chunk)
+--- line 72  [HTTPX]
+
+```pycon
+>>> with httpx.stream("GET", "https://www.example.com") as r:
+...     if int(r.headers['Content-Length']) < TOO_LONG:
+...         r.read()
+--- line 83  [HTTPX]
+
+```pycon
+>>> r = httpx.get('https://httpbin.org/cookies/set?chocolate=chip')
+>>> r.cookies['chocolate']
+'chip'
+--- line 88  [HTTPX, follow_redirects, redirect]
+```
+
+To inspect the `302` response that sets the cookie, rather than the page it redirects on to, pass `follow_redirects=False` to `httpx.get()`.
+
+To include cookies in an outgoing request, use the `cookies` parameter:
+--- line 94  [HTTPX]
+```pycon
+>>> cookies = {"peanut": "butter"}
+>>> r = httpx.get('https://httpbin.org/cookies', cookies=cookies)
+>>> r.json()
+{'cookies': {'peanut': 'butter'}}
+--- line 103  [HTTPX]
+
+```pycon
+>>> cookies = httpx.Cookies()
+>>> cookies.set('cookie_on_domain', 'hello, there!', domain='httpbin.org')
+>>> cookies.set('cookie_off_domain', 'nope.', domain='example.org')
+--- line 106  [HTTPX]
+>>> cookies.set('cookie_on_domain', 'hello, there!', domain='httpbin.org')
+>>> cookies.set('cookie_off_domain', 'nope.', domain='example.org')
+>>> r = httpx.get('http://httpbin.org/cookies', cookies=cookies)
+>>> r.json()
+{'cookies': {'cookie_on_domain': 'hello, there!'}}
+===== httpx-d07  (23 blocks)
+--- line 3  [transport]
+Request and response extensions provide a untyped space where additional information may be added.
+
+Extensions should be used for features that may not be available on all transports, and that do not fit neatly into [the simplified request/response model](https://www.encode.io/httpcore/extensions/) that the underlying `httpcore` package uses as its API.
+
+Several extensions are supported on the request:
+--- line 11  [HTTPX]
+# the request, ensuring that they are passed throughout the
+# entire call stack.
+client = httpx.Client()
+response = client.get(
+    "https://www.example.com",
+--- line 23  [HTTPX]
+
+```python
+client = httpx.Client()
+response = client.get("https://www.example.com")
+print(response.extensions["http_version"])  # b"HTTP/1.1"
+--- line 35  [transport]
+
+The trace extension allows a callback handler to be installed to monitor the internal
+flow of events within the underlying `httpcore` transport.
+
+The simplest way to explain this is with an example:
+--- line 40  [HTTPX]
+
+```python
+import httpx
+
+def log(event_name, info):
+--- line 45  [HTTPX]
+    print(event_name, info)
+
+client = httpx.Client()
+response = client.get("https://www.example.com/", extensions={"trace": log})
+# connection.connect_tcp.started {'host': 'www.example.com', 'port': 443, 'local_address': None, 'timeout': None}
+--- line 49  [SSL, ssl.SSLContext, sslcontext]
+# connection.connect_tcp.started {'host': 'www.example.com', 'port': 443, 'local_address': None, 'timeout': None}
+# connection.connect_tcp.complete {'return_value': <httpcore.backends.sync.SyncStream object at 0x1093f94d0>}
+# connection.start_tls.started {'ssl_context': <ssl.SSLContext object at 0x1093ee750>, 'server_hostname': b'www.example.com', 'timeout': None}
+# connection.start_tls.complete {'return_value': <httpcore.backends.sync.SyncStream object at 0x1093f9450>}
+# http11.send_request_headers.started {'request': <Request [b'GET']>}
+--- line 63  [argument, following]
+```
+
+The `event_name` and `info` arguments here will be one of the following:
+
+* `{event_type}.{event_name}.started`, `<dictionary of keyword arguments>`
+--- line 71  [following]
+Note that when using async code the handler function passed to `"trace"` must be an `async def ...` function.
+
+The following event types are currently exposed...
+
+**Establishing the connection**
+--- line 100  [SSL]
+### `"sni_hostname"`
+
+The server's hostname, which is used to confirm the hostname supplied by the SSL certificate.
+
+If you want to connect to an explicit IP address rather than using the standard DNS hostname lookup, then you'll need to use this request extension.
+--- line 108  [HTTPX, SSL, verify]
+``` python
+# Connect to '185.199.108.153' but use 'www.encode.io' in the Host header,
+# and use 'www.encode.io' when SSL verifying the server hostname.
+client = httpx.Client()
+headers = {"Host": "www.encode.io"}
+--- line 130  [HTTPX]
+# Timeout if a connection takes more than 5 seconds to established, or if
+# we are blocked waiting on the connection pool for more than 10 seconds.
+client = httpx.Client()
+response = client.get(
+    "https://www.example.com",
+--- line 137  [HTTPX]
+```
+
+This extension is how the `httpx` timeouts are implemented, ensuring that the timeout values are associated with the request instance and passed throughout the stack. You shouldn't typically be working with this extension directly, but use the higher level `timeout` API instead.
+
+### `"target"`
+--- line 145  [app]
+This enables support constructing requests that would otherwise be unsupported.
+
+* URL paths with non-standard escaping applied.
+* Forward proxy requests using an absolute URI.
+* Tunneling proxy requests using `CONNECT` with hostname as the target.
+--- line 167  [HTTPX]
+# For example including whitespace in the target will raise a `LocalProtocolError`.
+extensions = {"target": b"/test^path"}
+response = httpx.get("https://www.example.com", extensions=extensions)
+```
+
+--- line 173  [following]
+
+```python
+# This will send the following request...
+#
+# CONNECT * HTTP/1.1
+--- line 177  [HTTPX]
+# CONNECT * HTTP/1.1
+extensions = {"target": b"*"}
+response = httpx.request("CONNECT", "https://www.example.com", extensions=extensions)
+```
+
+--- line 211  [SSL]
+* `write(buffer, timeout = None)`
+* `close()`
+* `start_tls(ssl_context, server_hostname = None, timeout = None) -> NetworkStream`
+* `get_extra_info(info) -> Any`
+
+--- line 214  [proxie, proxies]
+* `get_extra_info(info) -> Any`
+
+This API can be used as the foundation for working with HTTP proxies, WebSocket upgrades, and other advanced use-cases.
+
+See the [network backends documentation](https://www.encode.io/httpcore/network-backends/) for more information on working directly with network streams.
+--- line 223  [HTTPX]
+
+```python
+response = httpx.get("https://www.example.com")
+network_stream = response.extensions["network_stream"]
+
+--- line 232  [SSL]
+```
+
+The socket SSL information is also available through this interface, although you need to ensure that the underlying connection is still open, in order to access it...
+
+```python
+--- line 235  [HTTPX]
+
+```python
+with httpx.stream("GET", "https://www.example.com") as response:
+    network_stream = response.extensions["network_stream"]
+
+--- line 238  [SSL]
+    network_stream = response.extensions["network_stream"]
+
+    ssl_object = network_stream.get_extra_info("ssl_object")
+    print("TLS version", ssl_object.version())
+```
+===== httpx-d08  (21 blocks)
+--- line 1  [HTTPX]
+# Third Party Packages
+
+As HTTPX usage grows, there is an expanding community of developers building tools and libraries that integrate with HTTPX, or depend on HTTPX. Here are some of them.
+
+<!-- NOTE: Entries are alphabetised. -->
+--- line 11  [HTTPX]
+[GitHub](https://github.com/karpetrosyan/hishel) - [Documentation](https://hishel.com/)
+
+An elegant HTTP Cache implementation for HTTPX and HTTP Core.
+
+### HTTPX-Auth
+--- line 15  [HTTPX]
+### HTTPX-Auth
+
+[GitHub](https://github.com/Colin-b/httpx_auth) - [Documentation](https://colin-b.github.io/httpx_auth/)
+
+Provides authentication classes to be used with HTTPX's [authentication parameter](advanced/authentication.md#customizing-authentication).
+--- line 19  [HTTPX]
+Provides authentication classes to be used with HTTPX's [authentication parameter](advanced/authentication.md#customizing-authentication).
+
+### httpx-caching
+
+[Github](https://github.com/johtso/httpx-caching)
+--- line 23  [HTTPX]
+[Github](https://github.com/johtso/httpx-caching)
+
+This package adds caching functionality to HTTPX
+
+### httpx-secure
+--- line 27  [HTTPX]
+### httpx-secure
+
+[GitHub](https://github.com/Zaczero/httpx-secure)
+
+Drop-in SSRF protection for httpx with DNS caching and custom validation support.
+--- line 31  [HTTPX]
+Drop-in SSRF protection for httpx with DNS caching and custom validation support.
+
+### httpx-socks
+
+[GitHub](https://github.com/romis2012/httpx-socks)
+--- line 35  [HTTPX, transport]
+[GitHub](https://github.com/romis2012/httpx-socks)
+
+Proxy (HTTP, SOCKS) transports for httpx.
+
+### httpx-sse
+--- line 39  [HTTPX]
+### httpx-sse
+
+[GitHub](https://github.com/florimondmanca/httpx-sse)
+
+Allows consuming Server-Sent Events (SSE) with HTTPX.
+--- line 43  [HTTPX, e.g]
+Allows consuming Server-Sent Events (SSE) with HTTPX.
+
+### httpx-retries
+
+[GitHub](https://github.com/will-ockmore/httpx-retries) - [Documentation](https://will-ockmore.github.io/httpx-retries/)
+--- line 47  [HTTPX, e.g]
+[GitHub](https://github.com/will-ockmore/httpx-retries) - [Documentation](https://will-ockmore.github.io/httpx-retries/)
+
+A retry layer for HTTPX.
+
+### httpx-ws
+--- line 51  [HTTPX]
+### httpx-ws
+
+[GitHub](https://github.com/frankie567/httpx-ws) - [Documentation](https://frankie567.github.io/httpx-ws/)
+
+WebSocket support for HTTPX.
+--- line 55  [HTTPX]
+WebSocket support for HTTPX.
+
+### pytest-HTTPX
+
+[GitHub](https://github.com/Colin-b/pytest_httpx) - [Documentation](https://colin-b.github.io/pytest_httpx/)
+--- line 59  [HTTPX]
+[GitHub](https://github.com/Colin-b/pytest_httpx) - [Documentation](https://colin-b.github.io/pytest_httpx/)
+
+Provides a [pytest](https://docs.pytest.org/en/latest/) fixture to mock HTTPX within test cases.
+
+### RESPX
+--- line 65  [HTTPX]
+[GitHub](https://github.com/lundberg/respx) - [Documentation](https://lundberg.github.io/respx/)
+
+A utility for mocking out HTTPX.
+
+### rpc.py
+--- line 71  [ASGI, HTTPX, WSGI, app, asgitransport, httpx.ASGITransport]
+[Github](https://github.com/abersheeran/rpc.py) - [Documentation](https://github.com/abersheeran/rpc.py#rpcpy)
+
+A fast and powerful RPC framework based on ASGI/WSGI. Use HTTPX as the client of the RPC service.
+
+When testing such services, HTTPX calls the application in-process through `httpx.WSGITransport(app=...)` or `httpx.ASGITransport(app=...)`, passed to the client as `transport=`.
+--- line 75  [ASGI, HTTPX, WSGI, app, asgitransport, httpx.ASGITransport]
+When testing such services, HTTPX calls the application in-process through `httpx.WSGITransport(app=...)` or `httpx.ASGITransport(app=...)`, passed to the client as `transport=`.
+
+## Libraries with HTTPX support
+
+### Authlib
+--- line 81  [HTTPX]
+[GitHub](https://github.com/lepture/authlib) - [Documentation](https://docs.authlib.org/en/latest/)
+
+A python library for building OAuth and OpenID Connect clients and servers. Includes an [OAuth HTTPX client](https://docs.authlib.org/en/latest/client/httpx.html).
+
+### Gidgethub
+--- line 87  [HTTPX]
+[GitHub](https://github.com/brettcannon/gidgethub) - [Documentation](https://gidgethub.readthedocs.io/en/latest/index.html)
+
+An asynchronous GitHub API library. Includes [HTTPX support](https://gidgethub.readthedocs.io/en/latest/httpx.html).
+
+### httpdbg
+--- line 103  [transport]
+## Gists
+
+### urllib3-transport
+
+[GitHub](https://gist.github.com/florimondmanca/d56764d78d748eb9f73165da388e546e)
+--- line 107  [transport]
+[GitHub](https://gist.github.com/florimondmanca/d56764d78d748eb9f73165da388e546e)
+
+This public gist provides an example implementation for a [custom transport](advanced/transports.md#custom-transports) implementation on top of the battle-tested [`urllib3`](https://urllib3.readthedocs.io) library.
+===== pip-d01  (1 blocks)
+--- line 34  [legacy]
+  This is because a partially-hashed requirements file is of little use and thus likely an error: a malicious actor could slip bad code into the installation via one of the unhashed requirements.
+
+  Note that hashes embedded in URL-style requirements via the `#md5=...` syntax suffice to satisfy this rule (regardless of hash strength, for legacy reasons), though you should use a stronger hash like sha256 whenever possible.
+
+- Hashes are required for _all_ dependencies.
+===== pip-d03  (3 blocks)
+--- line 79  [backtracking, legacy, resolver]
+the chosen version is available, it is assumed that any source is acceptable
+(as otherwise the versions would differ).
+That choice is made by pip's default backtracking resolver; the legacy resolver it replaced is deprecated and not supported.
+
+Obtaining information about what was installed
+--- line 206  [pip search, search]
+----------------
+
+Pip searches for packages on `PyPI`_ using the
+`HTTP simple interface <https://pypi.org/simple/>`_,
+which is documented `here <https://packaging.python.org/specifications/simple-repository-api/>`_
+--- line 217  [rather, search]
+``--index-url``, if not disabled via ``--no-index``), in the local filesystem,
+and in any additional repositories specified via ``--find-links`` or
+``--extra-index-url``. There is no priority in the locations that are searched.
+Rather they are all checked, and the "best" match for the requirements (in
+terms of version number - see the
+===== poetry-d01  (19 blocks)
+--- line 1  [script]
+### scripts
+
+{{% note %}}
+--- line 2  [script]
+
+{{% note %}}
+**Deprecated**: Use [`project.scripts`]({{< relref "#scripts" >}}) instead for `console` and `gui` scripts. Use
+`[tool.poetry.scripts]` only for scripts of type `file`.
+{{% /note %}}
+--- line 6  [script]
+{{% /note %}}
+
+This section describes the scripts or executables that will be installed when installing the package
+
+```toml
+--- line 9  [script]
+
+```toml
+[tool.poetry.scripts]
+my_package_cli = 'my_package.console:run'
+```
+--- line 13  [script]
+```
+
+Here, we will have the `my_package_cli` script installed which will execute the `run` function in the `console` module in the `my_package` package.
+
+{{% note %}}
+--- line 16  [script]
+
+{{% note %}}
+When a script is added or updated, run `poetry install` to make them available in the project's virtualenv.
+{{% /note %}}
+
+--- line 20  [script]
+
+```toml
+[tool.poetry.scripts]
+my_executable = { reference = "some_binary.exe", type = "file" }
+```
+--- line 26  [script]
+This tells Poetry to include the specified file, relative to your project directory, in distribution builds. It will then be copied to the appropriate installation directory for your operating system when your package is installed.
+
+* On Windows the file is placed in the `Scripts/` directory.
+* On *nix system the file is placed in the `bin/` directory.
+
+--- line 29  [script]
+* On *nix system the file is placed in the `bin/` directory.
+
+In its table form, the value of each script can contain a `reference` and `type`. The supported types are
+`console` and `file`. When the value is a string, it is inferred to be a `console` script.
+
+--- line 89  [activate]
+{{% /note %}}
+
+When installing or specifying Poetry-built packages, the extras defined in this section can be activated
+as described in [PEP 508](https://www.python.org/dev/peps/pep-0508/#extras).
+
+--- line 106  [plugin]
+
+
+### plugins
+
+**Deprecated**: Use `project.entry-points` instead.
+--- line 110  [plugin]
+**Deprecated**: Use `project.entry-points` instead.
+
+Poetry supports arbitrary plugins, which are exposed as the ecosystem-standard [entry points](https://packaging.python.org/en/latest/specifications/entry-points/) and discoverable using `importlib.metadata`. This is similar to (and compatible with) the entry points feature of `setuptools`.
+The syntax for registering a plugin is:
+
+--- line 114  [plugin]
+
+```toml
+[tool.poetry.plugins] # Optional super table
+
+[tool.poetry.plugins."A"]
+--- line 121  [plugin]
+Which are:
+
+- `A` - type of the plugin, for example `poetry.plugin` or `flake8.extension`
+- `B` - name of the plugin
+- `C` - python module import path
+--- line 124  [export, plugin]
+- `B` - name of the plugin
+- `C` - python module import path
+- `D` - the entry point of the plugin (a function or class)
+
+Example (from [`poetry-plugin-export`](https://github.com/python-poetry/poetry-plugin-export)):
+--- line 129  [export, plugin]
+
+```toml
+[tool.poetry.plugins."poetry.application.plugin"]
+export = "poetry_plugin_export.plugins:ExportApplicationPlugin"
+```
+--- line 159  [plugin]
+```
+
+### requires-plugins
+
+In this section, you can specify that certain plugins are required for your project:
+--- line 164  [plugin]
+
+```toml
+[tool.poetry.requires-plugins]
+my-application-plugin = ">=1.0"
+my-plugin = ">=1.0,<2.0"
+--- line 169  [export, plugin]
+```
+
+Were the Export Poetry Plugin ever to ship with Poetry by default again, it would no longer need to be listed here to make `poetry export` available.
+
+See [Project plugins]({{< relref "plugins#project-plugins" >}}) for more information.
+===== poetry-d02  (1 blocks)
+--- line 217  [provided]
+
+Package source constraints are strongly suggested for all packages that are expected
+to be provided only by one specific source to avoid dependency confusion attacks.
+
+{{% /note %}}
+===== poetry-d05  (3 blocks)
+--- line 14  [activate]
+
+{{% note %}}
+If Poetry detects it's running within an activated virtual environment, it will never create a new virtual environment,
+regardless of the value set for `virtualenvs.create`.
+{{% /note %}}
+--- line 124  [activate, plugin, poetry env activate, poetry shell, poetry-plugin-shell]
+*Introduced in 1.2.0*
+
+Format string defining the prompt to be displayed when the virtual environment is activated.
+The variables `project_name` and `python_version` are available for formatting.
+To activate the environment, run the command printed by `poetry env activate`; `poetry shell` is not part of Poetry anymore and is only available through the `poetry-plugin-shell` plugin.
+--- line 138  [activate]
+*Introduced in 2.0.0*
+
+By default, Poetry will use the activated Python version to create a new virtual environment.
+If set to `true`, the Python version used during Poetry installation is used.
+===== poetry-d07  (26 blocks)
+--- line 6  [installer]
+{{% /note %}}
+
+{{< tabs tabTotal="4" tabID1="installing-with-pipx" tabID2="installing-with-the-official-installer" tabID3="installing-manually" tabID4="ci-recommendations" tabName1="With pipx" tabName2="With the official installer" tabName3="Manually (advanced)" tabName4="CI recommendations">}}
+
+{{< tab tabID="installing-with-pipx" >}}
+--- line 83  [installer]
+
+{{< /tab >}}
+{{< tab tabID="installing-with-the-official-installer" >}}
+
+We provide a custom installer that will install Poetry in a new virtual environment
+--- line 92  [developed, install.python-poetry.org, installer, script]
+**Install Poetry**
+
+The installer script is available directly at [install.python-poetry.org](https://install.python-poetry.org),
+and is developed in [its own repository](https://github.com/python-poetry/install.python-poetry.org).
+The script can be executed directly (i.e. 'curl python') or downloaded and then executed from disk
+--- line 100  [install.python-poetry.org]
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+--- line 105  [install.python-poetry.org]
+**Windows (Powershell)**
+```powershell
+(Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+```
+
+--- line 132  [install.python-poetry.org]
+
+```bash
+curl -sSL https://install.python-poetry.org | POETRY_HOME=/etc/poetry python3 -
+```
+
+--- line 135  [script]
+```
+
+If you want to install prerelease versions, you can do so by passing the `--preview` option to the installation script
+or by using the `$POETRY_PREVIEW` environment variable:
+
+--- line 139  [install.python-poetry.org]
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 - --preview
+curl -sSL https://install.python-poetry.org | POETRY_PREVIEW=1 python3 -
+```
+--- line 147  [install.python-poetry.org]
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 - --version 1.8.4
+curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.8.4 python3 -
+```
+--- line 154  [install.python-poetry.org]
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 - --git https://github.com/python-poetry/poetry.git@main
+````
+If you want to install different versions of Poetry in parallel, a good approach is the installation with pipx and suffix.
+--- line 162  [installer]
+**Add Poetry to your PATH**
+
+The installer creates a `poetry` wrapper in a well-known, platform-specific directory:
+
+- `$HOME/.local/bin` on Unix.
+--- line 165  [script]
+
+- `$HOME/.local/bin` on Unix.
+- `%APPDATA%\Python\Scripts` on Windows.
+- `$POETRY_HOME/bin` if `$POETRY_HOME` is set.
+
+--- line 174  [script]
+```
+%LOCALAPPDATA%\Packages\PythonSoftwareFoundation.Python.3.12_qbz5n2kfra8p0
+\LocalCache\Roaming\Python\Scripts
+```
+
+--- line 187  [script]
+- `~/Library/Application Support/pypoetry/venv/bin/poetry` on macOS.
+- `~/.local/share/pypoetry/venv/bin/poetry` on Linux/Unix.
+- `%APPDATA%\pypoetry\venv\Scripts\poetry` on Windows.
+- `$POETRY_HOME/venv/bin/poetry` if `$POETRY_HOME` is set.
+
+--- line 205  [installer]
+**Update Poetry**
+
+Poetry is able to update itself when installed using the official installer.
+
+{{% warning %}}
+--- line 209  [installer]
+{{% warning %}}
+Especially on Windows, `self update` may be problematic
+so that a re-install with the installer should be preferred.
+{{% /warning %}}
+
+--- line 234  [installer]
+
+If you decide Poetry isn't your thing, you can completely remove it from your system
+by running the installer again with the `--uninstall` option or by setting
+the `POETRY_UNINSTALL` environment variable before executing the installer.
+
+--- line 238  [install.python-poetry.org]
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 - --uninstall
+curl -sSL https://install.python-poetry.org | POETRY_UNINSTALL=1 python3 -
+```
+--- line 248  [installer]
+
+Poetry can be installed manually using `pip` and the `venv` module. By doing so you will essentially perform the steps carried
+out by the official installer. As this is an advanced installation method, these instructions are Unix-only and omit specific
+examples such as installing from `git`.
+
+--- line 283  [install.python-poetry.org]
+```
+
+**Using install.python-poetry.org**
+
+{{% note %}}
+--- line 286  [install.python-poetry.org, installer, script]
+
+{{% note %}}
+The official installer script ([install.python-poetry.org](https://install.python-poetry.org)) offers a streamlined and
+simplified installation of Poetry, sufficient for developer use or for simple pipelines. However, in a CI environment
+the other two supported installation methods (pipx and manual) should be seriously considered.
+--- line 291  [install.python-poetry.org, installer, script]
+{{% /note %}}
+
+Downloading a copy of the installer script to a place accessible by your CI pipelines (or maintaining a copy of the
+[repository](https://github.com/python-poetry/install.python-poetry.org)) is strongly suggested, to ensure your
+pipeline's stability and to maintain control over what code is executed.
+--- line 295  [installer]
+pipeline's stability and to maintain control over what code is executed.
+
+By default, the installer will install to a user-specific directory. In more complex pipelines that may make accessing
+Poetry difficult (especially in cases like multi-stage container builds). It is highly suggested to make use of
+`$POETRY_HOME` when using the official installer in CI, as that way the exact paths can be controlled.
+--- line 300  [export]
+
+```bash
+export POETRY_HOME=/opt/poetry
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py -o install-poetry.py
+python3 install-poetry.py --version 2.0.0
+--- line 313  [export]
+
+```bash
+export POETRY_HOME=/opt/poetry
+python3 -m venv $POETRY_HOME
+$POETRY_HOME/bin/pip install poetry==2.0.0
+--- line 333  [activate]
+It should in no case be installed in the environment of the project that is to be managed by Poetry.
+This ensures that Poetry's own dependencies will not be accidentally upgraded or uninstalled.
+In addition, the isolated virtual environment in which poetry is installed should not be activated for running poetry commands.
+{{% /warning %}}
+===== pytest-d03  (11 blocks)
+--- line 34  [pytest.fixture, pytest.yield_fixture]
+it that was *after* the ``yield`` statement.
+
+If you maintain older code whose fixtures are still decorated with ``@pytest.yield_fixture``, you can switch them to plain ``@pytest.fixture`` without changing anything else.
+
+As a simple example, consider this basic email module:
+--- line 83  [pytest.fixture]
+
+
+    @pytest.fixture
+    def mail_admin():
+        return MailAdminClient()
+--- line 88  [pytest.fixture]
+
+
+    @pytest.fixture
+    def sending_user(mail_admin):
+        user = mail_admin.create_user()
+--- line 95  [pytest.fixture]
+
+
+    @pytest.fixture
+    def receiving_user(mail_admin):
+        user = mail_admin.create_user()
+--- line 158  [pytest.fixture]
+
+
+    @pytest.fixture
+    def mail_admin():
+        return MailAdminClient()
+--- line 163  [pytest.fixture]
+
+
+    @pytest.fixture
+    def sending_user(mail_admin):
+        user = mail_admin.create_user()
+--- line 170  [pytest.fixture]
+
+
+    @pytest.fixture
+    def receiving_user(mail_admin, request):
+        user = mail_admin.create_user()
+--- line 181  [pytest.fixture]
+
+
+    @pytest.fixture
+    def email(sending_user, receiving_user, request):
+        _email = Email(subject="Hey!", body="How's it going?")
+--- line 223  [pytest.fixture]
+
+
+    @pytest.fixture
+    def fix_w_yield1():
+        yield
+--- line 229  [pytest.fixture]
+
+
+    @pytest.fixture
+    def fix_w_yield2():
+        yield
+--- line 259  [pytest.fixture]
+
+
+    @pytest.fixture
+    def fix_w_finalizers(request):
+        request.addfinalizer(partial(print, "finalizer_2"))
+===== pytest-d05  (1 blocks)
+--- line 89  [3.7]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Python 3.7 introduces a builtin ``breakpoint()`` function.
+Since pytest itself requires Python 3.10 or newer, this function is always available in a pytest run.
+Pytest supports the use of ``breakpoint()`` with the following behaviours:
+===== pytest-d06  (4 blocks)
+--- line 4  [section]
+---------------------
+
+pytest captures log messages of level ``WARNING`` or above automatically and displays them in their own section
+for each failed test in the same manner as captured stdout and stderr.
+
+--- line 168  [pytest.fixture]
+.. code-block:: python
+
+    @pytest.fixture
+    def window(caplog):
+        window = create_window()
+--- line 296  [3.4]
+.. _log_changes_3_4:
+
+Incompatible changes in pytest 3.4
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+--- line 300  [3.4]
+
+This feature was introduced in ``3.3`` and some **incompatible changes** have been
+made in ``3.4`` after community feedback:
+
+* Log levels are no longer changed unless explicitly requested by the :confval:`log_level` configuration
+===== pytest-d07  (24 blocks)
+--- line 24  [pytest.toml]
+A quick example of the configuration files supported by pytest:
+
+pytest.toml
+~~~~~~~~~~~
+
+--- line 29  [precedence, pytest.toml]
+.. versionadded:: 9.0
+
+``pytest.toml`` files take precedence over other files, even when empty.
+
+Alternatively, the hidden version ``.pytest.toml`` can be used.
+--- line 37  [pytest.toml]
+    .. code-block:: toml
+
+        # pytest.toml or .pytest.toml
+        [pytest]
+        minversion = "9.0"
+--- line 46  [pytest.ini]
+        ]
+
+pytest.ini
+~~~~~~~~~~
+
+--- line 49  [precedence, pytest.ini, pytest.toml]
+~~~~~~~~~~
+
+``pytest.ini`` files take precedence over other files (except ``pytest.toml`` and ``.pytest.toml``), even when empty.
+
+Alternatively, the hidden version ``.pytest.ini`` can be used.
+--- line 57  [pytest.ini]
+    .. code-block:: ini
+
+        # pytest.ini or .pytest.ini
+        [pytest]
+        minversion = 6.0
+--- line 74  [3.9]
+``pyproject.toml`` files are supported for configuration.
+
+TOML configuration is parsed with the standard library's :mod:`tomllib` on Python 3.11 and newer; on Python 3.9 and 3.10 pytest depends on the ``tomli`` backport instead.
+
+.. tab:: toml
+--- line 93  [pytest.ini]
+.. tab:: ini
+
+    Use ``[tool.pytest.ini_options]`` for INI-style configuration (supported since pytest 6.0):
+
+    .. code-block:: toml
+--- line 98  [pytest.ini]
+
+        # pyproject.toml
+        [tool.pytest.ini_options]
+        minversion = "6.0"
+        addopts = "-ra -q"
+--- line 107  [pytest.ini]
+
+    For projects that still run pytest versions older than 6.0, keep
+    ``minversion`` in ``pytest.ini`` or ``tox.ini`` too. Those versions
+    do not read ``pyproject.toml``.
+
+--- line 114  [section]
+
+``tox.ini`` files are the configuration files of the `tox <https://tox.readthedocs.io>`__ project,
+and can also be used to hold pytest configuration if they have a ``[pytest]`` section.
+
+.. tab:: ini
+--- line 129  [setup.cfg]
+
+
+setup.cfg
+~~~~~~~~~
+
+--- line 132  [section, setup.cfg]
+~~~~~~~~~
+
+``setup.cfg`` files are general purpose configuration files, used originally by ``distutils`` (now deprecated) and :std:doc:`setuptools <setuptools:userguide/declarative_config>`, and can also be used to hold pytest configuration
+if they have a ``[tool:pytest]`` section.
+
+--- line 139  [setup.cfg]
+    .. code-block:: ini
+
+        # setup.cfg
+        [tool:pytest]
+        minversion = 6.0
+--- line 149  [pytest.ini, setup.cfg]
+.. warning::
+
+    Usage of ``setup.cfg`` is not recommended unless for very simple use cases. ``.cfg``
+    files use a different parser than ``pytest.ini`` and ``tox.ini`` which might cause hard to track
+    down problems.
+--- line 196  [pytest.ini, pytest.toml, setup.cfg]
+  found, the common ancestor directory is set to the current working directory.
+
+- Look for ``pytest.toml``, ``.pytest.toml``, ``pytest.ini``, ``.pytest.ini``, ``pyproject.toml``, ``tox.ini``, and ``setup.cfg`` files in the ancestor
+  directory and upwards.  If one is matched, it becomes the ``configfile`` and its
+  directory becomes the ``rootdir``.
+--- line 203  [pytest.ini, pytest.toml, setup.cfg]
+  ancestor directory to determine the ``rootdir``.
+
+- If no ``setup.py`` was found, look for ``pytest.toml``, ``.pytest.toml``, ``pytest.ini``, ``.pytest.ini``, ``pyproject.toml``, ``tox.ini``, and
+  ``setup.cfg`` in each of the specified ``args`` and upwards. If one is
+  matched, it becomes the ``configfile`` and its directory becomes the ``rootdir``.
+--- line 216  [precedence, pytest.ini, pytest.toml]
+Files will only be matched for configuration if:
+
+* ``pytest.toml``: will always match and take highest precedence, even if empty.
+* ``pytest.ini``: will always match and take precedence (after ``pytest.toml`` and ``.pytest.toml``), even if empty.
+* ``pyproject.toml``: contains a ``[tool.pytest]`` or ``[tool.pytest.ini_options]`` table.
+--- line 219  [precedence, pytest.ini, pytest.toml, section, setup.cfg]
+* ``pytest.ini``: will always match and take precedence (after ``pytest.toml`` and ``.pytest.toml``), even if empty.
+* ``pyproject.toml``: contains a ``[tool.pytest]`` or ``[tool.pytest.ini_options]`` table.
+* ``tox.ini``: contains a ``[pytest]`` section.
+* ``setup.cfg``: contains a ``[tool:pytest]`` section.
+
+--- line 223  [pytest.ini]
+
+Finally, a ``pyproject.toml`` file will be considered the ``configfile`` if no other match was found, in this case
+even if it does not contain a ``[tool.pytest]`` table (since version ``9.0``) or a ``[tool.pytest.ini_options]``
+table (since version ``8.1``).
+
+--- line 242  [pathlib, pathlib.Path]
+
+.. versionadded:: 6.1
+    The ``config.rootpath`` and ``config.inipath`` properties. They are :class:`pathlib.Path`
+    versions of the older ``config.rootdir`` and ``config.inifile``, which have type
+    ``py.path.local``, and still exist for backward compatibility.
+--- line 259  [pytest.ini, pytest.toml]
+.. code-block:: text
+
+    # first look for path/pytest.toml
+    path/pytest.toml
+    path/pytest.ini
+--- line 263  [pytest.ini, pytest.toml, section, setup.cfg]
+    path/pytest.ini
+    path/pyproject.toml  # must contain a [tool.pytest] table to match
+    path/tox.ini         # must contain [pytest] section to match
+    path/setup.cfg       # must contain [tool:pytest] section to match
+    pytest.toml
+--- line 266  [pytest.ini, pytest.toml, section, setup.cfg]
+    path/setup.cfg       # must contain [tool:pytest] section to match
+    pytest.toml
+    pytest.ini
+    ... # all the way up to the root
+
+===== pytest-d08  (8 blocks)
+--- line 33  [tmpdir]
+    =========================== test session starts ============================
+    platform linux -- Python 3.x.y, pytest-5.x.y, py-1.x.y, pluggy-0.x.y
+    rootdir: $REGENDOC_TMPDIR, inifile:
+    collected 5 items
+
+--- line 93  [pytest.toml]
+.. code-block:: toml
+
+    # content of pytest.toml
+    [pytest]
+    norecursedirs = [".svn", "_build", "tmp*"]
+--- line 99  [pytest.ini, pytest.toml]
+This would tell ``pytest`` to not recurse into typical subversion or sphinx-build directories or into any ``tmp`` prefixed directory.
+
+Were the same option also set in a ``pytest.ini`` next to this file, pytest would still take it from ``pytest.toml``, which wins even when both files are present.
+
+.. _`change naming conventions`:
+--- line 113  [pytest.toml]
+.. code-block:: toml
+
+    # content of pytest.toml
+    # Example 1: have pytest look for "check" instead of "test"
+    [pytest]
+--- line 142  [pytest.toml]
+    platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+    rootdir: /home/sweet/project
+    configfile: pytest.toml
+    collected 2 items
+
+--- line 157  [pytest.toml]
+.. code-block:: toml
+
+    # content of pytest.toml
+    # Example 2: have pytest look for files with "test" and "example"
+    [pytest]
+--- line 186  [pytest.toml]
+.. code-block:: toml
+
+    # content of pytest.toml
+    [pytest]
+    addopts = ["--pyargs"]
+--- line 205  [pytest.toml]
+    platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+    rootdir: /home/sweet/project
+    configfile: pytest.toml
+    collected 3 items
+
+===== requests-d02  (8 blocks)
+--- line 90  [source]
+Whenever a call is made to ``requests.get()`` and friends, you are doing two
+major things. First, you are constructing a ``Request`` object which will be
+sent off to a server to request or query some resource. Second, a ``Response``
+object is generated once Requests gets a response back from the server.
+The ``Response`` object contains all of the information returned by the server and
+--- line 102  [encoding]
+    >>> r.headers
+    {'content-length': '56170', 'x-content-type-options': 'nosniff', 'x-cache':
+    'HIT from cp1006.eqiad.wmnet, MISS from cp1010.eqiad.wmnet', 'content-encoding':
+    'gzip', 'age': '3080', 'content-language': 'en', 'vary': 'Accept-Encoding,Cookie',
+    'server': 'Apache', 'last-modified': 'Wed, 13 Jun 2012 01:33:50 GMT',
+--- line 107  [charset]
+    'connection': 'close', 'cache-control': 'private, s-maxage=0, max-age=0,
+    must-revalidate', 'date': 'Thu, 14 Jun 2012 12:59:39 GMT', 'content-type':
+    'text/html; charset=UTF-8', 'x-cache-lookup': 'HIT from cp1006.eqiad.wmnet:3128,
+    MISS from cp1010.eqiad.wmnet:80'}
+
+--- line 114  [encoding]
+
+    >>> r.request.headers
+    {'Accept-Encoding': 'identity, deflate, compress, gzip',
+    'Accept': '*/*', 'User-Agent': 'python-requests/1.2.0'}
+
+--- line 221  [github.com]
+I don't have SSL setup on this domain, so it throws an exception. Excellent. GitHub does though::
+
+    >>> requests.get('https://github.com')
+    <Response [200]>
+
+--- line 226  [github.com]
+You can pass ``verify`` the path to a CA_BUNDLE file or directory with certificates of trusted CAs::
+
+    >>> requests.get('https://github.com', verify='/path/to/certfile')
+
+or persistent::
+--- line 284  [source]
+
+Before version 2.16, Requests bundled a set of root CAs that it trusted,
+sourced from the `Mozilla trust store`_. The certificates were only updated
+once for each Requests version. When ``certifi`` was not installed, this led to
+extremely out-of-date certificate bundles when using significantly older
+--- line 290  [2.28.0, 2.7]
+
+For the sake of security we recommend upgrading certifi frequently!
+If you maintain an application that is stuck on Python 2.7, you will be
+limited to a Requests release older than 2.28.0, so keeping ``certifi`` up to
+date independently is especially important.
+===== requests-d04  (8 blocks)
+--- line 23  [github.com]
+
+    >>> s = requests.Session()
+    >>> s.mount('https://github.com/', MyAdapter())
+
+The mount call registers a specific instance of a Transport Adapter to a
+--- line 86  [github.com]
+    s.mount('https://', HTTPAdapter(max_retries=retries))
+
+.. _`urllib3`: https://github.com/urllib3/urllib3
+.. _`urllib3.util.Retry`: https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html#urllib3.util.Retry
+
+--- line 108  [github.com]
+does not use it.
+
+.. _`requests-threads`: https://github.com/requests/requests-threads
+.. _`grequests`: https://github.com/spyoungtech/grequests
+.. _`requests-futures`: https://github.com/ross/requests-futures
+--- line 111  [github.com]
+.. _`grequests`: https://github.com/spyoungtech/grequests
+.. _`requests-futures`: https://github.com/ross/requests-futures
+.. _`httpx`: https://github.com/encode/httpx
+
+Header Ordering
+--- line 127  [unles]
+Most requests to external servers should have a timeout attached, in case the
+server is not responding in a timely manner. By default, requests do not time
+out unless a timeout value is set explicitly. Without a timeout, your code may
+hang for minutes or more.
+
+--- line 144  [github.com]
+If you specify a single value for the timeout, like this::
+
+    r = requests.get('https://github.com', timeout=5)
+
+The timeout value will be applied to both the ``connect`` and the ``read``
+--- line 149  [github.com]
+timeouts. Specify a tuple if you would like to set the values separately::
+
+    r = requests.get('https://github.com', timeout=(3.05, 27))
+
+If the remote server is very slow, you can tell Requests to wait forever for
+--- line 157  [github.com]
+::
+
+    r = requests.get('https://github.com', timeout=None)
+
+.. note:: The connect timeout applies to each connection attempt to an IP address.
+===== requests-d05  (8 blocks)
+--- line 108  [encoding]
+    >>> r.headers
+    {
+        'content-encoding': 'gzip',
+        'transfer-encoding': 'chunked',
+        'connection': 'close',
+--- line 189  [github.com]
+For example, GitHub redirects all HTTP requests to HTTPS::
+
+    >>> r = requests.get('http://github.com/')
+
+    >>> r.url
+--- line 192  [github.com]
+
+    >>> r.url
+    'https://github.com/'
+
+    >>> r.status_code
+--- line 204  [github.com]
+redirection handling with the ``allow_redirects`` parameter::
+
+    >>> r = requests.get('http://github.com/', allow_redirects=False)
+
+    >>> r.status_code
+--- line 214  [github.com]
+If you're using HEAD, you can enable redirection as well::
+
+    >>> r = requests.head('http://github.com/', allow_redirects=True)
+
+    >>> r.url
+--- line 217  [github.com]
+
+    >>> r.url
+    'https://github.com/'
+
+    >>> r.history
+--- line 231  [github.com]
+to hang indefinitely::
+
+    >>> requests.get('https://github.com/', timeout=0.001)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+--- line 234  [github.com]
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    requests.exceptions.Timeout: HTTPConnectionPool(host='github.com', port=80): Request timed out. (timeout=0.001)
+
+
+===== requests-d06  (3 blocks)
+--- line 2  [github.com]
+
+If you think you have found a potential security vulnerability in
+requests, please open a [draft Security Advisory](https://github.com/psf/requests/security/advisories/new)
+via GitHub. We will coordinate verification and next steps through
+that secure medium.
+--- line 72  [2.7]
+know at one of the email addresses at the top of this article.
+Were we ever to issue a fix for a Python version that Requests no longer
+supports, such as Python 2.7, we would agree the details with these packagers
+separately.
+
+--- line 75  [repository]
+separately.
+
+On release day, we will push the patch to our public repository, along
+with an updated changelog that describes the issue and credits you. We
+will then issue a PyPI release containing the patch.

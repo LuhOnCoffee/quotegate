@@ -1,0 +1,14 @@
+# derived: rebuild with corpus/anonymise.py
+corpus/keyinput/
+# derivable from the raw runs
+corpus/runs/*.kept.jsonl
+corpus/runs/queue.out
+__pycache__/
+corpus/v2/keyinput/
+corpus/v2/runs/*.kept.jsonl
+corpus/v2/queue.out
+.venv/
+.serena/
+corpus/v3/keyinput/
+corpus/v3/runs/
+corpus/v4/keyinput/

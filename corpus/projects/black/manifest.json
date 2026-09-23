@@ -1,0 +1,121 @@
+{
+  "project": "black",
+  "head_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+  "head_date": "2026-09-21",
+  "license": "MIT",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Black requires Python 3.10 or newer to run.",
+      "source_path": "docs/getting_started.md",
+      "source_quote": "_Black_ can be installed by running `pip install black`. It requires Python 3.10+ to"
+    },
+    {
+      "id": "F2",
+      "fact": "Black no longer supports formatting Python 2 code; that support was removed in version 22.0.",
+      "source_path": "docs/faq.md",
+      "source_quote": "Support for formatting Python 2 code was removed in version 22.0."
+    },
+    {
+      "id": "F3",
+      "fact": "Black supports running on PyPy 3.8 and higher (PyPy 3.7 is no longer supported).",
+      "source_path": "docs/faq.md",
+      "source_quote": "Yes, there is support for PyPy 3.8 and higher."
+    },
+    {
+      "id": "F4",
+      "fact": "Black is stable (no longer a beta product): formatting output is stable for all releases within the same calendar year.",
+      "source_path": "docs/faq.md",
+      "source_quote": "Starting in 2022, the formatting output is stable for the releases made in the same year"
+    },
+    {
+      "id": "F5",
+      "fact": "The --experimental-string-processing flag has been removed (in 24.1.0); string splitting is now only available as the unstable feature string_processing via --preview --enable-unstable-feature string_processing.",
+      "source_path": "CHANGES.md",
+      "source_quote": "Remove the long-deprecated `--experimental-string-processing` flag."
+    }
+  ],
+  "docs": [
+    {
+      "file": "docs/black-01-organic.txt",
+      "kind": "organic",
+      "source_tag": "21.12b0",
+      "source_path": "README.md",
+      "source_commit": "f1d4e742c91dd5179d742b0db9293c4472b765f8",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes: 'It requires Python 3.6.2+ to run.' (F1); 'If you want to format Python 2 code as well, install with `pip install black[python2]`.' (F2); '_Black_ is still beta. Things will probably be wonky for a while.' (F4)"
+    },
+    {
+      "file": "docs/black-02-organic.txt",
+      "kind": "organic",
+      "source_tag": "22.1.0",
+      "source_path": "docs/faq.md",
+      "source_commit": "d038a24ca200da9dacc1dcb05090c9e5b45b7869",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes: 'Currently the runtime requires Python 3.6-3.10.' (F1); 'Yes, there is support for PyPy 3.7 and higher.' (F3). Note the doc correctly states Python 2 removal (consistent with F2) and stability (consistent with F4)."
+    },
+    {
+      "file": "docs/black-03-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "docs/usage_and_configuration/the_basics.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "If you only want the long string splitting, pass the `--experimental-string-processing` flag instead.",
+      "inserted_fact": "F5",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/black-04-planted.txt",
+      "kind": "planted",
+      "source_tag": "HEAD",
+      "source_path": "docs/index.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "_Black_ runs on Python 3.8 and newer.",
+      "inserted_fact": "F1",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/black-05-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "README.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "Release 21.12b0, published in December 2021, was the last version of _Black_ able to format Python 2 code.",
+      "inserted_fact": "F2",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/black-06-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "HEAD",
+      "source_path": "docs/usage_and_configuration/black_as_a_server.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "Until version 24.1.0 removed it, long string splitting could also be requested with the deprecated `--experimental-string-processing` flag.",
+      "inserted_fact": "F5",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/black-07-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/guides/using_black_with_other_tools.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    },
+    {
+      "file": "docs/black-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/integrations/source_version_control.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    }
+  ],
+  "notes": "HEAD = main at 62bcae6 (2026-09-21). black-03 is the_basics.md trimmed before the `--required-version` section (original 21,433 chars). Distractor facts verified: 21.12b0 tagged 2021-12-05 and Python 2 formatting removed in 22.0 (22.1.0); --experimental-string-processing removed under CHANGES 'Version 24.1.0'. Caveats: black-06 (blackd) contains an X-Python-Variant example 'compatible with Python 3.5 and 3.6' that is about target code, not runtime, so it does not contradict F1. black-01 also shows `pip install git+git://github.com/psf/black` (now git+https) - not a keyed fact. black-04 planted sentence sits inline at the end of the second paragraph of index.md."
+}

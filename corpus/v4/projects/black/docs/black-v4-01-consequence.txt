@@ -1,0 +1,215 @@
+# The _Black_ code style
+
+## Code style
+
+_Black_ aims for consistency, generality, readability and reducing git diffs. Similar
+language constructs are formatted with similar rules. Style configuration options are
+deliberately limited and rarely added. Previous formatting is taken into account as
+little as possible, with rare exceptions like the magic trailing comma. The coding style
+used by _Black_ follows PEP 8 in spirit and enforces a consistent subset of its
+formatting recommendations. It does not implement every style rule covered by PEP 8.
+
+This document describes the current formatting style. If you're interested in trying out
+where the style is heading, see [future style](./future_style.md) and try running
+`black --preview`.
+
+### How _Black_ wraps lines
+
+_Black_ ignores previous formatting and applies uniform horizontal and vertical
+whitespace to your code. The rules for horizontal whitespace can be summarized as: do
+whatever makes `pycodestyle` happy.
+
+As for vertical whitespace, _Black_ tries to render one full expression or simple
+statement per line. If this fits the allotted line length, great.
+
+```python
+# in:
+
+j = [1,
+     2,
+     3
+]
+
+# out:
+
+j = [1, 2, 3]
+```
+
+If not, _Black_ will look at the contents of the first outer matching brackets and put
+that in a separate indented line.
+
+```python
+# in:
+
+ImportantClass.important_method(exc, limit, lookup_lines, capture_locals, extra_argument)
+
+# out:
+
+ImportantClass.important_method(
+    exc, limit, lookup_lines, capture_locals, extra_argument
+)
+```
+
+If that still doesn't fit the bill, it will decompose the internal expression further
+using the same rule, indenting matching brackets every time. If the contents of the
+matching brackets pair are comma-separated (like an argument list, or a dict literal,
+and so on) then _Black_ will first try to keep them on the same line with the matching
+brackets. If that doesn't work, it will put all of them in separate lines.
+
+```python
+# in:
+
+def very_important_function(template: str, *variables, file: os.PathLike, engine: str, header: bool = True, debug: bool = False):
+    """Applies `variables` to the `template` and writes to `file`."""
+    with open(file, 'w') as f:
+        ...
+
+# out:
+
+def very_important_function(
+    template: str,
+    *variables,
+    file: os.PathLike,
+    engine: str,
+    header: bool = True,
+    debug: bool = False,
+):
+    """Applies `variables` to the `template` and writes to `file`."""
+    with open(file, "w") as f:
+        ...
+```
+
+If a data structure literal (tuple, list, set, dict) or a line of "from" imports cannot
+fit in the allotted length, it's always split into one element per line. This minimizes
+diffs as well as enables readers of code to find which commit introduced a particular
+entry. This also makes _Black_ compatible with
+[isort](../guides/using_black_with_other_tools.md#isort) with the ready-made `black`
+profile or manual configuration.
+
+You might have noticed that closing brackets are always dedented and that a trailing
+comma is always added. Such formatting produces smaller diffs; when you add or remove an
+element, it's always just one line. Also, having the closing bracket dedented provides a
+clear delimiter between two distinct sections of the code that otherwise share the same
+indentation level (like the arguments list and the docstring in the example above).
+
+(labels/why-no-backslashes)=
+
+_Black_ prefers parentheses over backslashes, and will remove backslashes if found.
+
+```python
+# in:
+
+if some_short_rule1 \
+  and some_short_rule2:
+      ...
+
+# out:
+
+if some_short_rule1 and some_short_rule2:
+  ...
+
+
+# in:
+
+if some_long_rule1 \
+  and some_long_rule2:
+    ...
+
+# out:
+
+if (
+    some_long_rule1
+    and some_long_rule2
+):
+    ...
+
+```
+
+Backslashes and multiline strings are one of the two places in the Python grammar that
+break significant indentation. You never need backslashes, they are used to force the
+grammar to accept breaks that would otherwise be parse errors. That makes them confusing
+to look at and brittle to modify. This is why _Black_ always gets rid of them.
+
+If you're reaching for backslashes, that's a clear signal that you can do better if you
+slightly refactor your code. I hope some of the examples above show you that there are
+many ways in which you can do it.
+
+(labels/line-length)=
+
+### Line length
+
+You probably noticed the peculiar default line length. _Black_ defaults to 88 characters
+per line, which happens to be 10% over 80. This number was found to produce
+significantly shorter files than sticking with 80 (the most popular), or even 79 (used
+by the standard library). In general,
+[90-ish seems like the wise choice](https://youtu.be/wf-BqAjZb8M?t=260).
+
+If you're paid by the lines of code you write, you can pass `--line-length` with a lower
+number. _Black_ will try to respect that. However, sometimes it won't be able to without
+breaking other rules. In those rare cases, auto-formatted code will exceed your allotted
+limit.
+
+Long string literals are the most common case, because _Black_ does not split them in
+its default style. Run it with `--preview` and expect those strings to be broken into
+implicitly concatenated pieces that fit your limit as well.
+
+You can also increase it, but remember that people with sight disabilities find it
+harder to work with line lengths exceeding 100 characters. It also adversely affects
+side-by-side diff review on typical screen resolutions. Long lines also make it harder
+to present code neatly in documentation or talk slides.
+
+#### Flake8 and other linters
+
+See [Using _Black_ with other tools](../guides/using_black_with_other_tools.md) about
+linter compatibility.
+
+### Empty lines
+
+_Black_ avoids spurious vertical whitespace. This is in the spirit of PEP 8 which says
+that in-function vertical whitespace should only be used sparingly.
+
+_Black_ will allow single empty lines inside functions, and single and double empty
+lines on module level left by the original editors, except when they're within
+parenthesized expressions. Since such expressions are always reformatted to fit minimal
+space, this whitespace is lost.
+
+```python
+# in:
+
+def function(
+    some_argument: int,
+
+    other_argument: int = 5,
+) -> EmptyLineInParenWillBeDeleted:
+
+
+
+    print("One empty line above me will be kept!")
+
+def this_is_okay_too():
+    print("No empty line here")
+# out:
+
+def function(
+    some_argument: int,
+    other_argument: int = 5,
+) -> EmptyLineInParenWillBeDeleted:
+
+    print("One empty line above me will be kept!")
+
+
+def this_is_okay_too():
+    print("No empty line here")
+```
+
+It will also insert proper spacing before and after function definitions. It's one line
+before and after inner functions and two lines before and after module-level functions
+and classes. _Black_ will not put empty lines between function/class definitions and
+standalone comments that immediately precede the given function/class.
+
+_Black_ will enforce single empty lines between a class-level docstring and the first
+following field or method. This conforms to
+[PEP 257](https://peps.python.org/pep-0257/#multi-line-docstrings).
+
+_Black_ won't insert empty lines after function docstrings unless that empty line is
+required due to an inner function starting immediately after.

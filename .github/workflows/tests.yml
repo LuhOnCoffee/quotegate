@@ -1,0 +1,38 @@
+name: tests
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install (no runtime dependencies; pytest only)
+        run: python -m pip install -e ".[dev]"
+      - name: Unit tests (no GPU, no model, no network)
+        run: python -m pytest -q
+      - name: The published benchmark numbers reproduce from the saved answers
+        run: |
+          python bench/score.py --corpus corpus
+          python bench/score.py --corpus corpus/v2
+          python bench/tiers.py --corpus corpus/v2
+          python bench/score_arms.py --corpus corpus/v2
+          python bench/score_arms.py --corpus corpus/v3
+          python bench/replay_sweep.py corpus/v3/sweep-live/tier3.decisions.jsonl.votes.jsonl --corpus corpus/v3
+          python bench/score_arms.py --corpus corpus/v4
+          for s in base exp v4; do python bench/replay_sweep.py corpus/v4/sweep-live/$s.decisions.jsonl.votes.jsonl --corpus corpus/v4; done
+      - name: The corpus is what it claims to be (structure, no upstream clones)
+        run: |
+          python corpus/verify_corpus.py --corpus corpus --structure-only
+          python corpus/verify_corpus.py --corpus corpus/v2 --structure-only
+          python corpus/verify_corpus.py --corpus corpus/v3 --structure-only
+          python corpus/verify_corpus.py --corpus corpus/v4 --structure-only
+      - name: Every number claimed in README/RESULTS still matches the data
+        run: python bench/check_claims.py

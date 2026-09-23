@@ -1,0 +1,201 @@
+# Configuration
+
+Poetry can be configured via the `config` command ([see more about its usage here]({{< relref "cli#config" >}} "config command documentation"))
+or directly in the `config.toml` file that will be automatically created when you first run that command.
+This file can typically be found in one of the following directories:
+
+- macOS:   `~/Library/Application Support/pypoetry`
+- Windows: `%APPDATA%\pypoetry`
+
+For Unix, we follow the XDG spec and support `$XDG_CONFIG_HOME`.
+That means, by default `~/.config/pypoetry`.
+
+## Local configuration
+
+Poetry also provides the ability to have settings that are specific to a project
+by passing the `--local` option to the `config` command.
+
+```bash
+poetry config virtualenvs.create false --local
+```
+
+{{% note %}}
+Your local configuration of Poetry application is stored in the `poetry.toml` file,
+which is separate from `pyproject.toml`.
+{{% /note %}}
+
+{{% note %}}
+If a setting is defined in both `poetry.toml` (local/project) and `config.toml` (global),
+the local/project configuration takes precedence over the global configuration.
+{{% /note %}}
+
+{{% warning %}}
+Be mindful when checking in this file into your repository since it may contain user-specific or sensitive information.
+{{% /warning %}}
+
+## Listing the current configuration
+
+To list the current configuration you can use the `--list` option
+of the `config` command:
+
+```bash
+poetry config --list
+```
+
+which will give you something similar to this:
+
+```toml
+cache-dir = "/path/to/cache/directory"
+virtualenvs.create = true
+virtualenvs.in-project = null
+virtualenvs.options.always-copy = true
+virtualenvs.options.no-pip = false
+virtualenvs.options.system-site-packages = false
+virtualenvs.path = "{cache-dir}/virtualenvs"  # /path/to/cache/directory/virtualenvs
+virtualenvs.prompt = "{project_name}-py{python_version}"
+virtualenvs.use-poetry-python = false
+```
+
+## Displaying a single configuration setting
+
+If you want to see the value of a specific setting, you can
+give its name to the `config` command
+
+```bash
+poetry config virtualenvs.path
+```
+
+For a full list of the supported settings see [Available settings](#available-settings).
+
+## Adding or updating a configuration setting
+
+To change or otherwise add a new configuration setting, you can pass
+a value after the setting's name:
+
+```bash
+poetry config virtualenvs.path /path/to/cache/directory/virtualenvs
+```
+
+For a full list of the supported settings see [Available settings](#available-settings).
+
+## Removing a specific setting
+
+If you want to remove a previously set setting, you can use the `--unset` option:
+
+```bash
+poetry config virtualenvs.path --unset
+```
+
+The setting will then retrieve its default value.
+
+## Using environment variables
+
+Sometimes, in particular when using Poetry with CI tools, it's easier
+to use environment variables and not have to execute configuration commands.
+
+Poetry supports this and any setting can be set by using environment variables.
+
+The environment variables must be prefixed by `POETRY_` and are comprised of the uppercase
+name of the setting and with dots and dashes replaced by underscore, here is an example:
+
+```bash
+export POETRY_VIRTUALENVS_PATH=/path/to/virtualenvs/directory
+```
+
+This also works for secret settings, like credentials:
+
+```bash
+export POETRY_HTTP_BASIC_MY_REPOSITORY_PASSWORD=secret
+```
+
+## Configuration sources
+
+When a setting is set in multiple places, Poetry applies the following precedence
+(from highest to lowest):
+
+1. Environment variables (for example, `POETRY_VIRTUALENVS_CREATE`)
+2. The local `poetry.toml` file (created with `poetry config --local`)
+3. The global `config.toml` file
+4. The setting's default value
+
+For repository credentials (`http-basic.*`, `pypi-token.*`), Poetry may also read
+from `auth.toml` and the system keyring (for details see [Repositories]({{< relref "repositories" >}})).
+Environment variables still take precedence over file-based values.
+
+## Migrate outdated configs
+
+If Poetry renames or remove config options it might be necessary to migrate explicit set options. This is possible
+by running:
+
+```bash
+poetry config --migrate
+```
+
+If you need to migrate a local config run:
+
+```bash
+poetry config --migrate --local
+```
+
+## Default Directories
+
+Poetry uses the following default directories:
+
+### Config Directory
+
+- Linux: `$XDG_CONFIG_HOME/pypoetry` or `~/.config/pypoetry`
+- Windows: `%APPDATA%\pypoetry`
+- macOS: `~/Library/Application Support/pypoetry`
+
+You can override the config directory by setting the `POETRY_CONFIG_DIR` environment variable.
+
+### Data Directory
+
+- Linux: `$XDG_DATA_HOME/pypoetry` or `~/.local/share/pypoetry`
+- Windows: `%APPDATA%\pypoetry`
+- macOS: `~/Library/Application Support/pypoetry`
+
+You can override the data directory by setting the `POETRY_DATA_DIR` or `POETRY_HOME` environment variables. If `POETRY_HOME` is set, it will be given higher priority.
+
+```bash
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/main/install-poetry.py | POETRY_HOME=/opt/poetry python3 -
+```
+
+### Cache Directory
+
+- Linux: `$XDG_CACHE_HOME/pypoetry` or `~/.cache/pypoetry`
+- Windows: `%LOCALAPPDATA%\pypoetry`
+- macOS: `~/Library/Caches/pypoetry`
+
+You can override the cache directory by setting the `POETRY_CACHE_DIR` environment variable.
+
+## Available settings
+
+### `cache-dir`
+
+**Type**: `string`
+
+**Environment Variable**: `POETRY_CACHE_DIR`
+
+The path to the cache directory used by Poetry.
+
+Defaults to one of the following directories:
+
+- macOS:   `~/Library/Caches/pypoetry`
+- Windows: `C:\Users\<username>\AppData\Local\pypoetry\Cache`
+- Unix:    `~/.cache/pypoetry`
+
+### `data-dir`
+
+**Type**: `string`
+
+**Environment Variable**: `POETRY_DATA_DIR`
+
+The path to the data directory used by Poetry.
+
+- Linux: `$XDG_DATA_HOME/pypoetry` or `~/.local/share/pypoetry`
+- Windows: `%APPDATA%\pypoetry`
+- macOS: `~/Library/Application Support/pypoetry`
+
+You can override the data directory by setting the `POETRY_DATA_DIR` or `POETRY_HOME` environment variables. If
+`POETRY_HOME` is set, it will be given higher priority.

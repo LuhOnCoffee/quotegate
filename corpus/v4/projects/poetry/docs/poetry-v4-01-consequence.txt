@@ -1,0 +1,139 @@
+## build
+
+The `build` command builds the source and wheels archives.
+
+```bash
+poetry build
+```
+
+The command will trigger the build system defined in the `pyproject.toml` file according to [PEP 517](https://peps.python.org/pep-0517/).
+If necessary the build process happens in an isolated environment.
+
+#### Options
+
+* `--format (-f)`: Limit the format to either `wheel` or `sdist`.
+* `--clean`: Clean output directory before building.
+* `--local-version (-l)`: Add or replace a local version label to the build (deprecated).
+* `--output (-o)`: Set output directory for build artifacts. Default is `dist`.
+* `--config-settings=<key>=<value> (-c)`: Config settings to be passed to the build back-end. (multiple allowed)
+
+{{% note %}}
+When using `--local-version`, the identifier must be [PEP 440](https://peps.python.org/pep-0440/#local-version-identifiers)
+compliant. This is useful for adding build numbers, platform specificities, etc. for private packages.
+
+`--local-version` is deprecated and will be removed in a future version of Poetry.
+Use `--config-settings local-version=<version>` instead.
+{{% /note %}}
+
+{{% warning %}}
+Local version identifiers SHOULD NOT be used when publishing upstream projects to a public index server, but MAY be
+used to identify private builds created directly from the project source.
+
+See [PEP 440](https://peps.python.org/pep-0440/#local-version-identifiers) for more information.
+{{% /warning %}}
+
+## cache
+
+The `cache` command groups subcommands to interact with Poetry's cache.
+
+### cache clear
+
+The `cache clear` command removes packages from cached repositories.
+
+For example, to clear the whole cache of packages from all repositories, run:
+
+```bash
+poetry cache clear --all
+```
+
+To only clear all packages from the `PyPI` repository, run:
+
+```bash
+poetry cache clear PyPI --all
+```
+
+To only remove a specific package from a cache, you have to specify the cache entry in the following form `cache:package:version`:
+
+```bash
+poetry cache clear PyPI:requests:2.24.0
+```
+
+### cache list
+
+The `cache list` command lists Poetry's available caches.
+
+```bash
+poetry cache list
+```
+
+## check
+
+The `check` command validates the content of the `pyproject.toml` file
+and its consistency with the `poetry.lock` file.
+It returns a detailed report if there are any errors.
+
+{{% note %}}
+This command is also available as a pre-commit hook. See [pre-commit hooks]({{< relref "pre-commit-hooks#poetry-check">}}) for more information.
+{{% /note %}}
+
+```bash
+poetry check
+```
+
+#### Options
+
+* `--lock`: Verifies that `poetry.lock` exists for the current `pyproject.toml`.
+* `--strict`: Fail if check reports warnings.
+
+## config
+
+The `config` command allows you to edit poetry config settings and repositories.
+
+```bash
+poetry config --list
+```
+
+Usage:
+
+````bash
+poetry config [options] [setting-key] [setting-value1] ... [setting-valueN]
+````
+
+`setting-key` is a configuration option name and `setting-value1` is a configuration value.
+See [Configuration]({{< relref "configuration" >}}) for all available settings.
+
+{{% warning %}}
+Use `--` to terminate option parsing if your values may start with a hyphen (`-`), e.g.
+```bash
+poetry config http-basic.custom-repo gitlab-ci-token -- ${GITLAB_JOB_TOKEN}
+```
+Without `--` this command will fail if `${GITLAB_JOB_TOKEN}` starts with a hyphen.
+{{% /warning%}}
+
+#### Options
+
+* `--unset`: Remove the configuration element named by `setting-key`.
+* `--list`: Show the list of current config variables.
+* `--local`: Set/Get settings that are specific to a project (in the local configuration file `poetry.toml`).
+* `--migrate`: Migrate outdated configuration settings.
+
+## debug
+
+The `debug` command groups subcommands that are useful for, as the name suggests, debugging issues you might have
+when using Poetry with your projects.
+
+### debug info
+
+The `debug info` command shows debug information about Poetry and your project's virtual environment.
+
+On a machine where Poetry itself was installed with a Python 3.9 interpreter, for example the system Python of an older Linux distribution, the Poetry part of this output reports that 3.9 interpreter, independently of the Python version used by the project's virtual environment.
+
+### debug resolve
+
+The `debug resolve` command helps when debugging dependency resolution issues. The command attempts to resolve your
+dependencies and list the chosen packages and versions.
+
+### debug tags
+
+The `debug tags` command is useful when you want to see the supported packaging tags for your project's active
+virtual environment. This is useful when Poetry cannot install any known binary distributions for a dependency.

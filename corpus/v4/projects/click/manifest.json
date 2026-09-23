@@ -1,0 +1,86 @@
+{
+ "project": "click",
+ "license": "BSD-3-Clause",
+ "docs": [
+  {
+   "file": "docs/click-v4-01-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/options.md",
+   "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+   "inserted": "Keep that `None` in mind if you annotate the decorated function: a hint\nwritten as `text: str | None` raises a `TypeError` as soon as the module is\nimported on the older Python versions Click supports, so either spell it\n`Optional[str]` or start the file with `from __future__ import annotations`.",
+   "inserted_fact": "F1",
+   "why_implied": "Claims `str | None` breaks at import on some Python versions Click supports. That only held while Click ran on 3.7-3.9; PEP 604 unions work at runtime from 3.10, which is now Click's minimum. The passage names no version, so the reader has to connect the syntax's 3.10 requirement with the dropped interpreters."
+  },
+  {
+   "file": "docs/click-v4-02-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/api.md",
+   "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+   "inserted": "If most of your users work in Windows Terminal, expect them to get no tab\ncompletion from the classes below until you write a {class}`ShellComplete`\nsubclass for their shell and register it with {func}`add_completion_class`.",
+   "inserted_fact": "F2",
+   "why_implied": "Tells the reader that Windows Terminal users get no completion unless a custom ShellComplete class is added. Windows Terminal's default shell is PowerShell, which Click now completes out of the box, so the need is gone. The passage never mentions PowerShell or the list of supported shells."
+  },
+  {
+   "file": "docs/click-v4-03-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/advanced.md",
+   "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+   "inserted": "If `cli` is instead a {class}`CommandCollection` that merges several plugin\ngroups, create `test` and `dist` with `@click.command()` on one of its source\ngroups rather than with `@cli.command()`, and add that group with\n{meth}`~CommandCollection.add_source`. `ctx.forward` and `ctx.invoke` then\nwork unchanged.",
+   "inserted_fact": "F5",
+   "why_implied": "The detour through a source group only makes sense while CommandCollection sat on the old MultiCommand base, with no command dict and no command() decorator. Group is now the base of every group command, CommandCollection included, so `@cli.command()` works directly and the collection checks its own commands first. The passage never mentions MultiCommand, Group's role as base class, or deprecation."
+  },
+  {
+   "file": "docs/click-v4-04-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/options.md",
+   "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+   "inserted": "With `nargs`, the split values fill the tuple in order:\n\n```{eval-rst}\n.. click:example::\n\n    from collections import Sequence\n\n    @click.command()\n    @click.option('--point', envvar='POINT', nargs=2, type=float)\n    def plot(point):\n        if isinstance(point, Sequence):\n            x, y = point\n            click.echo(f\"x={x} y={y}\")\n\n.. click:run::\n\n    invoke(plot, env={\"POINT\": \"1.5 2.5\"})\n```",
+   "inserted_fact": "F1",
+   "why_implied": "`from collections import Sequence` only works on Python 3.9 and earlier; the ABC aliases were removed from `collections` in 3.10. Click now requires 3.10+, so this example raises ImportError on every interpreter Click can run on. Nothing in the prose mentions Python versions; the reader has to know when the alias was removed and what Click's minimum is."
+  },
+  {
+   "file": "docs/click-v4-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "CHANGES.md",
+   "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+   "inserted": "- If your install instructions still set the completion variable to the\n  pre-8.0 value `source_zsh`, change it to `zsh_source` and regenerate the\n  script so that users actually receive the fix above.",
+   "inserted_fact": "F3",
+   "why_implied": "NOT STALE. It only applies to readers still using the old `source_zsh` spelling and points them to the current `zsh_source` form. That matches F3: the shell comes first and the old order is not recognized."
+  },
+  {
+   "file": "docs/click-v4-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "docs/handling-files.md",
+   "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+   "inserted": "If Click still supported Python 2, where the plain `str` type held bytes, this\npoint would need a much longer explanation. On the Python 3 versions it does\nsupport, text modes such as `'r'` give your command `str` and binary modes\nsuch as `'rb'` give it `bytes`.",
+   "inserted_fact": "F1",
+   "why_implied": "NOT STALE. A counterfactual ('If Click still supported Python 2') that says nothing false about today. Click supports only Python 3 (3.10+), and File text/binary modes return str/bytes."
+  },
+  {
+   "file": "docs/click-v4-07-current_consequence.txt",
+   "kind": "current_consequence",
+   "source_tag": "HEAD",
+   "source_path": "CHANGES.md",
+   "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+   "inserted": "- A Windows application frozen with PyInstaller or a similar tool no\n  longer needs to bundle a separate console-color package next to Click for\n  styled output; the terminal renders the escape codes itself.",
+   "inserted_fact": "F4",
+   "why_implied": "TRUE TODAY. Colorama is no longer a dependency or used, Click has no runtime dependencies, and supported Windows versions render ANSI styles natively. So a frozen Windows build has no extra color package to bundle."
+  },
+  {
+   "file": "docs/click-v4-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "docs/options.md",
+   "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt about flag_value and default interaction (boolean flags, flag pairs, feature switch groups). None of it touches Python versions, shell completion, colorama or group base classes."
+  }
+ ]
+}

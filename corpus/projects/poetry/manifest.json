@@ -1,0 +1,121 @@
+{
+  "project": "poetry",
+  "head_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+  "head_date": "2026-09-20",
+  "license": "MIT",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Poetry itself requires Python 3.10 or newer to run.",
+      "source_path": "docs/_index.md",
+      "source_quote": "Poetry requires **Python 3.10+**. It is multi-platform"
+    },
+    {
+      "id": "F2",
+      "fact": "The `poetry shell` command is no longer part of Poetry; it was moved to the separate poetry-plugin-shell plugin (use `poetry env activate` instead).",
+      "source_path": "docs/cli.md",
+      "source_quote": "The `shell` command was moved to a plugin: [`poetry-plugin-shell`](https://github.com/python-poetry/poetry-plugin-shell)"
+    },
+    {
+      "id": "F3",
+      "fact": "The `export` command is provided by the Export Poetry Plugin, which is no longer installed by default with Poetry (since 2.0).",
+      "source_path": "docs/cli.md",
+      "source_quote": "The plugin is no longer installed by default with Poetry 2.0."
+    },
+    {
+      "id": "F4",
+      "fact": "By default `poetry lock` does not update packages already in the lock file; updating all dependencies requires `poetry update --lock` or `poetry lock --regenerate`.",
+      "source_path": "docs/cli.md",
+      "source_quote": "By default, packages that have already been added to the lock file before will not be updated."
+    },
+    {
+      "id": "F5",
+      "fact": "Poetry's official installer script is served from install.python-poetry.org and is developed in its own separate repository.",
+      "source_path": "docs/_index.md",
+      "source_quote": "The installer script is available directly at [install.python-poetry.org](https://install.python-poetry.org),\nand is developed in [its own repository]"
+    }
+  ],
+  "docs": [
+    {
+      "file": "docs/poetry-01-organic.txt",
+      "kind": "organic",
+      "source_tag": "1.1.15",
+      "source_path": "docs/_index.md",
+      "source_commit": "46bf7fd3d1797b75ad9b07adc280039d93414e07",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes - F1: 'Poetry requires Python 2.7 or 3.5+.' (also F5: recommended installer is get-poetry.py fetched from raw.githubusercontent.com/python-poetry/poetry/master, though the doc itself warns it will be replaced by install.python-poetry.org in 1.2)"
+    },
+    {
+      "file": "docs/poetry-02-organic.txt",
+      "kind": "organic",
+      "source_tag": "1.8.5",
+      "source_path": "docs/basic-usage.md",
+      "source_commit": "19a2f7bddb9bdf931a229ea0913a84021f3f9b93",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "yes - F2: 'The easiest way to activate the virtual environment is to create a nested shell with `poetry shell`.' (poetry shell presented as a built-in command)"
+    },
+    {
+      "file": "docs/poetry-03-planted.txt",
+      "kind": "planted",
+      "source_tag": "main",
+      "source_path": "docs/basic-usage.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Alternatively, you can run `poetry shell` to spawn a nested shell with the virtual environment already activated.",
+      "inserted_fact": "F2",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/poetry-04-planted.txt",
+      "kind": "planted",
+      "source_tag": "main",
+      "source_path": "docs/plugins.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Some plugins, such as the Export Poetry Plugin that provides the `export` command, are installed together with Poetry by default, so they are available without any further steps.",
+      "inserted_fact": "F3",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/poetry-05-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "main",
+      "source_path": "docs/managing-environments.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "The `shell` command shipped with Poetry itself up to the 1.8 release series and was moved out of Poetry with the release of Poetry 2.0 in January 2025.",
+      "inserted_fact": "F2",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/poetry-06-distractor.txt",
+      "kind": "distractor",
+      "source_tag": "main",
+      "source_path": "docs/managing-dependencies.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "Before Poetry 2.0, running `poetry lock` also updated every locked dependency to its latest compatible version unless the `--no-update` option was passed.",
+      "inserted_fact": "F4",
+      "expected_stale": ""
+    },
+    {
+      "file": "docs/poetry-07-clean.txt",
+      "kind": "clean",
+      "source_tag": "main",
+      "source_path": "README.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no - README example uses requires-python '>=3.9' for the sample package's own metadata, not Poetry's runtime requirement"
+    },
+    {
+      "file": "docs/poetry-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "main",
+      "source_path": "docs/libraries.md",
+      "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+      "inserted": "",
+      "inserted_fact": "",
+      "expected_stale": "no"
+    }
+  ],
+  "notes": "Facts from HEAD of main (docs/_index.md, docs/cli.md). Deliberately excluded the virtualenv-Python default (virtualenvs.use-poetry-python) because HEAD docs are internally inconsistent: configuration.md says the activated Python is used by default, while managing-environments.md still says the Python used during Poetry's installation is used. Doc 05 (managing-environments.md) therefore contains that stale-looking sentence but it does not contradict any chosen fact. Organic 01 (1.1.15 _index.md) also carries a warning that get-poetry.py will be replaced by install.python-poetry.org in 1.2, which softens the F5 contradiction; the F1 contradiction ('Python 2.7 or 3.5+') is unambiguous. Organic 02 is 1.8.5 basic-usage.md trimmed before '## Version constraints'. Planted 03 is HEAD basic-usage.md trimmed before '### Committing your `poetry.lock` file to version control'. Clean 07 README shows requires-python '>=3.9' for the example package, a possible false-positive trap against F1. Several HEAD docs use pyenv/python3.7 examples for project envs; these are examples, not Poetry requirements. source_tag 'main' = HEAD of default branch. License: MIT."
+}

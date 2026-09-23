@@ -1,0 +1,37 @@
+{
+  "project": "poetry",
+  "as_of_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+  "as_of_date": "2026-09-20",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Poetry itself requires Python 3.10 or newer to run.",
+      "source_path": "docs/_index.md",
+      "source_quote": "Poetry requires **Python 3.10+**. It is multi-platform"
+    },
+    {
+      "id": "F2",
+      "fact": "The `poetry shell` command is no longer part of Poetry; it was moved to the separate poetry-plugin-shell plugin (use `poetry env activate` instead).",
+      "source_path": "docs/cli.md",
+      "source_quote": "The `shell` command was moved to a plugin: [`poetry-plugin-shell`](https://github.com/python-poetry/poetry-plugin-shell)"
+    },
+    {
+      "id": "F3",
+      "fact": "The `export` command is provided by the Export Poetry Plugin, which is no longer installed by default with Poetry (since 2.0).",
+      "source_path": "docs/cli.md",
+      "source_quote": "The plugin is no longer installed by default with Poetry 2.0."
+    },
+    {
+      "id": "F4",
+      "fact": "By default `poetry lock` does not update packages already in the lock file; updating all dependencies requires `poetry update --lock` or `poetry lock --regenerate`.",
+      "source_path": "docs/cli.md",
+      "source_quote": "By default, packages that have already been added to the lock file before will not be updated."
+    },
+    {
+      "id": "F5",
+      "fact": "Poetry's official installer script is served from install.python-poetry.org and is developed in its own separate repository.",
+      "source_path": "docs/_index.md",
+      "source_quote": "The installer script is available directly at [install.python-poetry.org](https://install.python-poetry.org),\nand is developed in [its own repository]"
+    }
+  ]
+}

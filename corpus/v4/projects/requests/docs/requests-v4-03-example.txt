@@ -1,0 +1,178 @@
+.. _streaming-uploads:
+
+Streaming Uploads
+-----------------
+
+Requests supports streaming uploads, which allow you to send large streams or
+files without reading them into memory. To stream and upload, simply provide a
+file-like object for your body::
+
+    with open('massive-body', 'rb') as f:
+        requests.post('http://some.url/streamed', data=f)
+
+.. warning:: It is strongly recommended that you open files in :ref:`binary
+             mode <tut-files>`. This is because Requests may attempt to provide
+             the ``Content-Length`` header for you, and if it does this value
+             will be set to the number of *bytes* in the file. Errors may occur
+             if you open the file in *text mode*.
+
+
+.. _chunk-encoding:
+
+Chunk-Encoded Requests
+----------------------
+
+Requests also supports Chunked transfer encoding for outgoing and incoming requests.
+To send a chunk-encoded request, simply provide a generator (or any iterator without
+a length) for your body::
+
+    def gen():
+        yield 'hi'
+        yield 'there'
+
+    requests.post('http://some.url/chunked', data=gen())
+
+For chunked encoded responses, it's best to iterate over the data using
+:meth:`Response.iter_content() <requests.Response.iter_content>`. In
+an ideal situation you'll have set ``stream=True`` on the request, in which
+case you can iterate chunk-by-chunk by calling ``iter_content`` with a ``chunk_size``
+parameter of ``None``. If you want to set a maximum size of the chunk,
+you can set a ``chunk_size`` parameter to any integer.
+
+
+.. _multipart:
+
+POST Multiple Multipart-Encoded Files
+-------------------------------------
+
+You can send multiple files in one request. For example, suppose you want to
+upload image files to an HTML form with a multiple file field 'images'::
+
+    <input type="file" name="images" multiple="true" required="true"/>
+
+To do that, just set files to a list of tuples of ``(form_field_name, file_info)``::
+
+    >>> url = 'https://httpbin.org/post'
+    >>> multiple_files = [
+    ...     ('images', ('foo.png', open('foo.png', 'rb'), 'image/png')),
+    ...     ('images', ('bar.png', open('bar.png', 'rb'), 'image/png'))]
+    >>> r = requests.post(url, files=multiple_files)
+    >>> r.text
+    {
+      ...
+      'files': {'images': 'data:image/png;base64,iVBORw ....'}
+      'Content-Type': 'multipart/form-data; boundary=3131623adb2043caaeb5538cc7aa0b3a',
+      ...
+    }
+
+.. warning:: It is strongly recommended that you open files in :ref:`binary
+             mode <tut-files>`. This is because Requests may attempt to provide
+             the ``Content-Length`` header for you, and if it does this value
+             will be set to the number of *bytes* in the file. Errors may occur
+             if you open the file in *text mode*.
+
+
+.. _event-hooks:
+
+Event Hooks
+-----------
+
+Requests has a hook system that you can use to manipulate portions of
+the request process, or signal event handling.
+
+Available hooks:
+
+``response``:
+    The response generated from a Request.
+
+
+You can assign a hook function on a per-request basis by passing a
+``{hook_name: callback_function}`` dictionary to the ``hooks`` request
+parameter::
+
+    hooks={'response': print_url}
+
+That ``callback_function`` will receive a chunk of data as its first
+argument.
+
+::
+
+    def print_url(r, *args, **kwargs):
+        print(r.url)
+
+Your callback function must handle its own exceptions. Any unhandled exception won't be passed silently and thus should be handled by the code calling Requests.
+
+If the callback function returns a value, it is assumed that it is to
+replace the data that was passed in. If the function doesn't return
+anything, nothing else is affected.
+
+::
+
+    def record_hook(r, *args, **kwargs):
+        r.hook_called = True
+        return r
+
+Let's print some request method arguments at runtime::
+
+    >>> requests.get('https://httpbin.org/', hooks={'response': print_url})
+    https://httpbin.org/
+    <Response [200]>
+
+You can add multiple hooks to a single request.  Let's call two hooks at once::
+
+    >>> r = requests.get('https://httpbin.org/', hooks={'response': [print_url, record_hook]})
+    https://httpbin.org/
+    >>> r.hook_called
+    True
+
+You can also add hooks to a ``Session`` instance.  Any hooks you add will then
+be called on every request made to the session.  For example::
+
+   >>> s = requests.Session()
+   >>> s.hooks['response'].append(print_url)
+   >>> s.get('https://httpbin.org/')
+    https://httpbin.org/
+    <Response [200]>
+
+A ``Session`` can have multiple hooks, which will be called in the order
+they are added.
+
+.. _custom-auth:
+
+Custom Authentication
+---------------------
+
+Requests allows you to specify your own authentication mechanism.
+
+Any callable which is passed as the ``auth`` argument to a request method will
+have the opportunity to modify the request before it is dispatched.
+
+Authentication implementations are subclasses of :class:`AuthBase <requests.auth.AuthBase>`,
+and are easy to define. Requests provides two common authentication scheme
+implementations in ``requests.auth``: :class:`HTTPBasicAuth <requests.auth.HTTPBasicAuth>` and
+:class:`HTTPDigestAuth <requests.auth.HTTPDigestAuth>`.
+
+Let's pretend that we have a web service that will only respond if the
+``X-Pizza`` header is set to a password value. Unlikely, but just go with it.
+
+::
+
+    from requests.auth import AuthBase
+
+    class PizzaAuth(AuthBase):
+        """Attaches HTTP Pizza Authentication to the given Request object."""
+        def __init__(self, username):
+            # setup any auth-related data here
+            if isinstance(username, unicode):
+                username = username.encode('utf-8')
+            self.username = username
+
+        def __call__(self, r):
+            # modify and return the request
+            r.headers['X-Pizza'] = self.username
+            return r
+
+Then, we can make a request using our Pizza Auth::
+
+    >>> requests.get('http://pizzabin.org/admin', auth=PizzaAuth('kenneth'))
+    <Response [200]>

@@ -1,0 +1,15 @@
+{
+  "name": "quotegate",
+  "description": "quotegate: verified local offload for Claude Code (a single-plugin marketplace).",
+  "owner": {
+    "name": "LuhOnCoffee"
+  },
+  "plugins": [
+    {
+      "name": "quotegate",
+      "source": "./",
+      "description": "Verified local offload: quote-gated local-model answers, budgeted multi-model sweeps, hand-back to Claude.",
+      "version": "0.0.4"
+    }
+  ]
+}

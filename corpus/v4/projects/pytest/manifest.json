@@ -1,0 +1,86 @@
+{
+ "project": "pytest",
+ "license": "MIT",
+ "docs": [
+  {
+   "file": "docs/pytest-v4-01-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "doc/en/how-to/xunit_setup.rst",
+   "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+   "inserted": "    If you port a ``setup_method``/``teardown_method`` pair to a fixture by\n    turning it into a generator that yields the prepared state, expect the\n    test to receive the generator object itself when the function is decorated\n    with a plain ``@pytest.fixture``, and the code after the ``yield`` will\n    never run as teardown.\n",
+   "inserted_fact": "F4",
+   "why_implied": "The sentence never names yield_fixture; it predicts that a yield-based function under plain @pytest.fixture hands the test a generator and skips teardown. That was true only before pytest 3.0, when yield fixtures needed @pytest.yield_fixture; today @pytest.fixture supports yield directly (yield_fixture is merely a deprecated alias), so the reader must infer the contradiction from F4."
+  },
+  {
+   "file": "docs/pytest-v4-02-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "doc/en/how-to/usage.rst",
+   "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+   "inserted": "\nThis form is also the simplest way to exercise a project against its oldest and newest\ninterpreters side by side: with pytest installed in each environment, ``python3.8 -m pytest``\nand ``python3.13 -m pytest`` run the same suite under the same pytest release, so any\ndifference in the outcome comes from the interpreter rather than from pytest.\n",
+   "inserted_fact": "F1",
+   "why_implied": "The passage never mentions pytest's supported Python versions; it predicts that the same (current) pytest release runs under python3.8. Current pytest requires Python 3.10+, so it cannot be installed on 3.8; the reader has to know the minimum version and compare 3.8 against it."
+  },
+  {
+   "file": "docs/pytest-v4-03-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "doc/en/how-to/plugins.rst",
+   "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+   "inserted": "\nTo try this out without touching the shared settings of a project that is configured\nthrough ``pytest.toml``, put the same ``addopts`` line in an untracked ``pytest.ini`` in the\nproject root, and delete that file again once you are done.\n",
+   "inserted_fact": "F3",
+   "why_implied": "The step never says which file wins; it just tells the reader to drop a pytest.ini next to pytest.toml to change behaviour. That only works if pytest.ini is read in preference to pytest.toml, but pytest.toml takes precedence over all other config files (even when empty), so the pytest.ini is ignored and the plugin stays enabled. The reader must infer this from the precedence rule."
+  },
+  {
+   "file": "docs/pytest-v4-04-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "doc/en/how-to/mark.rst",
+   "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+   "inserted": ".. tab:: setup.cfg\n\n    .. code-block:: ini\n\n        # content of setup.cfg\n        [pytest]\n        markers =\n            slow: marks tests as slow (deselect with '-m \"not slow\"')\n            serial\n\n",
+   "inserted_fact": "F2",
+   "why_implied": "An extra config tab shows markers registered under a plain [pytest] header in setup.cfg, with no prose claim. It sits naturally beside the toml/ini tabs, which legitimately use [pytest] for pytest.toml/pytest.ini; only a reader who knows setup.cfg requires [tool:pytest] (plain [pytest] fails since 4.0) sees that this snippet makes pytest abort."
+  },
+  {
+   "file": "docs/pytest-v4-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "doc/en/reference/fixtures.rst",
+   "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+   "inserted": "\n   If older tests in your suite still request :fixture:`tmpdir`, you can hand its value to\n   helpers written for :fixture:`tmp_path` by wrapping it as ``pathlib.Path(tmpdir)``,\n   which lets you migrate those tests one at a time.\n",
+   "inserted_fact": "F5",
+   "why_implied": "Conditional on still having legacy tmpdir users; it says nothing false today: tmpdir still exists as a legacy py.path fixture, its value supports os.fspath so pathlib.Path(tmpdir) works, and it steers toward the preferred tmp_path."
+  },
+  {
+   "file": "docs/pytest-v4-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "doc/en/how-to/parametrize.rst",
+   "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+   "inserted": "    Had pytest kept reading a bare ``[pytest]`` header from ``setup.cfg``, the ini\n    snippet could have been pasted into that file as-is; since it does not, a\n    ``setup.cfg`` needs the header ``[tool:pytest]`` instead.\n\n",
+   "inserted_fact": "F2",
+   "why_implied": "A counterfactual ('had pytest kept reading...') whose factual part matches today: setup.cfg only accepts [tool:pytest]; plain [pytest] there is unsupported."
+  },
+  {
+   "file": "docs/pytest-v4-07-current_consequence.txt",
+   "kind": "current_consequence",
+   "source_tag": "HEAD",
+   "source_path": "doc/en/how-to/output.rst",
+   "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+   "inserted": "\nIf your repository root holds both a ``pytest.toml`` and a ``pytest.ini``, these two lines have\nto go into ``pytest.toml``: that is the file pytest reads, and limits placed only in ``pytest.ini``\nwill leave the default of 8 lines or 640 characters in effect.\n",
+   "inserted_fact": "F3",
+   "why_implied": "True today: pytest.toml takes precedence over every other config file in the same directory (even pytest.ini, even when empty), so settings only in the pytest.ini beside it are never read and the documented defaults (8 lines / 640 chars) remain."
+  },
+  {
+   "file": "docs/pytest-v4-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "doc/en/how-to/subtests.rst",
+   "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt about subtests (new in 9.0); it mentions no Python version, config file, yield fixture or tmpdir, so nothing contradicts the facts."
+  }
+ ]
+}

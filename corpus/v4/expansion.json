@@ -1,0 +1,238 @@
+{
+ "provenance": "one Claude Opus 5.5 agent given only the 8 fact lists (D13), 2026-09-22; no file access used",
+ "projects": {
+  "black": {
+   "F1": [
+    "Install Black on Python 3.8 or 3.9 with `pip install black`.",
+    "CI matrix runs Black under python3.8 / python3.9 jobs.",
+    "Black works on any Python 3.7+ interpreter, so no separate tool venv is needed.",
+    "pre-commit config sets `language_version: python3.8` for the black hook."
+   ],
+   "F2": [
+    "Use `--target-version py27` to format legacy Python 2 code.",
+    "Install `black[python2]` to get Python 2 formatting support.",
+    "Black can format print statements and other Python 2 syntax in mixed codebases.",
+    "Keep Black pinned below 22.0 only if you need Python 2 support (presented as a current option)."
+   ],
+   "F3": [
+    "Black runs on PyPy 3.7, so PyPy3.7 CI jobs can include formatting checks.",
+    "Supported interpreters list includes pypy3.7.",
+    "Run `pypy3.7 -m black .` in PyPy-based environments."
+   ],
+   "F4": [
+    "Black is beta software; expect formatting to change between any releases.",
+    "Pin an exact Black version, because every upgrade may reformat your whole codebase.",
+    "Budget for large diffs on each Black upgrade, even minor ones.",
+    "Classifier `Development Status :: 4 - Beta` shown for Black."
+   ],
+   "F5": [
+    "Run `black --experimental-string-processing` to split long strings.",
+    "pyproject.toml `[tool.black]` with `experimental_string_processing = true`.",
+    "Enable string splitting with a stable flag, no --preview needed.",
+    "Use `--preview` alone to get string processing enabled."
+   ]
+  },
+  "click": {
+   "F1": [
+    "Click supports Python 3.7+, so it works on older interpreters.",
+    "`python_requires=\">=3.7\"` or tox envs py37/py38/py39 for Click-based tools.",
+    "Keep your CLI compatible with Python 3.8 because Click still supports it.",
+    "Install latest Click on a python3.9 system interpreter."
+   ],
+   "F2": [
+    "Click completion only works in Bash and Zsh; PowerShell users need a third-party package.",
+    "Install click-completion to get Fish or PowerShell support.",
+    "Bash completion works in any Bash version, including 3.x on macOS."
+   ],
+   "F3": [
+    "`eval \"$(_FOO_BAR_COMPLETE=source_bash foo-bar)\"` in .bashrc.",
+    "Set `_PROG_COMPLETE=source_zsh` or `source_fish` to generate the completion script.",
+    "Use `_PROG_COMPLETE=source` (no shell suffix) for Bash completion.",
+    "Completion script generated with `source_{shell}` and saved to a file."
+   ],
+   "F4": [
+    "Install colorama on Windows to get colored Click output.",
+    "Click pulls in colorama automatically on Windows; list it in lockfiles/requirements.",
+    "If colors do not show on Windows, check that colorama is installed.",
+    "Click wraps stdout with colorama to translate ANSI codes."
+   ],
+   "F5": [
+    "Subclass `click.MultiCommand` to build a custom lazy-loading group.",
+    "Use `click.BaseCommand` as the base for custom command types.",
+    "Type hints or isinstance checks against `click.MultiCommand` for groups.",
+    "`CommandCollection` described as a MultiCommand subclass to merge groups."
+   ]
+  },
+  "flask": {
+   "F1": [
+    "Flask supports Python 3.7/3.8/3.9, so deploy on older server interpreters.",
+    "Dockerfile uses `FROM python:3.8-slim` for a current Flask app.",
+    "Keep your Flask app compatible with Python 3.9 for supported hosts."
+   ],
+   "F2": [
+    "`export FLASK_ENV=development` then `flask run` to enable debug and reloader.",
+    "Set `FLASK_DEBUG=1` as the only way to turn on debug mode from the CLI.",
+    "Debug mode requires setting `app.debug = True` or calling `app.run(debug=True)` only."
+   ],
+   "F3": [
+    "`export FLASK_ENV=development` to enable development mode.",
+    "Check `app.env == 'production'` or `app.config['ENV']` to branch configuration.",
+    "Set `ENV = 'production'` in config.py for deployments.",
+    "Expect a startup banner line 'Environment: production'."
+   ],
+   "F4": [
+    "`app.config['JSON_SORT_KEYS'] = False` to keep key order in responses.",
+    "Set `JSON_AS_ASCII = False` to output non-ASCII characters in JSON.",
+    "Configure `JSONIFY_PRETTYPRINT_REGULAR = True` for indented jsonify output.",
+    "Change `JSONIFY_MIMETYPE` to customise the JSON response content type."
+   ],
+   "F5": [
+    "Install blinker separately (`pip install blinker`) to use Flask signals.",
+    "Signals silently do nothing unless blinker is installed.",
+    "Check `flask.signals.signals_available` before connecting handlers.",
+    "Add `flask[signals]` or blinker to requirements to enable signals."
+   ],
+   "F6": [
+    "Use `@app.before_first_request` to create tables or warm caches.",
+    "Blueprints register init with `@bp.before_app_first_request`.",
+    "Expect one-time setup to run lazily on the first incoming request.",
+    "Deprecation warning for before_first_request can be ignored for now."
+   ]
+  },
+  "httpx": {
+   "F1": [
+    "HTTPX supports Python 3.7+ / 3.8+.",
+    "CI matrix includes python3.8 for HTTPX-based clients.",
+    "Keep code compatible with 3.8 because HTTPX still supports it."
+   ],
+   "F2": [
+    "HTTPX follows redirects automatically, like requests.",
+    "Pass `allow_redirects=False` to disable redirect following.",
+    "Expect a 200 from a URL that redirects, without extra arguments.",
+    "Migrating from requests needs no changes for redirect handling."
+   ],
+   "F3": [
+    "`httpx.Client(proxies=\"http://localhost:8030\")` to route through a proxy.",
+    "Pass a dict `proxies={\"http://\": ..., \"https://\": ...}` for per-scheme proxies.",
+    "`AsyncClient(proxies=...)` shown in async proxy examples."
+   ],
+   "F4": [
+    "`httpx.Client(app=app)` to test a WSGI app directly.",
+    "`AsyncClient(app=app, base_url=\"http://test\")` in FastAPI/Starlette test fixtures.",
+    "Pass `app=` to call an ASGI app in-process without transport setup."
+   ],
+   "F5": [
+    "`verify=\"/path/to/ca-bundle.pem\"` to use a custom CA bundle.",
+    "Set verify to certifi.where() string for custom certificates.",
+    "Pass `cert=` and a verify path string together for client TLS setup."
+   ]
+  },
+  "pip": {
+   "F1": [
+    "pip supports Python 3.7/3.8/3.9; `get-pip.py` works on those interpreters.",
+    "Upgrade pip on python3.8 with `python3.8 -m pip install -U pip`.",
+    "pip still runs on Python 2.7 via the latest release.",
+    "Supported versions list stops at 3.12 or earlier."
+   ],
+   "F2": [
+    "Find packages with `pip search <term>`.",
+    "Scripts or tooling that call `pip search` to check package availability.",
+    "Expect `pip search` to list matching PyPI packages with descriptions."
+   ],
+   "F3": [
+    "Use `--use-feature=2020-resolver` to opt into the new resolver.",
+    "Fall back to `--use-deprecated=legacy-resolver` when resolution fails.",
+    "Expect pip to install conflicting versions with only a warning.",
+    "pip installs the first matching requirement without backtracking."
+   ],
+   "F4": [
+    "Use `--use-feature=in-tree-build` to build local projects in place.",
+    "Pass `--use-deprecated=out-of-tree-build` to keep copying to a temp dir.",
+    "Expect pip to copy the project to a temporary directory before building.",
+    "Build artifacts will not appear in your source tree after `pip install .`."
+   ]
+  },
+  "poetry": {
+   "F1": [
+    "Install Poetry with Python 3.8 or 3.9.",
+    "pipx install poetry using a python3.8 interpreter.",
+    "Poetry runs on any Python 3.7+, so no separate interpreter needed."
+   ],
+   "F2": [
+    "Run `poetry shell` to activate the project virtualenv.",
+    "Expect `poetry shell` to spawn a subshell with the venv active.",
+    "CI or scripts that call `poetry shell` before running commands."
+   ],
+   "F3": [
+    "Run `poetry export -f requirements.txt -o requirements.txt` right after installing Poetry.",
+    "Export is built in; no plugin installation needed.",
+    "Dockerfiles call `poetry export` without installing poetry-plugin-export."
+   ],
+   "F4": [
+    "`poetry lock --no-update` to lock without upgrading dependencies.",
+    "Expect `poetry lock` to update all dependencies to latest allowed versions.",
+    "Run `poetry lock` to refresh everything to newest versions."
+   ],
+   "F5": [
+    "`curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python`.",
+    "Use `get-poetry.py` or `install-poetry.py` from the main Poetry repository.",
+    "Report installer bugs in the main python-poetry/poetry repo."
+   ]
+  },
+  "pytest": {
+   "F1": [
+    "pytest supports Python 3.7/3.8/3.9.",
+    "tox.ini envlist includes py38 or py39 with latest pytest.",
+    "Keep test code 3.8-compatible to run under current pytest."
+   ],
+   "F2": [
+    "setup.cfg example with a `[pytest]` section.",
+    "Put `addopts` and `testpaths` under `[pytest]` in setup.cfg.",
+    "Expect only a deprecation warning when using `[pytest]` in setup.cfg."
+   ],
+   "F3": [
+    "pytest.ini always takes precedence over other config files.",
+    "Configuration lookup order listed as pytest.ini, pyproject.toml, tox.ini, setup.cfg only.",
+    "Put config in pytest.ini to guarantee it wins over everything else."
+   ],
+   "F4": [
+    "Use `@pytest.yield_fixture` for fixtures that use yield.",
+    "Plain `@pytest.fixture` cannot be used with yield-style teardown.",
+    "Yield fixtures require a special decorator separate from return fixtures."
+   ],
+   "F5": [
+    "Use the `tmpdir` fixture for temporary files, e.g. `tmpdir.join(\"f.txt\")`.",
+    "Session-wide temp dirs created with `tmpdir_factory.mktemp()`.",
+    "Examples use py.path methods like `.write()` / `.strpath` on temp dirs."
+   ]
+  },
+  "requests": {
+   "F1": [
+    "Requests supports Python 3.7+ / 3.8+.",
+    "Classifiers or badges list Python 3.8 and 3.9 as supported.",
+    "Keep code compatible with 3.9 because Requests still supports it."
+   ],
+   "F2": [
+    "Requests supports Python 2.7 and 3.x.",
+    "Install latest requests on Python 2.7 with pip.",
+    "Write Python 2/3 compatible code (six, unicode handling) for Requests usage."
+   ],
+   "F3": [
+    "Install with `pipenv install requests`.",
+    "Use `easy_install requests` as an installation alternative.",
+    "Plain `pip install requests` shown without `python -m`."
+   ],
+   "F4": [
+    "Source lives at github.com/kennethreitz/requests.",
+    "Clone with `git clone git://github.com/requests/requests.git`.",
+    "Report issues on the kennethreitz or requests org repository."
+   ],
+   "F5": [
+    "chardet is installed automatically as a Requests dependency.",
+    "Pin chardet in requirements because Requests needs it.",
+    "`response.apparent_encoding` uses chardet for encoding detection.",
+    "Expect chardet license (LGPL) concerns from depending on Requests."
+   ]
+  }
+ }
+}

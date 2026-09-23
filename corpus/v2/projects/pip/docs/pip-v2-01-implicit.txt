@@ -1,0 +1,269 @@
+Installing Packages
+===================
+
+Pip supports installing from `PyPI`_, version control, local projects, and
+directly from distribution files.
+
+
+The most common scenario is to install from `PyPI`_ using :ref:`Requirement
+Specifiers`
+
+.. tab:: Unix/macOS
+
+   .. code-block:: shell
+
+      python -m pip install SomePackage            # latest version
+      python -m pip install SomePackage==1.0.4     # specific version
+      python -m pip install 'SomePackage>=1.0.4'     # minimum version
+
+.. tab:: Windows
+
+   .. code-block:: shell
+
+      py -m pip install SomePackage            # latest version
+      py -m pip install SomePackage==1.0.4     # specific version
+      py -m pip install 'SomePackage>=1.0.4'   # minimum version
+
+If you are unsure of a project's exact name on `PyPI`_, look it up first with ``python -m pip search <keyword>`` and then install it using that name.
+
+For more information and examples, see the :ref:`pip install` reference.
+
+.. _PyPI: https://pypi.org/
+
+.. _`0-basic-authentication-credentials`:
+.. rubric:: Basic Authentication Credentials
+
+This is now covered in :doc:`topics/authentication`.
+
+.. _`0-netrc-support`:
+.. rubric:: netrc Support
+
+This is now covered in :doc:`topics/authentication`.
+
+.. _`0-keyring-support`:
+.. rubric:: Keyring Support
+
+This is now covered in :doc:`topics/authentication`.
+
+Using a Proxy Server
+====================
+
+When installing packages from `PyPI`_, pip requires internet access, which
+in many corporate environments requires an outbound HTTP proxy server.
+
+Pip can be configured to connect through a proxy server in various ways:
+
+* using the ``--proxy`` command-line option to specify a proxy in the form
+  ``scheme://[user:passwd@]proxy.server:port``
+* using ``proxy`` in a :ref:`config-file`
+* by setting the standard environment-variables ``http_proxy``, ``https_proxy``
+  and ``no_proxy``.
+* using the ``--no-proxy-env`` command-line option to ignore proxies set through
+  those environment variables (an explicit ``--proxy`` is still used).
+* using the environment variable ``PIP_USER_AGENT_USER_DATA`` to include
+  a JSON-encoded string in the user-agent variable used in pip's requests.
+
+
+.. _`Requirements Files`:
+
+
+Requirements Files
+==================
+
+"Requirements files" are files containing a list of items to be
+installed using :ref:`pip install` like so:
+
+.. tab:: Unix/macOS
+
+   .. code-block:: shell
+
+      python -m pip install -r requirements.txt
+
+.. tab:: Windows
+
+   .. code-block:: shell
+
+      py -m pip install -r requirements.txt
+
+Details on the format of the files are here: :ref:`requirements-file-format`.
+
+Logically, a Requirements file is just a list of :ref:`pip install` arguments
+placed in a file. Note that you should not rely on the items in the file being
+installed by pip in any particular order.
+
+Requirements files can also be served via a URL, e.g.
+http://example.com/requirements.txt besides as local files, so that they can
+be stored and served in a centralized place.
+
+In practice, there are 4 common uses of Requirements files:
+
+1. Requirements files are used to hold the result from :ref:`pip freeze` for the
+   purpose of achieving :doc:`topics/repeatable-installs`.  In
+   this case, your requirement file contains a pinned version of everything that
+   was installed when ``pip freeze`` was run.
+
+   .. tab:: Unix/macOS
+
+      .. code-block:: shell
+
+         python -m pip freeze > requirements.txt
+         python -m pip install -r requirements.txt
+
+   .. tab:: Windows
+
+      .. code-block:: shell
+
+         py -m pip freeze > requirements.txt
+         py -m pip install -r requirements.txt
+
+2. Requirements files are used to force pip to properly resolve dependencies.
+   pip 20.2 and earlier `doesn't have true dependency resolution
+   <https://github.com/pypa/pip/issues/988>`_, but instead simply uses the first
+   specification it finds for a project. E.g. if ``pkg1`` requires
+   ``pkg3>=1.0`` and ``pkg2`` requires ``pkg3>=1.0,<=2.0``, and if ``pkg1`` is
+   resolved first, pip will only use ``pkg3>=1.0``, and could easily end up
+   installing a version of ``pkg3`` that conflicts with the needs of ``pkg2``.
+   To solve this problem, you can place ``pkg3>=1.0,<=2.0`` (i.e. the correct
+   specification) into your requirements file directly along with the other top
+   level requirements. Like so::
+
+     pkg1
+     pkg2
+     pkg3>=1.0,<=2.0
+
+3. Requirements files are used to force pip to install an alternate version of a
+   sub-dependency.  For example, suppose ``ProjectA`` in your requirements file
+   requires ``ProjectB``, but the latest version (v1.3) has a bug, you can force
+   pip to accept earlier versions like so::
+
+     ProjectA
+     ProjectB<1.3
+
+4. Requirements files are used to override a dependency with a local patch that
+   lives in version control.  For example, suppose a dependency
+   ``SomeDependency`` from PyPI has a bug, and you can't wait for an upstream
+   fix.
+   You could clone/copy the src, make the fix, and place it in VCS with the tag
+   ``sometag``.  You'd reference it in your requirements file with a line like
+   so::
+
+     SomeDependency @ git+https://myvcs.com/some_dependency@sometag
+
+   If ``SomeDependency`` was previously a top-level requirement in your
+   requirements file, then **replace** that line with the new line. If
+   ``SomeDependency`` is a sub-dependency, then **add** the new line.
+
+
+It's important to be clear that pip determines package dependencies using
+the project metadata (typically in ``pyproject.toml`` or ``setup.py``),
+not by discovering ``requirements.txt`` files embedded in projects.
+
+See also:
+
+* :ref:`requirements-file-format`
+* :ref:`pip freeze`
+* `"setup.py vs requirements.txt" (an article by Donald Stufft)
+  <https://caremad.io/2013/07/setup-vs-requirement/>`_
+
+
+.. _`Constraints Files`:
+
+
+Constraints Files
+=================
+
+Constraints files are requirements files that only control which version of a
+requirement is installed, not whether it is installed or not. Their syntax and
+contents is a subset of :ref:`Requirements Files`, with several kinds of syntax
+not allowed: constraints must have a name, they cannot be editable, and they
+cannot specify extras. In terms of semantics, there is one key difference:
+Including a package in a constraints file does not trigger installation of the
+package.
+
+Use a constraints file like so:
+
+.. tab:: Unix/macOS
+
+   .. code-block:: shell
+
+      python -m pip install -c constraints.txt
+
+.. tab:: Windows
+
+   .. code-block:: shell
+
+      py -m pip install -c constraints.txt
+
+Constraints files are used for exactly the same reason as requirements files
+when you don't know exactly what things you want to install. For instance, say
+that the "helloworld" package doesn't work in your environment, so you have a
+local patched version. Some things you install depend on "helloworld", and some
+don't.
+
+One way to ensure that the patched version is used consistently is to
+manually audit the dependencies of everything you install, and if "helloworld"
+is present, write a requirements file to use when installing that thing.
+
+Constraints files offer a better way: write a single constraints file for your
+organisation and use that everywhere. If the thing being installed requires
+"helloworld" to be installed, your fixed version specified in your constraints
+file will be used.
+
+Constraints file support was added in pip 7.1. In :ref:`Resolver
+changes 2020` we did a fairly comprehensive overhaul, removing several
+undocumented and unsupported quirks from the previous implementation,
+and stripped constraints files down to being purely a way to specify
+global (version) limits for packages.
+
+Same as requirements files, constraints files can also be served via a URL,
+e.g. http://example.com/constraints.txt, so that your organization can store and
+serve them in a centralized place.
+
+
+.. _`Build Constraints`:
+
+Build Constraints
+-----------------
+
+.. versionadded:: 25.3
+
+.. versionchanged:: 26.2
+   Constraints files, including those set with the ``PIP_CONSTRAINT`` environment
+   variable, no longer affect isolated build environments. Use build constraints
+   to constrain build dependencies.
+
+Build constraints are a type of constraints file that applies only to isolated
+build environments used for building packages from source. Unlike regular
+constraints, which affect the packages installed in your environment, build
+constraints only influence the versions of packages available during the
+build process.
+
+This is useful when you need to constrain build dependencies
+(such as ``setuptools``, ``cython``, etc.) without affecting the
+final installed environment.
+
+Use build constraints like so:
+
+.. tab:: Unix/macOS
+
+   .. code-block:: shell
+
+      python -m pip install --build-constraint build-constraints.txt SomePackage
+
+.. tab:: Windows
+
+   .. code-block:: shell
+
+      py -m pip install --build-constraint build-constraints.txt SomePackage
+
+Example build constraints file (``build-constraints.txt``):
+
+.. code-block:: text
+
+   # Constrain setuptools version during build
+   setuptools>=45,<80
+   # Pin Cython for packages that use it to build
+   cython==0.29.24
+
+The ``--build-constraint`` option can be set with the ``PIP_BUILD_CONSTRAINT``
+environment variable.

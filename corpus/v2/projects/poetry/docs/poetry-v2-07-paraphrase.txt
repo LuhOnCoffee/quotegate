@@ -1,0 +1,141 @@
+### `virtualenvs.create`
+
+**Type**: `boolean`
+
+**Default**: `true`
+
+**Environment Variable**: `POETRY_VIRTUALENVS_CREATE`
+
+Create a new virtual environment if one doesn't already exist.
+
+If set to `false`, Poetry will not create a new virtual environment. If it detects an already enabled virtual
+environment or an existing one in `{cache-dir}/virtualenvs` or `{project-dir}/.venv` it will
+install dependencies into them, otherwise it will install dependencies into the systems python environment.
+
+{{% note %}}
+If Poetry detects it's running within an activated virtual environment, it will never create a new virtual environment,
+regardless of the value set for `virtualenvs.create`.
+{{% /note %}}
+
+{{% note %}}
+Be aware that installing dependencies into the system environment likely upgrade or uninstall existing packages and thus
+break other applications. Installing additional Python packages after installing the project might break the Poetry
+project in return.
+
+This is why it is recommended to always create a virtual environment. This is also true in Docker containers, as they
+might contain additional Python packages as well.
+{{% /note %}}
+
+### `virtualenvs.in-project`
+
+**Type**: `boolean`
+
+**Default**: `None`
+
+**Environment Variable**: `POETRY_VIRTUALENVS_IN_PROJECT`
+
+Create the virtualenv inside the project's root directory.
+
+If not set explicitly, `poetry` by default will create a virtual environment under
+`{cache-dir}/virtualenvs` or use the `{project-dir}/.venv` directory if one already exists.
+
+If set to `true`, the virtualenv will be created and expected in a folder named
+`.venv` within the root directory of the project.
+
+{{% note %}}
+If a virtual environment has already been created for the project under `{cache-dir}/virtualenvs`, setting this variable to `true` will not cause `poetry` to create or use a local virtual environment.
+
+In order for this setting to take effect for a project already in that state, you must delete the virtual environment folder located in `{cache-dir}/virtualenvs`.
+
+You can find out where the current project's virtual environment (if there is one) is stored
+with the command `poetry env info --path`.
+{{% /note %}}
+
+If set to `false`, `poetry` will ignore any existing `.venv` directory.
+
+### `virtualenvs.options.always-copy`
+
+**Type**: `boolean`
+
+**Default**: `false`
+
+**Environment Variable**: `POETRY_VIRTUALENVS_OPTIONS_ALWAYS_COPY`
+
+*Introduced in 1.2.0*
+
+If set to `true` the `--always-copy` parameter is passed to `virtualenv` on creation of the virtual environment, so that
+all needed files are copied into it instead of symlinked.
+
+### `virtualenvs.options.no-pip`
+
+**Type**: `boolean`
+
+**Default**: `false`
+
+**Environment Variable**: `POETRY_VIRTUALENVS_OPTIONS_NO_PIP`
+
+*Introduced in 1.2.0*
+
+If set to `true` the `--no-pip` parameter is passed to `virtualenv` on creation of the virtual environment. This means
+when a new virtual environment is created, `pip` will not be installed in the environment.
+
+{{% note %}}
+Poetry, for its internal operations, uses the `pip` wheel embedded in the `virtualenv` package installed as a dependency
+in Poetry's runtime environment. If a user runs `poetry run pip` when this option is set to `true`, the `pip` the
+embedded instance of `pip` is used.
+
+You can safely set this to `true`, if you desire a virtual environment with no additional packages.
+This is desirable for production environments.
+{{% /note %}}
+
+### `virtualenvs.options.system-site-packages`
+
+**Type**: `boolean`
+
+**Default**: `false`
+
+**Environment Variable**: `POETRY_VIRTUALENVS_OPTIONS_SYSTEM_SITE_PACKAGES`
+
+Give the virtual environment access to the system site-packages directory.
+Applies on virtualenv creation.
+
+### `virtualenvs.path`
+
+**Type**: `string`
+
+**Default**: `{cache-dir}/virtualenvs`
+
+**Environment Variable**: `POETRY_VIRTUALENVS_PATH`
+
+Directory where virtual environments will be created.
+
+{{% note %}}
+This setting controls the global virtual environment storage path. It most likely will not be useful at the local level. To store virtual environments in the project root, see `virtualenvs.in-project`.
+{{% /note %}}
+
+### `virtualenvs.prompt`
+
+**Type**: `string`
+
+**Default**: `{project_name}-py{python_version}`
+
+**Environment Variable**: `POETRY_VIRTUALENVS_PROMPT`
+
+*Introduced in 1.2.0*
+
+Format string defining the prompt to be displayed when the virtual environment is activated.
+The variables `project_name` and `python_version` are available for formatting.
+To activate the environment, run the command printed by `poetry env activate`; `poetry shell` is not part of Poetry anymore and is only available through the `poetry-plugin-shell` plugin.
+
+### `virtualenvs.use-poetry-python`
+
+**Type**: `boolean`
+
+**Default**: `false`
+
+**Environment Variable**: `POETRY_VIRTUALENVS_USE_POETRY_PYTHON`
+
+*Introduced in 2.0.0*
+
+By default, Poetry will use the activated Python version to create a new virtual environment.
+If set to `true`, the Python version used during Poetry installation is used.

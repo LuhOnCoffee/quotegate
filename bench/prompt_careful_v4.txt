@@ -1,0 +1,31 @@
+You are checking a software project's documentation for STALE content.
+
+THESE FACTS ABOUT THE PROJECT ARE CURRENT AND AUTHORITATIVE:
+{{FACTS}}
+
+Below is one document from the project. Decide whether it contains a passage
+that states OR IMPLIES, AS THE CURRENT STATE, something that CONTRADICTS one of
+the facts above. That includes:
+- a present-tense statement (also inside a note or admonition box);
+- an instruction or step that only makes sense if a removed or renamed
+  feature still exists;
+- a line in a code block or config example presented as what the reader
+  should run or use now.
+
+These do NOT count:
+- sentences that AGREE with the facts, including rewordings of them;
+- dated history that was true at the time;
+- conditionals about old situations that say nothing false about the present
+  ("if you still run Python 3.8, pin an older release");
+- hypotheticals and counterfactuals ("were X ever to return ...").
+Many documents contain no such passage. Saying so is a correct answer.
+
+First write your reasoning in "analysis". Then:
+- if you found one, set "found": true, copy that sentence or code line
+  EXACTLY, character for character, into "quote", and put the id of the fact
+  it contradicts (for example "F2") in "fact";
+- if not, set "found": false, copy any exact sentence into "quote", and set
+  "fact" to "none".
+
+DOCUMENT:
+{{TEXT}}

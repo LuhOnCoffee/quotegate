@@ -1,0 +1,41 @@
+[[models]]
+name = "gemma4:12b-it-qat"
+family = "gemma"
+host = "127.0.0.1:11437"
+think = "off"
+num_predict = 4096
+s_per_kchar = 0.48
+load_s = 27.3
+
+[[models]]
+name = "gemma4:26b-a4b-it-qat"
+family = "gemma"
+host = "127.0.0.1:11436"
+think = "off"
+num_predict = 4096
+s_per_kchar = 0.34
+load_s = 56.8
+
+[[models]]
+name = "gpt-oss:20b"
+family = "gpt-oss"
+host = "127.0.0.1:11435"
+think = "auto"
+num_predict = 8192
+s_per_kchar = 2.13
+load_s = 49.7
+
+[[models]]
+name = "qwen3.8:27b"
+family = "qwen"
+host = "127.0.0.1:11436"
+think = "off"
+num_predict = 4096
+s_per_kchar = 0.95
+load_s = 69.2
+
+[roles]
+first = "gemma4:12b-it-qat"
+second = "gemma4:26b-a4b-it-qat"
+tiebreak = "gpt-oss:20b"
+tripwire = "qwen3.8:27b"

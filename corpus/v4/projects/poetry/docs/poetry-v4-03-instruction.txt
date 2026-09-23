@@ -1,0 +1,197 @@
+# Commands
+
+You've already learned how to use the command-line interface to do some things.
+This chapter documents all the available commands.
+
+To get help from the command-line, simply call `poetry` to see the complete list of commands,
+then `--help` combined with any of those can give you more information.
+
+## Global Options
+
+* `--verbose (-v|vv|vvv)`: Increase the verbosity of messages: "-v" for normal output, "-vv" for more verbose output and "-vvv" for debug.
+
+{{% note %}}
+You can also set the verbosity level using the `SHELL_VERBOSITY` environment variable.
+This is useful in CI/CD pipelines or scripts where you cannot easily modify command-line arguments.
+
+| Value  | Equivalent | Description         |
+|--------|------------|---------------------|
+| `-1`   | `-q`       | Quiet mode          |
+| `0`    | (default)  | Normal output       |
+| `1`    | `-v`       | Verbose output      |
+| `2`    | `-vv`      | More verbose output |
+| `3`    | `-vvv`     | Debug output        |
+
+{{% /note %}}
+
+* `--help (-h)` : Display help information.
+* `--quiet (-q)` : Do not output any message.
+* `--ansi`: Force ANSI output.
+* `--no-ansi`: Disable ANSI output.
+* `--version (-V)`: Display this application version.
+* `--no-interaction (-n)`: Do not ask any interactive question.
+* `--no-plugins`: Disables plugins.
+* `--no-cache`: Disables the use of [Poetry's caches]({{< relref "#cache" >}}) (cached package metadata and dist files from configured package sources) for the duration of the command, forcing Poetry to behave as if it had a cold cache. This does not delete the caches; use `poetry cache clear` to remove cached data.
+* `--directory=DIRECTORY (-C)`: The working directory for the Poetry command (defaults to the current working directory). All command-line arguments will be resolved relative to the given directory.
+* `--project=PROJECT (-P)`: Specify another path as the project root. All command-line arguments will be resolved relative to the current working directory or directory specified using `--directory` option if used.
+
+## about
+
+The `about` command displays global information about Poetry, including the current version and version of `poetry-core`.
+
+```bash
+poetry about
+```
+
+## add
+
+The `add` command adds required packages to your `pyproject.toml` and installs them.
+
+If you do not specify a version constraint, poetry will attempt to use the latest version.
+
+```bash
+poetry add requests pendulum
+```
+
+{{% note %}}
+A package is looked up, by default, only from [PyPI](https://pypi.org).
+You can modify the default source (PyPI);
+or add and use [Supplemental Package Sources]({{< relref "repositories/#supplemental-package-sources" >}})
+or [Explicit Package Sources]({{< relref "repositories/#explicit-package-sources" >}}).
+
+For more information, refer to the [Package Sources]({{< relref "repositories/#package-sources" >}}) documentation.
+{{% /note %}}
+
+You can also specify a constraint when adding a package:
+
+```bash
+# Allow >=2.0.5, <3.0.0 versions
+poetry add pendulum@^2.0.5
+
+# Allow >=2.0.5, <2.1.0 versions
+poetry add pendulum@~2.0.5
+
+# Allow >=2.0.5 versions, without upper bound
+poetry add "pendulum>=2.0.5"
+
+# Allow only 2.0.5 version
+poetry add pendulum==2.0.5
+```
+
+{{% note %}}
+See the [Dependency specification]({{< relref "dependency-specification#using-the--operator" >}}) page for more information about the `@` operator.
+{{% /note %}}
+
+If you try to add a package that is already present, you will get an error.
+However, if you specify a constraint, like above, the dependency will be updated
+by using the specified constraint.
+
+If you want to get the latest version of an already
+present dependency, you can use the special `latest` constraint:
+
+```bash
+poetry add pendulum@latest
+```
+
+If you want every dependency, not just one, moved to the newest version its constraint allows, keep the constraints as they are and run `poetry lock` followed by `poetry install` instead.
+
+{{% note %}}
+See the [Dependency specification]({{< relref "dependency-specification" >}}) for more information on setting the version constraints for a package.
+{{% /note %}}
+
+You can also add `git` dependencies:
+
+```bash
+poetry add git+https://github.com/sdispater/pendulum.git
+```
+
+or use ssh instead of https:
+
+```bash
+poetry add git+ssh://git@github.com/sdispater/pendulum.git
+
+# or alternatively:
+poetry add git+ssh://git@github.com:sdispater/pendulum.git
+```
+
+If you need to checkout a specific branch, tag or revision,
+you can specify it when using `add`:
+
+```bash
+poetry add git+https://github.com/sdispater/pendulum.git#develop
+poetry add git+https://github.com/sdispater/pendulum.git#2.0.5
+
+# or using SSH instead:
+poetry add git+ssh://git@github.com:sdispater/pendulum.git#develop
+poetry add git+ssh://git@github.com:sdispater/pendulum.git#2.0.5
+```
+
+or reference a subdirectory:
+
+```bash
+poetry add git+https://github.com/myorg/mypackage_with_subdirs.git@main#subdirectory=subdir
+```
+
+You can also add a local directory or file:
+
+```bash
+poetry add ./my-package/
+poetry add ../my-package/dist/my-package-0.1.0.tar.gz
+poetry add ../my-package/dist/my_package-0.1.0.whl
+```
+
+If you want the dependency to be installed in editable mode you can use the `--editable` option.
+
+```bash
+poetry add --editable ./my-package/
+poetry add --editable git+ssh://github.com/sdispater/pendulum.git#develop
+```
+
+Alternatively, you can specify it in the `pyproject.toml` file. It means that changes in the local directory will be reflected directly in environment.
+
+```toml
+[tool.poetry.dependencies]
+my-package = {path = "../my/path", develop = true}
+```
+
+{{% note %}}
+The `develop` attribute is a Poetry-specific feature, so it is not included in the package distribution metadata.
+In other words, it is only considered when using Poetry to install the project.
+{{% /note %}}
+
+If the package(s) you want to install provide extras, you can specify them
+when adding the package:
+
+```bash
+poetry add "requests[security,socks]"
+poetry add "requests[security,socks]~=2.22.0"
+poetry add "git+https://github.com/pallets/flask.git@1.1.1[dotenv,dev]"
+```
+
+{{% warning %}}
+Some shells may treat square braces (`[` and `]`) as special characters. It is suggested to always quote arguments containing these characters to prevent unexpected shell expansion.
+{{% /warning %}}
+
+If you want to add a package to a specific group of dependencies, you can use the `--group (-G)` option:
+
+```bash
+poetry add mkdocs --group docs
+```
+
+See [Dependency groups]({{< relref "managing-dependencies#dependency-groups" >}}) for more information
+about dependency groups.
+
+#### Options
+
+* `--group (-G)`: The group to add the dependency to.
+* `--dev (-D)`: Add package as development dependency. (shortcut for `-G dev`)
+* `--editable (-e)`: Add vcs/path dependencies as editable.
+* `--extras (-E)`: Extras to activate for the dependency. (multiple values allowed)
+* `--optional`: Add as an optional dependency to an extra.
+* `--python`: Python version for which the dependency must be installed.
+* `--platform`: Platforms for which the dependency must be installed.
+* `--markers`: Environment markers which describe when the dependency should be installed.
+* `--source`: Name of the source to use to install the package.
+* `--allow-prereleases`: Accept prereleases.
+* `--dry-run`: Output the operations but do not execute anything (implicitly enables `--verbose`).
+* `--lock`: Do not perform install (only update the lockfile).

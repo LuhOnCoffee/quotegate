@@ -1,0 +1,86 @@
+{
+  "project": "pytest",
+  "license": "MIT",
+  "docs": [
+    {
+      "file": "docs/pytest-v3-01-instruction.txt",
+      "kind": "instruction",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/explanation/goodpractices.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "If you need to check your package against more than one interpreter, create one environment per version -- for example ``python3.9 -m venv .venv39`` and ``python3.13 -m venv .venv313`` -- and install ``pytest`` into each of them.",
+      "inserted_fact": "F1",
+      "why_implied": "It is a setup step, not a claim: no support range or 'supported' wording appears anywhere. The reader has to reason that a step telling you to create a 3.9 environment and install pytest into it is only performable if pytest still installs on Python 3.9, which contradicts the 3.10+ requirement. Searching for '3.10', 'Python 3.10+' or 'requires' finds nothing; the only version token present is the '3.9' in a venv command, which is unremarkable on its face because users do pin old interpreters for their own code."
+    },
+    {
+      "file": "docs/pytest-v3-02-example.txt",
+      "kind": "example",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/doctest.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": ".. tab:: setup.cfg\n\n    .. code-block:: ini\n\n        [pytest]\n        doctest_optionflags = NORMALIZE_WHITESPACE IGNORE_EXCEPTION_DETAIL",
+      "inserted_fact": "F2",
+      "why_implied": "A third config tab beside the existing toml/ini tabs, with no prose at all. The section name ``[pytest]`` is correct in the neighbouring pytest.toml and pytest.ini tabs, so the header looks right; only the tab label tells you the file is setup.cfg, where pytest reads ``[tool:pytest]`` and ignores a bare ``[pytest]``. Nothing says the section is valid there, and a keyword search for '[tool:pytest]' (the fact's own words) returns nothing in the document."
+    },
+    {
+      "file": "docs/pytest-v3-03-example.txt",
+      "kind": "example",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/writing_plugins.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "    requires-python = \">=3.9\"\n    dependencies = [\"pytest\"]",
+      "inserted_fact": "F1",
+      "why_implied": "Two lines of packaging metadata inside the existing sample pyproject.toml for a pytest11 plugin, with no sentence about them. The contradiction only appears if the reader combines them: a distribution that depends on pytest cannot honestly advertise installability on Python 3.9 when pytest itself needs 3.10+. Read alone, 'requires-python = \">=3.9\"' is just a floor a package author picked, and nowhere does the document state which interpreters pytest supports."
+    },
+    {
+      "file": "docs/pytest-v3-04-consequence.txt",
+      "kind": "consequence",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/example/simple.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "If the project also has a ``pytest.ini``, that is the file named on the ``configfile:`` line of the run header, so add the ``addopts`` entry there instead.",
+      "inserted_fact": "F3",
+      "why_implied": "It describes an observation (which file the header names) and an action (put the option in pytest.ini), never a rule about precedence. The words 'precedence', 'takes precedence' and 'even when empty' do not occur, so searching the fact's own wording finds nothing. A reader must infer that 'pytest.ini is the configfile when both exist' is exactly the reverse of pytest.toml winning over every other configuration file, and that the advice to move the setting therefore sends you to the file that is now ignored."
+    },
+    {
+      "file": "docs/pytest-v3-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/skipping.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "If your project still keeps its pytest settings in a ``[pytest]`` section of a ``setup.cfg`` file, rename that section to ``[tool:pytest]`` and the option can be set there in the same way.",
+      "inserted_fact": "F2",
+      "why_implied": "Not stale: the condition is about a legacy layout ('still keeps'), and what it tells you to do -- rename to [tool:pytest] -- is what the current rule requires. It names the old ``[pytest]`` spelling and setup.cfg, the surface features of a stale F2 claim, so it should draw a false positive, but it asserts nothing that is false today."
+    },
+    {
+      "file": "docs/pytest-v3-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/getting-started.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "If ``tmp_path`` were not available, the test would have to request the legacy ``tmpdir`` fixture instead and convert the ``py.path.local`` object it hands back with ``Path(str(tmpdir))`` before using any :mod:`pathlib` API on it.",
+      "inserted_fact": "F5",
+      "why_implied": "Not stale: an explicit counterfactual ('were not available ... would have to'), and its content is accurate -- tmpdir is the legacy fixture and does return a py.path.local. It calls tmpdir 'legacy' and leaves tmp_path as the fixture actually used in the example above it, so it agrees with the current preference while sitting on the exact topic of a stale F5 claim."
+    },
+    {
+      "file": "docs/pytest-v3-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/explanation/fixtures.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "``pytest.yield_fixture`` is nothing but an old alias of :py:func:`@pytest.fixture <pytest.fixture>`: it has been deprecated for a long time and pytest 10 will drop it, so fixtures that yield a value are decorated with ``@pytest.fixture`` too.",
+      "inserted_fact": "F4",
+      "why_implied": "Not stale: a reworded but faithful restatement of the current deprecation -- alias for pytest.fixture, removal in pytest 10, use plain @pytest.fixture for yielding fixtures. The deprecated name appears verbatim in a document that otherwise never mentions it, which makes it look like a planted stale mention even though every clause is true."
+    },
+    {
+      "file": "docs/pytest-v3-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "doc/en/how-to/cache.rst",
+      "source_commit": "6a9ba0f02f827a54cff6ab4da0dddecd65444ff6",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_implied": "Not stale: unmodified HEAD excerpt. It touches none of the five facts -- no Python version requirement, no setup.cfg or config-file precedence discussion, no tmpdir/tmp_path recommendation and no yield_fixture -- so there is nothing in it to contradict."
+    }
+  ]
+}

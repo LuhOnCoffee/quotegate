@@ -1,0 +1,86 @@
+{
+ "project": "flask",
+ "license": "BSD-3-Clause",
+ "docs": [
+  {
+   "file": "docs/flask-v4-01-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD (main)",
+   "source_path": "docs/cli.rst",
+   "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+   "inserted": "For example, a :file:`.flaskenv` that puts the project in the development\nenvironment gives everyone who checks it out the reloader and debugger, while\na :file:`.env` on a staging server only has to set the environment back to\n``production`` to switch them off again.",
+   "inserted_fact": "F3",
+   "why_implied": "The sentence tells the reader what they will get from dotenv files: a committed .flaskenv that selects the 'development environment' turns on the reloader and debugger, and a .env setting 'the environment' back to 'production' turns them off. That only happens under the removed FLASK_ENV variable; today there is no environment setting, so neither file would change the debugger or reloader (only --debug / FLASK_DEBUG does). The text never names FLASK_ENV, ENV or app.env, so the reader must know that the 'environment' setting no longer exists."
+  },
+  {
+   "file": "docs/flask-v4-02-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD (main)",
+   "source_path": "docs/extensiondev.rst",
+   "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+   "inserted": "If you connect receivers to Flask's :data:`.request_started` and\n:data:`.request_tearing_down` signals instead, expect bug reports of\n``init_app`` failing with a ``RuntimeError`` on some users' machines but not\non yours, depending on what else is installed in their virtualenv. Catching\nthat error and falling back to the decorator methods above keeps the\nextension working for them.",
+   "inserted_fact": "F5",
+   "why_implied": "It predicts that connecting to Flask's signals in init_app will raise RuntimeError in some users' environments depending on what is installed. That was only true when Blinker was optional and Flask substituted fake signals whose connect() raised; now Blinker is a required dependency installed with Flask, so signals are always available and the connect call cannot fail that way. The text never mentions Blinker or optional dependencies, so the reader has to infer the old behaviour."
+  },
+  {
+   "file": "docs/flask-v4-03-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD (main)",
+   "source_path": "docs/patterns/sqlalchemy.rst",
+   "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+   "inserted": "In a deployed application you don't want to rely on someone running this by\nhand. Register ``init_db`` in your application module as the hook Flask calls\nonce, just before it dispatches the very first request, so the tables exist\nbefore any view touches ``db_session``.",
+   "inserted_fact": "F6",
+   "why_implied": "The step tells the reader to register init_db with Flask's once-only hook that runs just before the first request. That hook is app.before_first_request, which was removed in Flask 2.3, so the step cannot be followed today (setup must run in the factory / app context instead). The decorator name is never written, so a search for before_first_request finds nothing."
+  },
+  {
+   "file": "docs/flask-v4-04-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD (main)",
+   "source_path": "docs/patterns/packages.rst",
+   "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+   "inserted": "requires-python = \">=3.9\"",
+   "inserted_fact": "F1",
+   "why_implied": "The pyproject.toml example declares that the Flask application runs on Python 3.9, which was only true while Flask supported 3.9. Current Flask supports Python 3.10 and newer, so the declared floor is wrong for a project depending on current Flask. No prose states any supported Python version; the reader must compare the config value against the fact."
+  },
+  {
+   "file": "docs/flask-v4-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD (main)",
+   "source_path": "docs/views.rst",
+   "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+   "inserted": "If you are porting an API like this from an older Flask release that tuned\nits ``jsonify`` output with ``JSON_``-prefixed keys in ``app.config``, set the\nmatching attributes on ``app.json`` instead, such as ``app.json.sort_keys``;\ncurrent Flask no longer reads those config keys.",
+   "inserted_fact": "F4",
+   "why_implied": "Conditional on porting from an older release; it says the JSON_* config keys are no longer read and points to app.json attributes (DefaultJSONProvider.sort_keys exists), which is consistent with F4. Nothing false today."
+  },
+  {
+   "file": "docs/flask-v4-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD (main)",
+   "source_path": "docs/blueprints.rst",
+   "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+   "inserted": "Were blueprints still able to register a hook that runs only before the\napplication's first request, a blueprint mounted twice would also have had to\ndecide whether that hook should run once or once per registration.",
+   "inserted_fact": "F6",
+   "why_implied": "A counterfactual ('Were blueprints still able to...') about the removed bp.before_app_first_request hook; it asserts nothing about current behaviour beyond implying the hook is gone, which matches F6."
+  },
+  {
+   "file": "docs/flask-v4-07-current_consequence.txt",
+   "kind": "current_consequence",
+   "source_tag": "HEAD (main)",
+   "source_path": "docs/errorhandling.rst",
+   "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+   "inserted": "So while you are working on a handler for 500 errors with ``flask run``, start\nthe server without the ``--debug`` option when you want to see your page; with\nthe option on, the debugger takes its place.",
+   "inserted_fact": "F2",
+   "why_implied": "True today: debug mode for flask run is enabled with the --debug option (F2), and the page itself says that in debug mode the 500 handler is bypassed for the interactive debugger. So to see the custom 500 page you must run without --debug. This is a consequence the reader must act on, and it is correct under current behaviour."
+  },
+  {
+   "file": "docs/flask-v4-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD (main)",
+   "source_path": "docs/patterns/fileuploads.rst",
+   "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt; covers file uploads, secure_filename, MAX_CONTENT_LENGTH and upload progress, none of which touch Python versions, debug mode, FLASK_ENV, JSON config keys, Blinker or first-request hooks."
+  }
+ ]
+}

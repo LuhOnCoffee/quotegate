@@ -1,0 +1,798 @@
+{
+ "docs": {
+  "black-d01": [],
+  "black-d02": [],
+  "black-d03": [
+   {
+    "quote": "If you only want the long string splitting, pass the `--experimental-string-processing` flag instead.",
+    "fact": "The --experimental-string-processing flag has been removed (in 24.1.0)",
+    "corrected_in_doc": false,
+    "note": "Recommends a removed flag as current usage.",
+    "by": "AB"
+   }
+  ],
+  "black-d04": [],
+  "black-d05": [],
+  "black-d06": [
+   {
+    "quote": "Currently the runtime requires Python 3.6-3.10.",
+    "fact": "Black requires Python 3.10 or newer to run.",
+    "corrected_in_doc": false,
+    "note": "Outdated runtime range.",
+    "by": "AB"
+   },
+   {
+    "quote": "Yes, there is support for PyPy 3.7 and higher.",
+    "fact": "Black supports running on PyPy 3.8 and higher (PyPy 3.7 is no longer supported).",
+    "corrected_in_doc": false,
+    "note": "PyPy 3.7 no longer supported.",
+    "by": "AB"
+   }
+  ],
+  "black-d07": [
+   {
+    "quote": "It requires Python 3.6.2+ to run.",
+    "fact": "Black requires Python 3.10 or newer to run.",
+    "corrected_in_doc": false,
+    "note": "Outdated minimum Python.",
+    "by": "AB"
+   },
+   {
+    "quote": "If you want to format Python 2 code as well, install with `pip install black[python2]`.",
+    "fact": "Black no longer supports formatting Python 2 code; removed in 22.0.",
+    "corrected_in_doc": false,
+    "note": "Python 2 formatting extra presented as current.",
+    "by": "AB"
+   },
+   {
+    "quote": "However, _Black_ is still beta. Things will probably be wonky for a while.",
+    "fact": "Black is stable (no longer a beta product).",
+    "corrected_in_doc": false,
+    "note": "Claims beta status.",
+    "by": "AB"
+   },
+   {
+    "quote": "NOTE: This is a beta product",
+    "fact": "Black is stable (no longer a beta product).",
+    "corrected_in_doc": false,
+    "note": "Heading asserts beta status.",
+    "by": "AB"
+   },
+   {
+    "quote": "until the formatter becomes stable, you should expect some formatting to change in the future",
+    "fact": "Black is stable; output stable within calendar year",
+    "corrected_in_doc": false,
+    "note": "",
+    "by": "B"
+   }
+  ],
+  "black-d08": [
+   {
+    "quote": "_Black_ runs on Python 3.8 and newer.",
+    "fact": "Black requires Python 3.10 or newer to run.",
+    "corrected_in_doc": false,
+    "note": "Outdated minimum Python.",
+    "by": "AB"
+   }
+  ],
+  "click-d01": [
+   {
+    "quote": "On Windows, Click installs colorama as a dependency and uses it to translate these codes into console API calls.",
+    "fact": "Colorama is no longer a dependency of Click and is not used.",
+    "corrected_in_doc": false,
+    "note": "The Older Windows Support admonition says to install colorama yourself, which implies Click doesn't. | RULED uncorrected: the admonition implies otherwise but does not mark this sentence outdated.",
+    "by": "AB"
+   }
+  ],
+  "click-d02": [],
+  "click-d03": [
+   {
+    "quote": "Bash, Zsh, and Fish are supported",
+    "fact": "Click's built-in shell completion supports Bash (4.4+), Zsh, Fish, and PowerShell.",
+    "corrected_in_doc": false,
+    "note": "Leaves out PowerShell.",
+    "by": "AB"
+   },
+   {
+    "quote": "By exporting it with the ``source_{shell}`` value it will output the activation script to evaluate.",
+    "fact": "Shell completion is activated with `{shell}_source`, not the old `source_{shell}` form.",
+    "corrected_in_doc": false,
+    "note": "Old activation value.",
+    "by": "AB"
+   },
+   {
+    "quote": "eval \"$(_FOO_BAR_COMPLETE=source_bash foo-bar)\"",
+    "fact": "Shell completion is activated with `{shell}_source` (e.g. `bash_source`).",
+    "corrected_in_doc": false,
+    "note": "Old source_bash form.",
+    "by": "AB"
+   },
+   {
+    "quote": "eval \"$(_FOO_BAR_COMPLETE=source_zsh foo-bar)\"",
+    "fact": "Shell completion is activated with `{shell}_source`.",
+    "corrected_in_doc": false,
+    "note": "Old source_zsh form.",
+    "by": "A"
+   },
+   {
+    "quote": "eval (env _FOO_BAR_COMPLETE=source_fish foo-bar)",
+    "fact": "Shell completion is activated with `{shell}_source`.",
+    "corrected_in_doc": false,
+    "note": "Old source_fish form.",
+    "by": "A"
+   },
+   {
+    "quote": "_FOO_BAR_COMPLETE=source_bash foo-bar > foo-bar-complete.sh",
+    "fact": "Shell completion is activated with `{shell}_source`.",
+    "corrected_in_doc": false,
+    "note": "Activation script uses the old form.",
+    "by": "A"
+   },
+   {
+    "quote": "_FOO_BAR_COMPLETE=source_zsh foo-bar > foo-bar-complete.sh",
+    "fact": "Shell completion is activated with `{shell}_source`.",
+    "corrected_in_doc": false,
+    "note": "Old form; this line appears for both Zsh and Fish.",
+    "by": "A"
+   },
+   {
+    "quote": "_FOO_BAR_COMPLETE=source_fish foo-bar > ~/.config/fish/completions/foo-bar-complete.fish",
+    "fact": "Shell completion is activated with `{shell}_source`.",
+    "corrected_in_doc": false,
+    "note": "Old source_fish form.",
+    "by": "A"
+   }
+  ],
+  "click-d04": [],
+  "click-d05": [],
+  "click-d06": [
+   {
+    "quote": "The :func:`echo` function supports ANSI colors and styles. On Windows this uses `colorama`_.",
+    "fact": "Colorama is no longer a dependency of Click and is not used.",
+    "corrected_in_doc": false,
+    "note": "Says Click uses colorama.",
+    "by": "AB"
+   },
+   {
+    "quote": "On Windows, Click uses colorama without calling ``colorama.init()``.",
+    "fact": "Colorama is no longer a dependency of Click and is not used.",
+    "corrected_in_doc": false,
+    "note": "Says Click uses colorama.",
+    "by": "AB"
+   }
+  ],
+  "click-d07": [
+   {
+    "quote": "Internally, {class}`Group` is a subclass of {class}`MultiCommand`, which is the base class for all group commands.",
+    "fact": "MultiCommand is deprecated; Group is the base class for all group commands.",
+    "corrected_in_doc": false,
+    "note": "Names MultiCommand as the base class.",
+    "by": "AB"
+   }
+  ],
+  "click-d08": [],
+  "flask-d01": [],
+  "flask-d02": [
+   {
+    "quote": "Debug mode can also be enabled by setting the ``FLASK_ENV`` environment variable to ``development`` before running ``flask run``.",
+    "fact": "FLASK_ENV environment variable has been removed (since Flask 2.3); debug via --debug",
+    "corrected_in_doc": false,
+    "note": "Doc elsewhere correctly says to use --debug, but does not say FLASK_ENV is removed.",
+    "by": "AB"
+   }
+  ],
+  "flask-d03": [],
+  "flask-d04": [
+   {
+    "quote": "To enable all development features, set the ``FLASK_ENV`` environment variable to ``development`` before calling ``flask run``.",
+    "fact": "FLASK_ENV environment variable has been removed (since Flask 2.3); debug via --debug",
+    "corrected_in_doc": false,
+    "note": "Followed by export/set FLASK_ENV=development code tabs.",
+    "by": "AB"
+   }
+  ],
+  "flask-d05": [
+   {
+    "quote": "Blinker is not installed along with Flask, so add it to your project's dependencies first.",
+    "fact": "Blinker is a required dependency installed automatically with Flask",
+    "corrected_in_doc": false,
+    "note": "",
+    "by": "AB"
+   }
+  ],
+  "flask-d06": [
+   {
+    "quote": "Flask supports Python 3.5 and newer, Python 2.7, and PyPy.",
+    "fact": "Flask supports Python 3.10 and newer",
+    "corrected_in_doc": false,
+    "note": "",
+    "by": "AB"
+   },
+   {
+    "quote": "`Blinker`_ provides support for :ref:`signals`.",
+    "fact": "Blinker is a required dependency installed automatically with Flask",
+    "corrected_in_doc": false,
+    "note": "Listed under 'Optional dependencies' that 'will not be installed automatically'.",
+    "by": "AB"
+   }
+  ],
+  "flask-d07": [],
+  "flask-d08": [],
+  "httpx-d01": [],
+  "httpx-d02": [],
+  "httpx-d03": [
+   {
+    "quote": "HTTPX requires Python 3.6+.",
+    "fact": "HTTPX requires Python 3.9 or newer",
+    "corrected_in_doc": false,
+    "note": "",
+    "by": "AB"
+   }
+  ],
+  "httpx-d04": [
+   {
+    "quote": "When using `httpx.Client(proxies={...})` to map to a selection of different proxies, we use full URL schemes, such as `proxies={\"http://\": ..., \"https://\": ...}`.",
+    "fact": "The proxies argument has been removed; use proxy or mounts=",
+    "corrected_in_doc": false,
+    "note": "",
+    "by": "AB"
+   },
+   {
+    "quote": "In consideration of consistency, we make `HEAD` follow redirects by default in HTTPX.",
+    "fact": "HTTPX does not follow redirects by default",
+    "corrected_in_doc": false,
+    "note": "",
+    "by": "AB"
+   }
+  ],
+  "httpx-d05": [
+   {
+    "quote": "For simple cases you can skip creating the transport and pass the application straight to the client instead, using `httpx.Client(app=app, base_url=\"http://testserver\")`.",
+    "fact": "The app shortcut argument on clients has been removed; use transport=httpx.WSGITransport(app=...)",
+    "corrected_in_doc": false,
+    "note": "The doc's main example correctly uses WSGITransport, but it never says the app shortcut was removed.",
+    "by": "AB"
+   }
+  ],
+  "httpx-d06": [
+   {
+    "quote": "You can also pass a `proxies` dictionary directly to the client, for example `httpx.Client(proxies={\"http://\": \"http://localhost:8030\", \"https://\": \"http://localhost:8031\"})`, which maps each URL scheme onto its own proxy.",
+    "fact": "The proxies argument has been removed; use proxy or mounts=",
+    "corrected_in_doc": false,
+    "note": "",
+    "by": "AB"
+   }
+  ],
+  "httpx-d07": [],
+  "httpx-d08": [],
+  "pip-d01": [],
+  "pip-d02": [],
+  "pip-d03": [],
+  "pip-d04": [
+   {
+    "quote": "When building from such a path, pip first copies the project into a temporary directory and runs the build backend there, leaving the original source tree untouched.",
+    "fact": "pip builds local directories in place (out-of-tree builds removed in 22.1)",
+    "corrected_in_doc": false,
+    "note": "Describes out-of-tree build as current behaviour.",
+    "by": "AB"
+   }
+  ],
+  "pip-d05": [],
+  "pip-d06": [
+   {
+    "quote": "but instead simply uses the first specification it finds for a project.",
+    "fact": "pip's backtracking (2020) resolver is the default",
+    "corrected_in_doc": false,
+    "note": "Claims pip has no true dependency resolution, as it is now.",
+    "by": "AB"
+   },
+   {
+    "quote": "The query will be used to search the names and summaries of all packages.",
+    "fact": "PyPI no longer supports pip search",
+    "corrected_in_doc": false,
+    "note": "Searching for Packages section presents pip search as working.",
+    "by": "A"
+   },
+   {
+    "quote": "pip can search `PyPI`_ for packages using the ``pip search``",
+    "fact": "PyPI no longer supports pip search",
+    "corrected_in_doc": false,
+    "note": "Same section, the opening sentence.",
+    "by": "AB"
+   }
+  ],
+  "pip-d07": [
+   {
+    "quote": "You can also switch to the legacy resolver, which does not backtrack and remains fully supported, by passing `--use-deprecated=legacy-resolver`.",
+    "fact": "legacy resolver is deprecated and unsupported",
+    "corrected_in_doc": false,
+    "note": "Says the legacy resolver is fully supported.",
+    "by": "AB"
+   }
+  ],
+  "pip-d08": [
+   {
+    "quote": "pip works with CPython versions 2.7, 3.5, 3.6, 3.7 and also PyPy.",
+    "fact": "pip supports CPython 3.10-3.15 plus PyPy3; Python 2 not supported",
+    "corrected_in_doc": false,
+    "note": "Wrong compatibility list.",
+    "by": "AB"
+   },
+   {
+    "quote": "pip is already installed if you are using Python 2 >=2.7.9 or Python 3 >=3.4",
+    "fact": "Python 2 and older Python 3 versions are not supported",
+    "corrected_in_doc": false,
+    "note": "Borderline: implies pip runs on Python 2.7.9 and 3.4.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d01": [],
+  "poetry-d02": [],
+  "poetry-d03": [
+   {
+    "quote": "Alternatively, you can run `poetry shell` to spawn a nested shell with the virtual environment already activated.",
+    "fact": "poetry shell is no longer part of Poetry (moved to poetry-plugin-shell)",
+    "corrected_in_doc": false,
+    "note": "Presents poetry shell as built in.",
+    "by": "AB"
+   }
+  ],
+  "poetry-d04": [
+   {
+    "quote": "Poetry requires Python 2.7 or 3.5+.",
+    "fact": "Poetry requires Python 3.10 or newer",
+    "corrected_in_doc": false,
+    "note": "System requirements section.",
+    "by": "AB"
+   },
+   {
+    "quote": "curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -",
+    "fact": "official installer is served from install.python-poetry.org, separate repo",
+    "corrected_in_doc": false,
+    "note": "Recommended installer is get-poetry.py from the main repo. The warning only says it will be replaced in 1.2.",
+    "by": "AB"
+   },
+   {
+    "quote": "`python` (which can be a py3 or py2 interpreter)",
+    "fact": "Poetry requires Python 3.10 or newer",
+    "corrected_in_doc": false,
+    "note": "Borderline: says the installer runs on a py2 interpreter.",
+    "by": "AB"
+   },
+   {
+    "quote": "Python 2.7 and 3.5 will no longer be supported in the next feature release (1.2).",
+    "fact": "Poetry itself requires Python 3.10 or newer to run.",
+    "corrected_in_doc": false,
+    "note": "Implies 2.7/3.5 are still supported now.",
+    "by": "B"
+   },
+   {
+    "quote": "(Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -",
+    "fact": "Official installer script is served from install.python-poetry.org, separate repository",
+    "corrected_in_doc": false,
+    "note": "Windows version of the old installer command.",
+    "by": "B"
+   }
+  ],
+  "poetry-d05": [],
+  "poetry-d06": [],
+  "poetry-d07": [
+   {
+    "quote": "The easiest way to activate the virtual environment is to create a nested shell with `poetry shell`.",
+    "fact": "poetry shell is no longer part of Poetry",
+    "corrected_in_doc": false,
+    "note": "Presents poetry shell as built in.",
+    "by": "AB"
+   },
+   {
+    "quote": "If you'd like to prevent `poetry shell` from modifying your shell prompt on virtual environment activation, you should",
+    "fact": "poetry shell is no longer part of Poetry",
+    "corrected_in_doc": false,
+    "note": "Instructions for poetry shell as a built-in command.",
+    "by": "AB"
+   },
+   {
+    "quote": "Therefore, Poetry has to create a sub-shell with the virtual environment activated",
+    "fact": "poetry shell is no longer part of Poetry",
+    "corrected_in_doc": false,
+    "note": "Borderline: rationale for the built-in shell command.",
+    "by": "AB"
+   },
+   {
+    "quote": "you do not need to use `poetry run` or `poetry shell` since",
+    "fact": "poetry shell is no longer part of Poetry",
+    "corrected_in_doc": false,
+    "note": "Borderline: passing present-tense reference.",
+    "by": "AB"
+   },
+   {
+    "quote": "| Sub-shell | `poetry shell` | `poetry shell` | `exit` |",
+    "fact": "poetry shell is no longer part of Poetry (use poetry env activate)",
+    "corrected_in_doc": false,
+    "note": "Table row listing poetry shell as an activation method.",
+    "by": "B"
+   }
+  ],
+  "poetry-d08": [
+   {
+    "quote": "Some plugins, such as the Export Poetry Plugin that provides the `export` command, are installed together with Poetry by default, so they are available without any further steps.",
+    "fact": "Export plugin no longer installed by default (since 2.0)",
+    "corrected_in_doc": false,
+    "note": "Says the export plugin ships with Poetry by default.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d01": [
+   {
+    "quote": "``pytest.ini`` files take precedence over other files, even when empty.",
+    "fact": "pytest.toml (new in 9.0) takes precedence over all other configuration files, including pytest.ini.",
+    "corrected_in_doc": false,
+    "note": "Claims pytest.ini has top precedence.",
+    "by": "AB"
+   },
+   {
+    "quote": "``pytest.ini``: will always match and take precedence, even if empty.",
+    "fact": "pytest.toml (new in 9.0) takes precedence over all other configuration files, including pytest.ini.",
+    "corrected_in_doc": false,
+    "note": "Repeats pytest.ini-first precedence in the config-matching rules.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d02": [
+   {
+    "quote": "``pytest`` requires: Python 3.8+ or PyPy3.",
+    "fact": "pytest requires Python 3.10 or newer (or PyPy3).",
+    "corrected_in_doc": false,
+    "note": "States an old minimum Python version.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d03": [],
+  "pytest-d04": [
+   {
+    "quote": "Python 2.7, Python 3.4+, PyPy 2.3, Jython 2.5 (untested);",
+    "fact": "pytest requires Python 3.10 or newer (or PyPy3).",
+    "corrected_in_doc": false,
+    "note": "Old README feature list of supported Python versions.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d05": [],
+  "pytest-d06": [],
+  "pytest-d07": [
+   {
+    "quote": "If a ``pytest.ini`` file is also present, it takes precedence over ``pytest.toml``.",
+    "fact": "pytest.toml (new in 9.0) takes precedence over all other configuration files, including pytest.ini.",
+    "corrected_in_doc": false,
+    "note": "Reverses the actual precedence order.",
+    "by": "AB"
+   }
+  ],
+  "pytest-d08": [],
+  "requests-d01": [
+   {
+    "quote": "Yes! Requests officially supports Python 2.7 & 3.5+ and PyPy.",
+    "fact": "Requests officially supports Python 3.10 and newer; Python 2.7 support dropped in 2.28.0.",
+    "corrected_in_doc": false,
+    "note": "Old supported-version statement.",
+    "by": "AB"
+   },
+   {
+    "quote": "Yes! We do not have immediate plans to",
+    "fact": "Requests no longer supports Python 2.7; support was dropped in Requests 2.28.0.",
+    "corrected_in_doc": false,
+    "note": "Says there are no plans to sunset Python 2.7 support (the sentence continues with an RST link).",
+    "by": "AB"
+   },
+   {
+    "quote": "We understand that we have a large user base with varying needs, and intend to maintain Python 2.7 support within Requests",
+    "fact": "Requests no longer supports Python 2.7; support was dropped in Requests 2.28.0.",
+    "corrected_in_doc": false,
+    "note": "Says Python 2.7 support is still being maintained.",
+    "by": "AB"
+   }
+  ],
+  "requests-d02": [],
+  "requests-d03": [
+   {
+    "quote": "which is always installed alongside Requests as a required dependency",
+    "fact": "chardet is not a mandatory dependency; Requests uses charset-normalizer unless chardet is installed or the extra is used.",
+    "corrected_in_doc": false,
+    "note": "Calls chardet a required dependency.",
+    "by": "AB"
+   }
+  ],
+  "requests-d04": [],
+  "requests-d05": [],
+  "requests-d06": [],
+  "requests-d07": [
+   {
+    "quote": "Requests currently supports Python 3.8 and newer, so your change should pass",
+    "fact": "Requests officially supports Python 3.10 and newer.",
+    "corrected_in_doc": false,
+    "note": "States an old minimum Python version.",
+    "by": "AB"
+   }
+  ],
+  "requests-d08": [
+   {
+    "quote": "Requests officially supports Python 2.7 & 3.4\u20133.7, and runs great on",
+    "fact": "Requests officially supports Python 3.10 and newer; Python 2.7 dropped in 2.28.0.",
+    "corrected_in_doc": false,
+    "note": "Old README supported-version line.",
+    "by": "AB"
+   },
+   {
+    "quote": "To install Requests, simply use [pipenv](http://pipenv.org/) (or pip, of",
+    "fact": "The documented way to install Requests is `python -m pip install requests` (not pipenv or easy_install).",
+    "corrected_in_doc": false,
+    "note": "Recommends pipenv for installing.",
+    "by": "AB"
+   },
+   {
+    "quote": "$ pipenv install requests",
+    "fact": "The documented way to install Requests is `python -m pip install requests` (not pipenv or easy_install).",
+    "corrected_in_doc": false,
+    "note": "The pipenv install command shown in the code block.",
+    "by": "AB"
+   },
+   {
+    "quote": "Fork [the repository](https://github.com/requests/requests) on",
+    "fact": "The Requests source repository lives at github.com/psf/requests.",
+    "corrected_in_doc": false,
+    "note": "Points to the old requests/requests repository location.",
+    "by": "AB"
+   }
+  ]
+ },
+ "judged": {
+  "click-d02": {
+   "Click 8.1.8, released in December 2024, was the last release to support Python 3.7, 3.8, and 3.9.": "wrong"
+  },
+  "click-d04": {
+   "PowerShell support was added in Click 8.5.0, released in August 2026; earlier releases supported only Bash, Zsh, and Fish.": "wrong",
+   "It must invoke your program with the environment variable {FOOBAR}COMPLETE set to {shell}complete and pass the complete args and incomplete value.": "wrong"
+  },
+  "httpx-d01": {
+   "Also note that requests.Session.request(...) allows a proxies=... parameter, whereas httpx.Client.request(...) does not allow mounts=....": "wrong",
+   "Also note that requests.Session.request(...) allows a proxies=... parameter, whereas httpx.Client.request(...) does not allow mounts=...": "wrong"
+  },
+  "pip-d03": {
+   "For non-editable installs, the project is built locally in a temp dir and then installed normally.": "wrong"
+  },
+  "requests-d02": {
+   "Yes! Requests supports all officially supported versions of Python <https://devguide.python.org/versions/> and recent releases of PyPy.": "wrong",
+   "Requests supports all officially supported versions of Python <https://devguide.python.org/versions/> and recent releases of PyPy.": "wrong"
+  },
+  "black-d01": {
+   "Until version 24.1.0 removed it, long string splitting could also be requested with the deprecated --experimental-string-processing flag.": "wrong"
+  },
+  "black-d04": {
+   "Release 21.12b0, published in December 2021, was the last version of Black able to format Python 2 code.": "wrong"
+  },
+  "poetry-d01": {
+   "Before Poetry 2.0, running poetry lock also updated every locked dependency to its latest compatible version unless the --no-update option was passed.": "wrong"
+  },
+  "poetry-d05": {
+   "requires-python = \">=3.9\"": "wrong"
+  },
+  "poetry-d06": {
+   "poetry env use python3.7": "wrong",
+   "pyenv install 3.9.8 pyenv local 3.9.8 # Activate Python 3.9 for the current project poetry install": "wrong"
+  },
+  "pytest-d03": {
+   "pytest version min. Python version ============== =================== 9.0+ 3.10+ 8.4 3.9+ 8.0 - 8.3 3.8+ 7.1 - 7.4 3.7+ 6.2 - 7.0 3.6+ 5.0 - 6.1 3.5+ 3.3 - 4.6 2.7, 3.4+ ============== ===================": "wrong",
+   "The pytest 4.6 series, first released in 2019, was the last to support Python 2.7 and Python 3.4.": "wrong"
+  },
+  "requests-d06": {
+   "Requests will first check for an encoding in the HTTP header, and if none is present, will use charsetnormalizer <https://pypi.org/project/charsetnormalizer/> or chardet <https://github.com/chardet/chardet> to attempt to guess the encoding.": "wrong"
+  }
+ },
+ "borderline": [
+  {
+   "doc": "click-d01",
+   "quote": "On Windows, Click installs colorama as a dependency and uses it to translate these codes into console API calls.",
+   "ruled": "stale, uncorrected",
+   "why": "keyer A marked it corrected because a later admonition implies colorama is user-installed; an implicit contradiction is not an explicit correction (keyer B and the planting record agree)"
+  }
+ ],
+ "provenance": {
+  "keyers": "two blind Claude agents per document (different prompts, different project pairings), 2026-09-21",
+  "checks": "all key quotes validated verbatim; all 16 planted sentences keyed by both keyers; no distractor sentence keyed by either; one A/B disagreement, resolved above",
+  "construction": "construction_key.json records every inserted sentence and its kind"
+ },
+ "judged_log": [
+  {
+   "doc": "click-d02",
+   "quote": "Click 8.1.8, released in December 2024, was the last release to support Python 3.7, 3.8, and 3.9.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "click-d04",
+   "quote": "PowerShell support was added in Click 8.5.0, released in August 2026; earlier releases supported only Bash, Zsh, and Fish.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "httpx-d01",
+   "quote": "Also note that `requests.Session.request(...)` allows a `proxies=...` parameter, whereas `httpx.Client.request(...)` does not allow `mounts=...`.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "pip-d03",
+   "quote": "For non-editable installs, the project is built locally in a temp dir and then installed normally.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "requests-d02",
+   "quote": "Yes! Requests supports all `officially supported versions of Python <https://devguide.python.org/versions/>`_ and recent releases of PyPy.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "black-d01",
+   "quote": "Until version 24.1.0 removed it, long string splitting could also be requested with the deprecated --experimental-string-processing flag.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "black-d04",
+   "quote": "Release 21.12b0, published in December 2021, was the last version of _Black_ able to format Python 2 code.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "click-d02",
+   "quote": "Click 8.1.8, released in December 2024, was the last release to support Python 3.7, 3.8, and 3.9.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "click-d04",
+   "quote": "PowerShell support was added in Click 8.5.0, released in August 2026; earlier releases supported only Bash, Zsh, and Fish.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "httpx-d01",
+   "quote": "Also note that `requests.Session.request(...)` allows a `proxies=...` parameter, whereas `httpx.Client.request(...)` does not allow `mounts=...`.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "pip-d03",
+   "quote": "For non-editable installs, the project is built locally in a temp dir and then installed normally.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "poetry-d01",
+   "quote": "Before Poetry 2.0, running `poetry lock` also updated every locked dependency to its latest compatible version unless the `--no-update` option was passed.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "poetry-d05",
+   "quote": "requires-python = \">=3.9\"",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "poetry-d06",
+   "quote": "poetry env use python3.7",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "pytest-d03",
+   "quote": "pytest version  min. Python version\n==============  ===================\n9.0+            3.10+\n8.4             3.9+\n8.0 - 8.3       3.8+\n7.1 - 7.4       3.7+\n6.2 - 7.0       3.6+\n5.0 - 6.1       3.5+\n3",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "requests-d02",
+   "quote": "Requests supports all `officially supported versions of Python <https://devguide.python.org/versions/>`_ and recent releases of PyPy.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "requests-d06",
+   "quote": "Requests will first check for an encoding in the HTTP header, and if none is present, will use `charset_normalizer <https://pypi.org/project/charset_normalizer/>`_ or `chardet <https://github.com/char",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "pip-d03",
+   "quote": "For non-editable installs, the project is built locally in a temp dir and then installed normally.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "poetry-d05",
+   "quote": "requires-python = \">=3.9\"",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "black-d04",
+   "quote": "Release 21.12b0, published in December 2021, was the last version of _Black_ able to format Python 2 code.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "click-d02",
+   "quote": "Click 8.1.8, released in December 2024, was the last release to support Python 3.7, 3.8, and 3.9.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "click-d04",
+   "quote": "It must invoke your program with the environment variable `_{FOO_BAR}_COMPLETE` set to `{shell}_complete` and pass the complete args and incomplete value.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "httpx-d01",
+   "quote": "Also note that `requests.Session.request(...)` allows a `proxies=...` parameter, whereas `httpx.Client.request(...)` does not allow `mounts=...`.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "pip-d03",
+   "quote": "For non-editable installs, the project is built locally in a temp dir and then installed normally.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "poetry-d01",
+   "quote": "Before Poetry 2.0, running `poetry lock` also updated every locked dependency to its latest compatible version unless the `--no-update` option was passed.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "poetry-d05",
+   "quote": "requires-python = \">=3.9\"",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "poetry-d06",
+   "quote": "pyenv install 3.9.8\npyenv local 3.9.8  # Activate Python 3.9 for the current project\npoetry install",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "pytest-d03",
+   "quote": "The pytest 4.6 series, first released in 2019, was the last to support Python 2.7 and Python 3.4.\n",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "httpx-d01",
+   "quote": "Also note that requests.Session.request(...) allows a proxies=... parameter, whereas httpx.Client.request(...) does not allow mounts=...",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "requests-d02",
+   "quote": "Yes! Requests supports all `officially supported versions of Python <https://devguide.python.org/versions/>`_ and recent releases of PyPy.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "click-d02",
+   "quote": "Click 8.1.8, released in December 2024, was the last release to support Python 3.7, 3.8, and 3.9.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  },
+  {
+   "doc": "pip-d03",
+   "quote": "For non-editable installs, the project is built locally in a temp dir and then installed normally.",
+   "verdict": "wrong",
+   "why": "public corpus, all 32 read: 15 are the planted DATED-HISTORY distractors (Click 8.1.8/8.5.0, Black 24.1.0/21.12b0, Poetry 2.0, pytest 4.6); others agree with the facts (Requests 'all officially supported versions', charset_normalizer, pytest version table), are examples for a user's own project (poetry requires-python/env use/pyenv), or a different case than the fact (pip-d03: VCS clone to a temp dir, F4 is about local directories; httpx-d01 compares requests vs httpx; click {shell}_complete)"
+  }
+ ]
+}

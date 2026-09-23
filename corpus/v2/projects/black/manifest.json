@@ -1,0 +1,86 @@
+{
+  "project": "black",
+  "license": "MIT",
+  "docs": [
+    {
+      "file": "docs/black-v2-01-implicit.txt",
+      "kind": "implicit",
+      "source_tag": "HEAD",
+      "source_path": "docs/the_black_code_style/future_style.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "When reporting a problem with this feature, mention whether you enabled it with `--unstable` or with `--experimental-string-processing`.",
+      "inserted_fact": "F5",
+      "why_subtle": "Never tells the reader to use the removed flag and makes no claim about it; the bug-reporting step merely presupposes that `--experimental-string-processing` is still a way to turn string processing on, sitting in the very section that documents the feature correctly as unstable-only."
+    },
+    {
+      "file": "docs/black-v2-02-code.txt",
+      "kind": "code",
+      "source_tag": "HEAD",
+      "source_path": "docs/contributing/the_basics.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "(.venv)$ tox -e py39 # Run tests on the oldest supported python version",
+      "inserted_fact": "F1",
+      "why_subtle": "The stale fact exists only as one tox command in a console block of contributor commands; the prose never mentions a minimum Python version, so the reader must notice that py39 is labelled the oldest supported version when Black now requires 3.10+."
+    },
+    {
+      "file": "docs/black-v2-03-note.txt",
+      "kind": "note",
+      "source_tag": "HEAD",
+      "source_path": "docs/guides/using_black_with_jupyter_notebooks.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "Formatting notebooks that run a Python 2 kernel additionally requires the `python2` extra.",
+      "inserted_fact": "F2",
+      "why_subtle": "A present-tense claim inside a {note} box about install extras, in the same register as the true sentence before it; it never says 'Python 2 is supported' outright, but it only makes sense if Black can still format Python 2 code, which was removed in 22.0."
+    },
+    {
+      "file": "docs/black-v2-04-multi.txt",
+      "kind": "multi",
+      "source_tag": "HEAD",
+      "source_path": "docs/faq.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "On PyPy 3.7 and newer, the pure Python wheel is used instead.",
+      "inserted_fact": "F3",
+      "why_subtle": "The FAQ already states correctly that PyPy 3.8+ is supported, that Python 2 formatting was removed in 22.0, the 3.9 runtime removal and the stability policy; the insertion is an off-by-one drift (3.7 instead of 3.8) buried in the compiled-wheels answer, several sections away from the PyPy answer."
+    },
+    {
+      "file": "docs/black-v2-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD",
+      "source_path": "docs/integrations/github_actions.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "If part of your repository is still Python 2 code, leave it out of `src`: no release of _Black_ from 22.0 onward can format it.",
+      "inserted_fact": "F2",
+      "why_subtle": "Mentions Python 2 code in a version-pinning section, which looks like the stale claims, but it is conditional on the user's own legacy code and asserts only the current fact (no release since 22.0 formats Python 2)."
+    },
+    {
+      "file": "docs/black-v2-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD",
+      "source_path": "docs/contributing/release_process.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "Were _Black_ still a beta project, as it was until early 2022, any release could change the style and this scheduling concern would not arise.",
+      "inserted_fact": "F4",
+      "why_subtle": "Talks about Black being a beta project in a style-stability context, but as a counterfactual ('Were ... still') that presupposes it is not beta now; the historical aside is accurate (22.1.0 in January 2022 was the first stable release)."
+    },
+    {
+      "file": "docs/black-v2-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD",
+      "source_path": "docs/contributing/issue_triage.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "Requests to split long strings are another regular, and the answer is always the same: string splitting is still only available as the unstable `string_processing` feature, enabled with `--preview --enable-unstable-feature string_processing`.",
+      "inserted_fact": "F5",
+      "why_subtle": "On exactly the topic of the stale F5 claims (long string splitting and how to enable it) and uses the word 'still', but it restates the current fact accurately; the doc also contains the organic 'Getting to beta' project mention, which names a finished project and makes no claim that Black is beta."
+    },
+    {
+      "file": "docs/black-v2-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/integrations/editors.md",
+      "source_commit": "62bcae6485c3d5adc9c0acdcf500c8ed0f547694",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_subtle": "Unmodified excerpt (title plus Vim section to the end). It correctly states the Vim plugin needs Python 3.10+, mentions stable branches/tags and a 22.3.0 minimum for the VS Code extension; none contradicts the facts."
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+## Values from Environment Variables
+
+To pass in a value from a specific environment variable use `envvar`.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--username', envvar='USERNAME')
+    def greet(username):
+       click.echo(f"Hello {username}!")
+
+.. click:run::
+
+    invoke(greet, env={'USERNAME': 'john'})
+```
+
+If a list is passed to `envvar`, the first environment variable found is picked.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--username', envvar=['ALT_USERNAME', 'USERNAME'])
+    def greet(username):
+       click.echo(f"Hello {username}!")
+
+.. click:run::
+
+    invoke(greet, env={'ALT_USERNAME': 'Bill', 'USERNAME': 'john'})
+
+```
+
+Variable names are:
+ - [Case-insensitive on Windows but not on other platforms](https://github.com/python/cpython/blob/aa9eb5f757ceff461e6e996f12c89e5d9b583b01/Lib/os.py#L777-L789).
+ - Not stripped of whitespace and should match the exact name provided to the
+   `envvar` argument.
+
+For flag options, there are two concepts to consider: the activation of the flag
+driven by the environment variable, and the value of the flag if it is
+activated.
+
+The values read from environment variables are always strings and will require
+extra processing. We need to transform these strings into boolean values that
+will determine if the flag is activated or not.
+
+Here are the rules used to parse environment variable values for flag options:
+   - `true`, `1`, `yes`, `on`, `t`, `y` are interpreted as activating the flag
+   - `false`, `0`, `no`, `off`, `f`, `n` are interpreted as deactivating the
+     flag
+   - The presence of the environment variable without value is interpreted as
+     deactivating the flag
+   - Empty strings are interpreted as deactivating the flag
+   - Values are case-insensitive, so the `True`, `TRUE`, `tRuE` strings are all
+     interpreted as activating the flag
+   - Values are stripped of leading and trailing whitespace before being
+     interpreted, so the `" True "` string is transformed to `"true"` and thus
+     activates the flag
+   - If the flag option has a `flag_value` argument, passing that value in the
+     environment variable will activate the flag, in addition to all the cases
+     described above
+   - Any other value is interpreted as deactivating the flag
+
+```{caution}
+For boolean flags with a pair of values, the only recognized environment variable is the one provided to the `envvar` argument.
+
+So an option defined as `--flag/--no-flag`, with an `envvar="FLAG"` parameter, there is no magical `NO_FLAG=<anything>` variable that is recognized. Only the `FLAG=<anything>` environment variable is recognized.
+```
+
+If the flag is activated, its value is set to `flag_value`. Otherwise, the value
+defaults to `None`.
+
+## Multiple Options from Environment Values
+
+As options can accept multiple values, pulling in such values from
+environment variables (which are strings) is a bit more complex. Click handles
+this by deferring customization of the behavior to the `type`. For both
+`multiple` and `nargs` with values other than
+`1`, Click will invoke the {meth}`ParamType.split_envvar_value` method to
+perform the splitting.
+
+The default implementation for all types is to split on whitespace. The
+exceptions to this rule are the {class}`File` and {class}`Path` types
+which both split according to the operating system's path splitting rules.
+On Unix systems like Linux and OS X, the splitting happens on
+every colon (`:`), and for Windows, splitting on every semicolon (`;`).
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('paths', '--path', envvar='PATHS', multiple=True,
+                  type=click.Path())
+    def perform(paths):
+        for path in paths:
+            click.echo(path)
+
+    if __name__ == '__main__':
+        perform()
+
+.. click:run::
+
+    import os
+    invoke(perform, env={"PATHS": f"./foo/bar{os.path.pathsep}./test"})
+```
+
+With `nargs`, the split values fill the tuple in order:
+
+```{eval-rst}
+.. click:example::
+
+    from collections import Sequence
+
+    @click.command()
+    @click.option('--point', envvar='POINT', nargs=2, type=float)
+    def plot(point):
+        if isinstance(point, Sequence):
+            x, y = point
+            click.echo(f"x={x} y={y}")
+
+.. click:run::
+
+    invoke(plot, env={"POINT": "1.5 2.5"})
+```
+
+## Other Prefix Characters
+
+Click can deal with prefix characters besides `-` for options, including `/` and
+`+`, as well as others. Note that alternative prefix characters are generally
+used very sparingly if at all within POSIX.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('+w/-w')
+    def chmod(w):
+        click.echo(f"writable={w}")
+
+.. click:run::
+
+    invoke(chmod, args=['+w'])
+    invoke(chmod, args=['-w'])
+```
+
+There are special considerations for using `/` as prefix character. See
+{ref}`option-boolean-flag` for more.
+
+(optional-value)=
+
+## Optional Value
+
+Providing the value to an option can be made optional, in which case
+providing only the option's flag without a value will either show a
+prompt or use its `flag_value`.
+
+Setting `is_flag=False, flag_value=value` tells Click that the option
+can still be passed a value, but if only the flag is given, the
+value will be `flag_value`.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option("--name", is_flag=False, flag_value="Flag", default="Default")
+    def hello(name):
+        click.echo(f"Hello, {name}!")
+
+.. click:run::
+
+    invoke(hello, args=[])
+    invoke(hello, args=["--name", "Value"])
+    invoke(hello, args=["--name"])
+```

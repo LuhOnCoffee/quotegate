@@ -1,0 +1,37 @@
+{
+  "project": "requests",
+  "as_of_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+  "as_of_date": "2026-09-21",
+  "facts": [
+    {
+      "id": "F1",
+      "fact": "Requests officially supports Python 3.10 and newer.",
+      "source_path": "README.md",
+      "source_quote": "Requests officially supports Python 3.10+."
+    },
+    {
+      "id": "F2",
+      "fact": "Requests no longer supports Python 2.7; support was dropped in Requests 2.28.0.",
+      "source_path": "docs/community/faq.rst",
+      "source_quote": "No! As of Requests 2.28.0, Requests no longer supports Python 2.7."
+    },
+    {
+      "id": "F3",
+      "fact": "The documented way to install Requests is `python -m pip install requests` (not pipenv or easy_install).",
+      "source_path": "docs/user/install.rst",
+      "source_quote": "$ python -m pip install requests"
+    },
+    {
+      "id": "F4",
+      "fact": "The Requests source repository lives at github.com/psf/requests.",
+      "source_path": "docs/user/install.rst",
+      "source_quote": "$ git clone https://github.com/psf/requests.git"
+    },
+    {
+      "id": "F5",
+      "fact": "chardet is not a mandatory dependency; unless chardet is already installed or the [use_chardet_on_py3] extra is used, Requests uses charset-normalizer to guess response encodings.",
+      "source_path": "docs/user/advanced.rst",
+      "source_quote": "and ``chardet`` is not already installed, ``requests`` uses ``charset-normalizer``"
+    }
+  ]
+}

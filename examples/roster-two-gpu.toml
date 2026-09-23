@@ -1,0 +1,44 @@
+# The benchmark rig (Quadro RTX 5000 16 GB + RTX 2080 Ti 11 GB), all three
+# tiers. Speeds are from `quotegate calibrate` on that machine - re-run it on
+# yours. Each host is a separate Ollama instance pinned to its card(s).
+[[models]]
+name = "gemma4:12b-it-qat"
+family = "gemma"
+host = "127.0.0.1:11437"        # 2080 Ti
+hosts = ["127.0.0.1:11437", "127.0.0.1:11435"]   # 2080 Ti AND Quadro: the first stage
+                                # is split across both cards (it fits either; the
+                                # Quadro's server unloads it before the tie-break)
+think = "off"
+s_per_kchar = 0.83
+load_s = 60
+
+[[models]]
+name = "gemma4:26b-a4b-it-qat"
+family = "gemma"
+host = "127.0.0.1:11436"        # both cards
+think = "off"
+s_per_kchar = 0.57
+load_s = 70
+
+[[models]]
+name = "gpt-oss:20b"
+family = "gpt-oss"
+host = "127.0.0.1:11435"        # Quadro
+think = "auto"                  # gpt-oss cannot turn reasoning off
+num_predict = 8192
+s_per_kchar = 2.78
+load_s = 90
+
+[[models]]
+name = "qwen3.8:27b"
+family = "qwen"
+host = "127.0.0.1:11436"        # both cards
+think = "off"
+s_per_kchar = 1.31
+load_s = 90
+
+[roles]
+first = "gemma4:12b-it-qat"
+second = "gemma4:26b-a4b-it-qat"
+tiebreak = "gpt-oss:20b"         # a different family from both voters
+tripwire = "qwen3.8:27b"

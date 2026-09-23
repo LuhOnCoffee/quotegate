@@ -1,0 +1,86 @@
+{
+  "project": "flask",
+  "license": "BSD-3-Clause",
+  "docs": [
+    {
+      "file": "docs/flask-v2-01-implicit.txt",
+      "kind": "implicit",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/testing.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "If the app does one-time setup in a ``before_first_request`` function, make one request with the test client in the fixture so that setup has already run when your tests start.",
+      "inserted_fact": "F6",
+      "why_subtle": "Never claims before_first_request exists; it is a fixture tip that presupposes the removed hook, tucked into the middle of an ordinary paragraph about fixture setup/teardown."
+    },
+    {
+      "file": "docs/flask-v2-02-code.txt",
+      "kind": "code",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/tutorial/factory.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "JSON_SORT_KEYS=False,",
+      "inserted_fact": "F4",
+      "why_subtle": "A single extra keyword in the tutorial's create_app from_mapping() call; the prose never mentions JSON, so only a reader who knows JSON_SORT_KEYS was removed in 2.3 will see the tutorial code telling users to set a dead config key."
+    },
+    {
+      "file": "docs/flask-v2-03-note.txt",
+      "kind": "note",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/tutorial/database.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "The env needs Python 3.9 or newer, the oldest version Flask supports.",
+      "inserted_fact": "F1",
+      "why_subtle": "Off-by-one version floor (3.9 vs 3.10) appended to a routine reminder inside a .. note:: about opening a new terminal; no version number appears anywhere else in the excerpt."
+    },
+    {
+      "file": "docs/flask-v2-04-multi.txt",
+      "kind": "multi",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/config.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "It is also enabled by default when :data:`ENV` is ``'development'``.",
+      "inserted_fact": "F3",
+      "why_subtle": "Sits between two correct statements (FLASK_DEBUG sets DEBUG; unreliable if set in code) and follows a section that correctly says to use --debug; it resurrects the removed ENV config key as a cross-reference rather than naming FLASK_ENV."
+    },
+    {
+      "file": "docs/flask-v2-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/lifecycle.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "If you are porting an older application that did this kind of setup in a ``before_first_request`` function, move that code into the setup phase so it runs before the app starts serving.",
+      "inserted_fact": "F6",
+      "why_subtle": "Mentions the removed before_first_request hook, but only as something an older app did and tells the reader to move off it; nothing is claimed about current Flask."
+    },
+    {
+      "file": "docs/flask-v2-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/api.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "If Blinker were ever made optional again, the signals below would only be sent in environments where it happened to be installed.",
+      "inserted_fact": "F5",
+      "why_subtle": "Talks about Blinker being optional and signals not being sent, which is exactly the stale v1 claim, but as a counterfactual ('were ever ... again') that presupposes Blinker is currently required."
+    },
+    {
+      "file": "docs/flask-v2-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/patterns/appfactories.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "Add the ``--debug`` option to either command to run the development server in debug mode.",
+      "inserted_fact": "F2",
+      "why_subtle": "A new debug-mode instruction on the topic where stale FLASK_ENV/FLASK_DEBUG advice usually lives, but it restates the current --debug option correctly."
+    },
+    {
+      "file": "docs/flask-v2-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD (main)",
+      "source_path": "docs/patterns/urlprocessors.rst",
+      "source_commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_subtle": "Unmodified; mentions 'Flask 0.7 introduces' URL processors and uses @app.url_value_preprocessor/@bp hooks, which are dated or still-current, and touches none of the facts."
+    }
+  ]
+}

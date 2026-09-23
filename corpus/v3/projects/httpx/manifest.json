@@ -1,0 +1,86 @@
+{
+  "project": "httpx",
+  "license": "BSD-3-Clause",
+  "docs": [
+    {
+      "file": "docs/httpx-v3-01-instruction.txt",
+      "kind": "instruction",
+      "source_tag": "HEAD",
+      "source_path": ".github/CONTRIBUTING.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "Before installing, create and activate a virtual environment for the checkout with `python3.8 -m venv venv` and `source venv/bin/activate`, so that the pinned development dependencies don't end up in your system site-packages.",
+      "inserted_fact": "F1",
+      "why_implied": "The sentence is a setup step, not a claim: it never says which Python versions HTTPX supports. A reader only sees the problem by reasoning that a contributor told to build the development environment on the `python3.8` interpreter could not install or test a package that requires 3.9+, so the step presupposes a 3.8 that no longer works. Searching the doc for 'Python 3.9', 'requires' or 'supported versions' finds nothing; the excerpt is trimmed before the 'Development proxy setup' section, so no other passage in it touches any fact."
+    },
+    {
+      "file": "docs/httpx-v3-02-instruction.txt",
+      "kind": "instruction",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/transports.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "For a quick check of a single route, drop the `transport=` argument, pass `app=app` to the client instead, and request the path exactly as above.",
+      "inserted_fact": "F4",
+      "why_implied": "Written as a shortcut procedure directly under the Flask/WSGITransport example, it makes no statement about the client's arguments; it simply tells the reader to perform a step. The step is only executable if `httpx.Client(app=...)` still exists, and the removal of the `app` shortcut has to be supplied by the reader. Every other `app=` in the excerpt is the legitimate `WSGITransport(app=...)`/`ASGITransport(app=...)` keyword, so a keyword search for 'app=' shows a page full of correct usage and cannot single the insertion out."
+    },
+    {
+      "file": "docs/httpx-v3-03-example.txt",
+      "kind": "example",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/proxies.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "An equivalent configuration, written as a single mapping:\n\n```python\nproxies = {\n    \"http://\": \"http://localhost:8030\",\n    \"https://\": \"http://localhost:8031\",\n}\n\nwith httpx.Client(proxies=proxies) as client:\n    ...\n```",
+      "inserted_fact": "F3",
+      "why_implied": "The staleness lives entirely in the code block: a `proxies={...}` mapping handed to `httpx.Client()`. The one line of framing prose says only that it is an equivalent configuration and never names the argument, claims it is supported, or contrasts it with `proxy=`/`mounts=`. A reader has to know that the plural `proxies` argument was removed to see that this snippet raises a TypeError; the surrounding page is correct throughout and states nothing that conflicts with it."
+    },
+    {
+      "file": "docs/httpx-v3-04-consequence.txt",
+      "kind": "consequence",
+      "source_tag": "HEAD",
+      "source_path": "docs/async.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "If `https://www.example.com/` sends you on somewhere else, `r` is the response from the end of the chain, and `r.history` lists the redirects that were made along the way.",
+      "inserted_fact": "F2",
+      "why_implied": "It describes what the reader will find in `r` after the plain `await client.get(...)` shown just above, with no `follow_redirects` argument anywhere in the example. No default is asserted and the words 'by default' never appear; the reader must work out that with redirects not followed, `r` would be the `30x` itself and `r.history` would be empty, so the described outcome only holds under the old default. Nothing else in the async page mentions redirects, so the insertion is the only conflict."
+    },
+    {
+      "file": "docs/httpx-v3-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD",
+      "source_path": "docs/environment_variables.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "If you are porting settings out of a script that configured a client with a `proxies={...}` mapping, that argument has been removed; these variables, or an explicit `proxy=` or `mounts=`, are what replaces it.",
+      "inserted_fact": "F3",
+      "why_implied": "Not stale. It mentions `proxies={...}` only as something an older script may contain, and states correctly that the argument has been removed and that `proxy=`/`mounts=` (or the environment variables on this page) replace it, which is exactly F3."
+    },
+    {
+      "file": "docs/httpx-v3-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD",
+      "source_path": "docs/advanced/ssl.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "Had the plain-string form of `verify` not been deprecated, this last example could have been shortened to `httpx.Client(verify=\"path/to/certs.pem\")`.",
+      "inserted_fact": "F5",
+      "why_implied": "Not stale. The counterfactual ('Had ... not been deprecated ... could have been shortened') asserts the opposite of itself about the present: it takes for granted that the string form of `verify` is deprecated, which matches F5, and it does not recommend the shortened form."
+    },
+    {
+      "file": "docs/httpx-v3-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD",
+      "source_path": "README.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "* Redirect responses are handed back to you as they are, and are only followed if you ask for it with `follow_redirects=True`.",
+      "inserted_fact": "F2",
+      "why_implied": "Not stale. A feature bullet restating F2 in different words: redirects are returned rather than followed, and following is opt-in via `follow_redirects=True`. The README states no redirect behaviour elsewhere, and its own 'HTTPX requires Python 3.9+' line is left untouched."
+    },
+    {
+      "file": "docs/httpx-v3-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/logging.md",
+      "source_commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_implied": "Not stale, and unmodified. The logging page only configures Python's `logging` module around `httpx.get(...)` calls; it never mentions a Python version, redirect behaviour, the `proxies` or `app` arguments, or the `verify` argument (the single `SSLContext(verify=True)` in the sample log output is current behaviour)."
+    }
+  ]
+}

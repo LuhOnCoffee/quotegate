@@ -1,0 +1,87 @@
+{
+ "project": "requests",
+ "license": "Apache-2.0",
+ "docs": [
+  {
+   "file": "docs/requests-v3-01-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "HEAD",
+   "source_path": "docs/index.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "Not installed yet? Run ``$ pipenv install requests`` in your project directory first -- it will add the dependency to your Pipfile -- and then try the snippet above.",
+   "inserted_fact": "F3",
+   "why_implied": "It is a step, not a claim: it never says how Requests is installed or that pipenv is the documented installer. The reader has to notice that the documented install is `python -m pip install requests` (not pipenv), and therefore that an instruction to run `pipenv install requests` and gain a Pipfile only makes sense under the older, pipenv-based install docs. Searching the doc for the fact's own words ('python -m pip install requests') returns nothing; the landing page links to the install chapter rather than quoting it, so nothing in the excerpt states the current command."
+  },
+  {
+   "file": "docs/requests-v3-02-example.txt",
+   "kind": "example",
+   "source_tag": "HEAD",
+   "source_path": "docs/user/authentication.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "If you would rather ask for the credentials than keep them in the source, the\ntuple form composes nicely with the standard library::\n\n    >>> import getpass\n    >>> username = raw_input('Username: ')\n    >>> requests.get('https://httpbin.org/basic-auth/user/pass',\n    ...              auth=(username, getpass.getpass()))\n    <Response [200]>",
+   "inserted_fact": "F2",
+   "why_implied": "No prose in the passage mentions any Python version; the only stale element is the builtin `raw_input`, which exists solely on Python 2 (it is `input` on Python 3). A reader must recognise the builtin, work out that the example can only run on a Python 2 interpreter, and then infer that the doc presumes Requests still runs there -- although Requests dropped Python 2.7 in 2.28.0. A keyword search for 'Python 2.7' or '2.28.0' finds nothing in the doc."
+  },
+  {
+   "file": "docs/requests-v3-03-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/user/advanced.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "Hard-coding ``'utf-8'`` keeps that decision in your hands. If you would rather let the detector pick, pin ``chardet`` in your requirements file next to Requests -- a different release of it can put a different label on the same bytes, and ``r.encoding`` follows whatever your resolver installed.",
+   "inserted_fact": "F5",
+   "why_implied": "The sentence only tells the reader what they must do (pin `chardet` to keep encoding guesses stable). It never claims that Requests depends on chardet or that chardet is the detector behind `r.encoding` -- so a keyword search for the fact's wording ('chardet is not a mandatory dependency', 'charset-normalizer') turns up nothing. The reader has to infer that the advice presupposes chardet being present and in use on an ordinary install, whereas by default Requests resolves charset-normalizer and only defers to chardet if it happens to be installed already or the [use_chardet_on_py3] extra was requested; pinning chardet in a plain project changes nothing."
+  },
+  {
+   "file": "docs/requests-v3-04-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "HEAD",
+   "source_path": "docs/dev/contributing.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "Keep the snippets themselves conservative as well: a ``match`` statement or an ``int | None`` annotation will not even parse on the oldest interpreter Requests still supports, so reach for ``if``/``elif`` and ``typing.Optional`` instead.",
+   "inserted_fact": "F1",
+   "why_implied": "No version number appears anywhere in the passage, so no keyword search for '3.10' or 'officially supports' can surface it. The contradiction is reachable only by chaining two facts the reader must supply: structural pattern matching and PEP 604 `X | Y` annotations both landed in Python 3.10, and Requests officially supports Python 3.10+ -- so both syntaxes do parse on the oldest supported interpreter. The stated consequence ('will not even parse', 'reach for typing.Optional instead') is true only if the support floor were still 3.8/3.9."
+  },
+  {
+   "file": "docs/requests-v3-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "HEAD",
+   "source_path": "HISTORY.md",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "- If your deployment is still on Python 3.9, this is the last release you will be able to upgrade to; support for it ends in the next feature release.",
+   "inserted_fact": "F1",
+   "why_implied": "Not stale: a conditional aimed at readers stuck on an interpreter Requests has since left behind. It is placed in the 2.32.5 entry, and 2.33.0 is indeed where 3.9 was dropped, so what it implies (2.32.5 is the last release that runs on 3.9; the current floor is above 3.9) agrees with Requests officially supporting Python 3.10+. It asserts nothing about what Requests supports today."
+  },
+  {
+   "file": "docs/requests-v3-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "HEAD",
+   "source_path": "HISTORY.md",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "Had Requests still needed to run on interpreters older than 3.10, these annotations would have had to spell every union as `typing.Optional`; as it is, they use PEP 604 syntax throughout.",
+   "inserted_fact": "F1",
+   "why_implied": "Not stale: an explicit counterfactual ('Had Requests still needed to run on interpreters older than 3.10'), whose factual half -- that the 2.34.0 inline types can use PEP 604 unions -- holds precisely because Requests officially supports Python 3.10+. It sits on the same topic the stale docs drift on (the support floor) without committing to anything false."
+  },
+  {
+   "file": "docs/requests-v3-07-paraphrase.txt",
+   "kind": "paraphrase",
+   "source_tag": "HEAD",
+   "source_path": "docs/user/quickstart.rst",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "When the headers name no charset at all, the guess is made from the body instead: that job goes to ``charset-normalizer``, unless you already have ``chardet`` installed (or asked for it with the ``use_chardet_on_py3`` extra), in which case Requests uses ``chardet``.",
+   "inserted_fact": "F5",
+   "why_implied": "Not stale: a true restatement, in different words, of the current encoding-detection behaviour -- charset-normalizer by default, chardet only when it is already installed or pulled in through the [use_chardet_on_py3] extra. It is placed in the Response Content section, which otherwise only discusses header-based guessing, so it adds a correct detail rather than contradicting one."
+  },
+  {
+   "file": "docs/requests-v3-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "HEAD",
+   "source_path": "HISTORY.md",
+   "source_commit": "611c6162cbc4ac2020a2f91c7cfa4f3abf9bbb60",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "No insertion. Unmodified release notes for 2.31.0 down to 2.28.0; every version-support line in the excerpt (dropping Python 2.7 and 3.6 in 2.28.0, chardet/charset-normalizer version support) is historical and agrees with the current facts."
+  }
+ ],
+ "notes": "HEAD = main at 611c6162 (2026-09-21); every excerpt taken with `git show HEAD:<path>` and trimmed at section boundaries. Ranges: 01 whole docs/index.rst; 02 whole docs/user/authentication.rst; 03 docs/user/advanced.rst lines 298-577 (Body Content Workflow through Streaming Requests, the only range in that file left unused by v1 and v2); 04 whole docs/dev/contributing.rst; 05 HISTORY.md lines 98-204 (2.32.5 to 2.32.0); 06 HISTORY.md lines 1-97 (dev to 2.33.0); 07 docs/user/quickstart.rst lines 1-304 (Quickstart through More complicated POST requests, i.e. the section v2 did not use); 08 HISTORY.md lines 205-303 (2.31.0 to 2.28.0). Inserted text is recorded whitespace-normalized (02's code block is shown with / between lines); in the files it is hard-wrapped to match the surrounding style. v2 files avoided entirely: .github/CONTRIBUTING.md, .github/AI_POLICY.md, .github/SECURITY.md, README.md; docs/user/advanced.rst and docs/user/quickstart.rst are reused only in sections disjoint from v1's and v2's. docs/api.rst was avoided because its 'Migrating to 1.x/2.x' sections carry Python 2 compatibility code and present-tense Python 2 prose, which would have added a second, unintended contradiction. In each stale doc the inserted passage is the only contradiction: 01's page states the current support floor (3.10+) but never the install command; 02, 03 and 04 contain no other statement about Python versions, chardet or installation. 04 is the hardest of the four: it names no version at all, so the reader must know which Python release introduced `match` and `X | Y` unions."
+}

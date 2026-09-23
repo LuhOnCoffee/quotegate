@@ -1,0 +1,286 @@
+.. _`finalization`:
+
+Teardown/Cleanup (AKA Fixture finalization)
+-------------------------------------------
+
+When we run our tests, we'll want to make sure they clean up after themselves so
+they don't mess with any other tests (and also so that we don't leave behind a
+mountain of test data to bloat the system). Fixtures in pytest offer a very
+useful teardown system, which allows us to define the specific steps necessary
+for each fixture to clean up after itself.
+
+This system can be leveraged in two ways.
+
+.. _`yield fixtures`:
+
+1. ``yield`` fixtures (recommended)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. regendoc: wipe
+
+"Yield" fixtures ``yield`` instead of ``return``. With these
+fixtures, we can run some code and pass an object back to the requesting
+fixture/test, just like with the other fixtures. The only differences are:
+
+1. ``return`` is swapped out for ``yield``.
+2. Any teardown code for that fixture is placed *after* the ``yield``.
+
+Once pytest figures out a linear order for the fixtures, it will run each one up
+until it returns or yields, and then move on to the next fixture in the list to
+do the same thing.
+
+Once the test is finished, pytest will go back down the list of fixtures, but in
+the *reverse order*, taking each one that yielded, and running the code inside
+it that was *after* the ``yield`` statement.
+
+If you maintain older code whose fixtures are still decorated with ``@pytest.yield_fixture``, you can switch them to plain ``@pytest.fixture`` without changing anything else.
+
+As a simple example, consider this basic email module:
+
+.. code-block:: python
+
+    # content of emaillib.py
+    class MailAdminClient:
+        def create_user(self):
+            return MailUser()
+
+        def delete_user(self, user):
+            # do some cleanup
+            pass
+
+
+    class MailUser:
+        def __init__(self):
+            self.inbox = []
+
+        def send_email(self, email, other):
+            other.inbox.append(email)
+
+        def clear_mailbox(self):
+            self.inbox.clear()
+
+
+    class Email:
+        def __init__(self, subject, body):
+            self.subject = subject
+            self.body = body
+
+Let's say we want to test sending email from one user to another. We'll have to
+first make each user, then send the email from one user to the other, and
+finally assert that the other user received that message in their inbox. If we
+want to clean up after the test runs, we'll likely have to make sure the other
+user's mailbox is emptied before deleting that user, otherwise the system may
+complain.
+
+Here's what that might look like:
+
+.. code-block:: python
+
+    # content of test_emaillib.py
+    from emaillib import Email, MailAdminClient
+
+    import pytest
+
+
+    @pytest.fixture
+    def mail_admin():
+        return MailAdminClient()
+
+
+    @pytest.fixture
+    def sending_user(mail_admin):
+        user = mail_admin.create_user()
+        yield user
+        mail_admin.delete_user(user)
+
+
+    @pytest.fixture
+    def receiving_user(mail_admin):
+        user = mail_admin.create_user()
+        yield user
+        user.clear_mailbox()
+        mail_admin.delete_user(user)
+
+
+    def test_email_received(sending_user, receiving_user):
+        email = Email(subject="Hey!", body="How's it going?")
+        sending_user.send_email(email, receiving_user)
+        assert email in receiving_user.inbox
+
+Because ``receiving_user`` is the last fixture to run during setup, it's the first to run
+during teardown.
+
+There is a risk that even having the order right on the teardown side of things
+doesn't guarantee a safe cleanup. That's covered in a bit more detail in
+:ref:`safe teardowns`.
+
+.. code-block:: pytest
+
+   $ pytest -q test_emaillib.py
+   .                                                                    [100%]
+   1 passed in 0.12s
+
+Handling errors for yield fixture
+"""""""""""""""""""""""""""""""""
+
+If a yield fixture raises an exception before yielding, pytest won't try to run
+the teardown code after that yield fixture's ``yield`` statement. But, for every
+fixture that has already run successfully for that test, pytest will still
+attempt to tear them down as it normally would.
+
+2. Adding finalizers directly
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+While yield fixtures are considered to be the cleaner and more straightforward
+option, there is another choice, and that is to add "finalizer" functions
+directly to the test's `request-context`_ object. It brings a similar result as
+yield fixtures, but requires a bit more verbosity.
+
+In order to use this approach, we have to request the `request-context`_ object
+(just like we would request another fixture) in the fixture we need to add
+teardown code for, and then pass a callable, containing that teardown code, to
+its ``addfinalizer`` method.
+
+We have to be careful though, because pytest will run that finalizer once it's
+been added, even if that fixture raises an exception after adding the finalizer.
+So to make sure we don't run the finalizer code when we wouldn't need to, we
+would only add the finalizer once the fixture would have done something that
+we'd need to teardown.
+
+Here's how the previous example would look using the ``addfinalizer`` method:
+
+.. code-block:: python
+
+    # content of test_emaillib.py
+    from emaillib import Email, MailAdminClient
+
+    import pytest
+
+
+    @pytest.fixture
+    def mail_admin():
+        return MailAdminClient()
+
+
+    @pytest.fixture
+    def sending_user(mail_admin):
+        user = mail_admin.create_user()
+        yield user
+        mail_admin.delete_user(user)
+
+
+    @pytest.fixture
+    def receiving_user(mail_admin, request):
+        user = mail_admin.create_user()
+
+        def delete_user():
+            mail_admin.delete_user(user)
+
+        request.addfinalizer(delete_user)
+        return user
+
+
+    @pytest.fixture
+    def email(sending_user, receiving_user, request):
+        _email = Email(subject="Hey!", body="How's it going?")
+        sending_user.send_email(_email, receiving_user)
+
+        def empty_mailbox():
+            receiving_user.clear_mailbox()
+
+        request.addfinalizer(empty_mailbox)
+        return _email
+
+
+    def test_email_received(receiving_user, email):
+        assert email in receiving_user.inbox
+
+
+It's a bit longer than yield fixtures and a bit more complex, but it
+does offer some nuances for when you're in a pinch.
+
+.. code-block:: pytest
+
+   $ pytest -q test_emaillib.py
+   .                                                                    [100%]
+   1 passed in 0.12s
+
+Note on finalizer order
+""""""""""""""""""""""""
+
+Finalizers are executed in a first-in-last-out order.
+For yield fixtures, the first teardown code to run is from the right-most fixture, i.e. the last test parameter.
+
+
+.. code-block:: python
+
+    # content of test_finalizers.py
+    import pytest
+
+
+    def test_bar(fix_w_yield1, fix_w_yield2):
+        print("test_bar")
+
+
+    @pytest.fixture
+    def fix_w_yield1():
+        yield
+        print("after_yield_1")
+
+
+    @pytest.fixture
+    def fix_w_yield2():
+        yield
+        print("after_yield_2")
+
+
+.. code-block:: pytest
+
+    $ pytest -s test_finalizers.py
+    =========================== test session starts ============================
+    platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+    rootdir: /home/sweet/project
+    collected 1 item
+
+    test_finalizers.py test_bar
+    .after_yield_2
+    after_yield_1
+
+
+    ============================ 1 passed in 0.12s =============================
+
+For finalizers, the first fixture to run is last call to `request.addfinalizer`.
+
+.. code-block:: python
+
+    # content of test_finalizers.py
+    from functools import partial
+    import pytest
+
+
+    @pytest.fixture
+    def fix_w_finalizers(request):
+        request.addfinalizer(partial(print, "finalizer_2"))
+        request.addfinalizer(partial(print, "finalizer_1"))
+
+
+    def test_bar(fix_w_finalizers):
+        print("test_bar")
+
+
+.. code-block:: pytest
+
+    $ pytest -s test_finalizers.py
+    =========================== test session starts ============================
+    platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+    rootdir: /home/sweet/project
+    collected 1 item
+
+    test_finalizers.py test_bar
+    .finalizer_1
+    finalizer_2
+
+
+    ============================ 1 passed in 0.12s =============================
+
+This is so because yield fixtures use `addfinalizer` behind the scenes: when the fixture executes, `addfinalizer` registers a function that resumes the generator, which in turn calls the teardown code.

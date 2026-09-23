@@ -1,0 +1,298 @@
+(options)=
+
+# Options
+
+```{eval-rst}
+.. currentmodule:: click
+```
+
+Adding options to commands can be accomplished with the {func}`option`
+decorator. At runtime the decorator invokes the {class}`Option` class. Options
+in Click are distinct from {ref}`positional arguments <arguments>`.
+
+Useful and often used kwargs are:
+
+- `default`: Passes a default.
+- `help`: Sets help message.
+- `nargs`: Sets the number of arguments.
+- `required`: Makes option required.
+- `type`: Sets {ref}`parameter type <parameter-types>`
+
+```{contents}
+:depth: 2
+:local: true
+```
+
+## Option Decorator
+
+The {func}`option()` decorator is usually passed two positional arguments: the
+option name and the decorated function argument name.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--string-to-echo', 'string_to_echo')
+    def echo(string_to_echo):
+        click.echo(string_to_echo)
+
+
+.. click:run::
+
+    invoke(echo, args=['--help'])
+```
+
+However, if the decorated function argument name is not passed in, then Click
+will try to infer it. A simple way to name the option so that Click will infer
+it correctly is by taking the function argument, adding two dashes to the front
+and converting underscores to dashes.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--string-to-echo')
+    def echo(string_to_echo):
+        click.echo(string_to_echo)
+
+.. click:run::
+
+    invoke(echo, args=['--string-to-echo', 'Hi!'])
+```
+
+More formally, Click will try to infer the decorated function argument name as
+follows:
+
+1. If a positional argument is a valid [Python identifier](https://docs.python.org/3/reference/lexical_analysis.html#identifiers) (and thus does not have dashes), it is chosen.
+2. If multiple positional arguments are prefixed with `--`, the first one
+  declared is chosen.
+3. Otherwise, the first positional argument prefixed with `-` is chosen.
+
+To get the argument name, the chosen positional argument is converted to lower
+case, a leading `-` or `--` is removed if found, and any remaining `-`
+characters are replaced with `_`.
+
+```{eval-rst}
+.. list-table:: Examples
+    :widths: 15 15
+    :header-rows: 1
+
+    * - Decorator Arguments
+      - Inferred Argument Name
+    * - ``"-f", "--foo-bar"``
+      - foo_bar
+    * - ``"-x"``
+      - x
+    * - ``"-f", "--filename", "dest"``
+      - dest
+    * - ``"--CamelCase"``
+      - camelcase
+    * - ``"-f", "-fb"``
+      - f
+    * - ``"--f", "--foo-bar"``
+      - f
+    * - ``"---f"``
+      - _f
+```
+
+## Basic Example
+
+A simple {class}`click.Option` takes one option name. By default, it's assumed
+that the decorated function argument is not required and the expected type is
+`str`. If the decorated function takes a positional argument but the option is
+not passed with the command, then `None` is passed.
+
+Keep that `None` in mind if you annotate the decorated function: a hint
+written as `text: str | None` raises a `TypeError` as soon as the module is
+imported on the older Python versions Click supports, so either spell it
+`Optional[str]` or start the file with `from __future__ import annotations`.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--text')
+    def print_this(text):
+        click.echo(text)
+
+
+.. click:run::
+
+    invoke(print_this, args=['--text=this'])
+
+    invoke(print_this, args=[])
+
+
+.. click:run::
+
+    invoke(print_this, args=['--help'])
+
+```
+
+## Setting a Default
+
+Instead of setting the `type`, you may set a default and Click will try to infer
+the type.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--n', default=1)
+    def dots(n):
+        click.echo('.' * n)
+
+.. click:run::
+
+    invoke(dots, args=['--help'])
+```
+
+## Multi Value Options
+
+To make an option take multiple values, pass in `nargs`. Note you may pass in
+any positive integer, but not -1. The values are passed to the decorated
+function as a tuple.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--pos', nargs=2, type=float)
+    def findme(pos):
+        a, b = pos
+        click.echo(f"{a} / {b}")
+
+.. click:run::
+
+    invoke(findme, args=['--pos', '2.0', '3.0'])
+
+```
+
+(tuple-type)=
+
+## Multi Value Options as Tuples
+
+```{versionadded} 4.0
+```
+
+By setting `nargs` to a specific number, each item in
+the resulting tuple is of the same type. Alternatively, you might want to use
+different types for different indexes in
+the tuple. For this you can directly specify a tuple as `type`:
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--item', type=(str, int))
+    def putitem(item):
+        name, id = item
+        click.echo(f"name={name} id={id}")
+
+
+And on the command line:
+
+.. click:run::
+
+    invoke(putitem, args=['--item', 'peter', '1338'])
+```
+
+By using a tuple literal as the `type`, `nargs` gets automatically set to the
+length of the tuple and the {class}`click.Tuple` type is automatically
+used. The above example is thus equivalent to this:
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--item', nargs=2, type=click.Tuple([str, int]))
+    def putitem(item):
+        name, id = item
+        click.echo(f"name={name} id={id}")
+```
+
+(multiple-options)=
+
+## Multiple Options
+
+The multiple options format allows options to take an arbitrary number of
+arguments (which is called variadic). The arguments are passed to the decorated
+function as a tuple. If set, `default` must be a list or tuple. Setting a string
+as `default` will be interpreted as a list of characters.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('--message', '-m', multiple=True)
+    def commit(message):
+        click.echo(message)
+        for m in message:
+            click.echo(m)
+
+.. click:run::
+
+    invoke(commit, args=['-m', 'foo', '-m', 'bar', '-m', 'here'])
+```
+
+## Combining short options
+
+Short options made of a single character can be combined into one argument: `-abc` is equivalent to `-a -b -c`. This is the standard POSIX behavior for short option stacking, and it is the reason a repeated flag like `-vvv` works with the [Counting](#counting) feature.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('-a', is_flag=True)
+    @click.option('-b', is_flag=True)
+    @click.option('-c', is_flag=True)
+    def cli(a, b, c):
+        click.echo(f"a={a} b={b} c={c}")
+
+.. click:run::
+
+    invoke(cli, args=['-a', '-b', '-c'])
+    invoke(cli, args=['-abc'])
+```
+
+If the last option in the combination takes a value, the value can either follow as the next argument or be attached directly:
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('-v', is_flag=True)
+    @click.option('-n', type=int)
+    def cli(v, n):
+        click.echo(f"v={v} n={n}")
+
+.. click:run::
+
+    invoke(cli, args=['-v', '-n', '5'])
+    invoke(cli, args=['-vn', '5'])
+    invoke(cli, args=['-vn5'])
+```
+
+```{note}
+Multi-character short option names are not supported. An argument like `-dbg` is interpreted as the combination of `-d`, `-b`, and `-g`, so Click reports `No such option: -d` if `-d` is not declared. For longer option names, use a long option with the `--` prefix (like `--debug`).
+```
+
+## Counting
+
+To count the occurrence of an option, set `count=True`. If the option is not
+passed on the command line, then the count is 0. Counting is commonly used for
+verbosity.
+
+```{eval-rst}
+.. click:example::
+
+    @click.command()
+    @click.option('-v', '--verbose', count=True)
+    def log(verbose):
+        click.echo(f"Verbosity: {verbose}")
+
+.. click:run::
+
+    invoke(log, args=[])
+    invoke(log, args=['-vvv'])
+```

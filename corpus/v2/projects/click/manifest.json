@@ -1,0 +1,86 @@
+{
+  "project": "click",
+  "license": "BSD-3-Clause",
+  "docs": [
+    {
+      "file": "docs/click-v2-01-implicit.txt",
+      "kind": "implicit",
+      "source_tag": "HEAD",
+      "source_path": "docs/complex.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "You can watch this happen in Bash after enabling completion for the example with `eval \"$(_CLI_COMPLETE=source_bash cli)\"`.",
+      "inserted_fact": "F3",
+      "why_subtle": "Not stated as a claim about Click: it's a side remark inside a numbered list item about lazy loading that tells the reader to enable completion using the removed `source_bash` value (the current value is `bash_source`). Nothing in the excerpt mentions completion setup, so the reader has to know the env-var value format."
+    },
+    {
+      "file": "docs/click-v2-02-code.txt",
+      "kind": "code",
+      "source_tag": "HEAD",
+      "source_path": "docs/standalone-apps.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "    \"colorama\",  # needed by Click for colored output on Windows",
+      "inserted_fact": "F4",
+      "why_subtle": "A single added entry in the Briefcase `requires` list of a pyproject.toml sample. Only its trailing comment claims Click needs colorama (it no longer depends on it or uses it). The prose around it just says 'Click and any other libraries the project needs'."
+    },
+    {
+      "file": "docs/click-v2-03-note.txt",
+      "kind": "note",
+      "source_tag": "HEAD",
+      "source_path": "docs/documentation.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "A custom subclass of {class}`MultiCommand`, the base class behind every group command, is bracketed the same way.",
+      "inserted_fact": "F5",
+      "why_subtle": "Buried in the middle of a long 'Optional elements are bracketed' note about usage-line syntax, as an aside that calls MultiCommand 'the base class behind every group command'. Group is now the base class and MultiCommand is deprecated. The sentences around it correctly talk about Group."
+    },
+    {
+      "file": "docs/click-v2-04-multi.txt",
+      "kind": "multi",
+      "source_tag": "HEAD",
+      "source_path": "docs/unicode-support.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Every Python version Click supports, 3.9 and newer, includes both of these changes.",
+      "inserted_fact": "F1",
+      "why_subtle": "Off-by-one drift (3.9 instead of 3.10) attached to a correct detail (PEP 538/540 are in every Python 3.7+). It sits right after the page's own 'Python 3.7 and later' sentence, which is about interpreter behaviour, not Click support."
+    },
+    {
+      "file": "docs/click-v2-05-conditional.txt",
+      "kind": "conditional",
+      "source_tag": "HEAD",
+      "source_path": "docs/extending-click.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "If your plugin loader was written against an older release and subclasses {class}`MultiCommand`, change its base class to {class}`click.Group`.",
+      "inserted_fact": "F5",
+      "why_subtle": "Trap: mentions MultiCommand, but only as a conditional about legacy code, and it tells the reader to move to click.Group. That matches the facts, so nothing false is said about the present."
+    },
+    {
+      "file": "docs/click-v2-06-hypothetical.txt",
+      "kind": "hypothetical",
+      "source_tag": "HEAD",
+      "source_path": "docs/wincmd.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Were Click ever to depend on colorama again, its ANSI translation would also have to go through this emulated stream.",
+      "inserted_fact": "F4",
+      "why_subtle": "Trap: mentions colorama in a Windows-console page, but as a counterfactual ('Were Click ever to depend on colorama again'), which presupposes the current fact that it doesn't."
+    },
+    {
+      "file": "docs/click-v2-07-paraphrase.txt",
+      "kind": "paraphrase",
+      "source_tag": "HEAD",
+      "source_path": "docs/commands-and-groups.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "Every group command, including any custom group class you write, has {class}`Group` as its base class.",
+      "inserted_fact": "F5",
+      "why_subtle": "Trap: restates F5 (Group is the base class for all group commands) in new words, on the same topic as the MultiCommand plants."
+    },
+    {
+      "file": "docs/click-v2-08-clean.txt",
+      "kind": "clean",
+      "source_tag": "HEAD",
+      "source_path": "docs/why.md",
+      "source_commit": "3cbaa76b6014be7427d1ab06b4af40f01e7c278e",
+      "inserted": "",
+      "inserted_fact": "",
+      "why_subtle": "Clean: unmodified 'Why Click?' page. It mentions ANSI colors, optparse and argparse, but none of the five facts are contradicted."
+    }
+  ]
+}

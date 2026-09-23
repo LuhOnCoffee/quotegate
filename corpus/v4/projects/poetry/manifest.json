@@ -1,0 +1,86 @@
+{
+ "project": "poetry",
+ "license": "MIT",
+ "docs": [
+  {
+   "file": "docs/poetry-v4-01-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "main",
+   "source_path": "docs/cli.md",
+   "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+   "inserted": "On a machine where Poetry itself was installed with a Python 3.9 interpreter, for example the system Python of an older Linux distribution, the Poetry part of this output reports that 3.9 interpreter, independently of the Python version used by the project's virtual environment.",
+   "inserted_fact": "F1",
+   "why_implied": "The sentence only describes what `poetry debug info` will show when Poetry runs on Python 3.9. It never says which Python versions Poetry supports, and there is no '3.10' or 'requires' wording to search for; the reader has to know that Poetry now needs Python 3.10+ to run, so a Poetry installed on 3.9 cannot exist and the described output can never be seen."
+  },
+  {
+   "file": "docs/poetry-v4-02-consequence.txt",
+   "kind": "consequence",
+   "source_tag": "main",
+   "source_path": "docs/pyproject.md",
+   "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+   "inserted": "You can see the effect of this registration on a freshly installed Poetry: `poetry list` already shows `export` among the available commands, next to the ones Poetry defines itself.",
+   "inserted_fact": "F3",
+   "why_implied": "It only states what the reader will see from `poetry list` on a fresh installation. That is true only if poetry-plugin-export ships with Poetry, which stopped with Poetry 2.0; today `export` appears only after the plugin has been added. The sentence never says 'installed by default' or mentions the plugin being bundled, so the reader has to infer the stale assumption from the expected output."
+  },
+  {
+   "file": "docs/poetry-v4-03-instruction.txt",
+   "kind": "instruction",
+   "source_tag": "main",
+   "source_path": "docs/cli.md",
+   "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+   "inserted": "If you want every dependency, not just one, moved to the newest version its constraint allows, keep the constraints as they are and run `poetry lock` followed by `poetry install` instead.",
+   "inserted_fact": "F4",
+   "why_implied": "The step tells the reader to use a plain `poetry lock` to move all dependencies to their newest allowed versions. That only works under the pre-2.0 behaviour; today `poetry lock` keeps every package already in the lock file, so the step changes nothing (you need `poetry update` or `poetry lock --regenerate`). The sentence describes the procedure, not the lock behaviour, so the reader must know what `poetry lock` does now to see it fails."
+  },
+  {
+   "file": "docs/poetry-v4-04-example.txt",
+   "kind": "example",
+   "source_tag": "main",
+   "source_path": "docs/configuration.md",
+   "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+   "inserted": "```bash\ncurl -sSL https://raw.githubusercontent.com/python-poetry/poetry/main/install-poetry.py | POETRY_HOME=/opt/poetry python3 -\n```",
+   "inserted_fact": "F5",
+   "why_implied": "A bare code line with no prose: it fetches the installer script from the root of the Poetry repository. That only works while the installer lived in the Poetry repository; today it is served from install.python-poetry.org and developed in its own repository, so this URL no longer points to an installer. Nothing in the line says where the installer is hosted - the reader has to know that to see the command is broken."
+  },
+  {
+   "file": "docs/poetry-v4-05-conditional.txt",
+   "kind": "conditional",
+   "source_tag": "main",
+   "source_path": "docs/faq.md",
+   "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+   "inserted": "If you are still on a 1.x release, the step to 2.0 is such a major version bump: on 1.x, `poetry export` works right after installing Poetry, while on 2.x it is only available once you have added the export plugin.",
+   "inserted_fact": "F3",
+   "why_implied": "Not stale: it is explicitly scoped to readers still on Poetry 1.x, where the export plugin was bundled, and what it says about 2.x (export needs the plugin to be added) matches today's behaviour."
+  },
+  {
+   "file": "docs/poetry-v4-06-hypothetical.txt",
+   "kind": "hypothetical",
+   "source_tag": "main",
+   "source_path": "docs/cli.md",
+   "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+   "inserted": "Were `poetry lock` to refresh every locked package on each run, a one-line change to `pyproject.toml` could produce a lock file diff touching most of your dependencies; keeping the existing versions keeps such diffs small and easy to review.",
+   "inserted_fact": "F4",
+   "why_implied": "Not stale: a counterfactual ('Were `poetry lock` to refresh...') that reasons about the behaviour Poetry does NOT have, and its conclusion (existing versions are kept) agrees with the surrounding note and with F4."
+  },
+  {
+   "file": "docs/poetry-v4-07-current_consequence.txt",
+   "kind": "current_consequence",
+   "source_tag": "main",
+   "source_path": "docs/cli.md",
+   "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+   "inserted": "Because the environment is activated in your current shell rather than in a nested one, leave it again with `deactivate`; typing `exit` would close that shell itself.",
+   "inserted_fact": "F2",
+   "why_implied": "True today: with `poetry shell` gone from Poetry, activation happens by running the command printed by `poetry env activate` in the user's own shell, so there is no subshell to exit - `deactivate` leaves the venv and `exit` would close the terminal session. It is a consequence the reader must act on, and it is correct under current behaviour (it is the opposite of the stale 'type exit' advice)."
+  },
+  {
+   "file": "docs/poetry-v4-08-clean.txt",
+   "kind": "clean",
+   "source_tag": "main",
+   "source_path": "CHANGELOG.md",
+   "source_commit": "94b6e35b9091991887aa54feeb3771a86d3bd692",
+   "inserted": "",
+   "inserted_fact": "",
+   "why_implied": "Unmodified excerpt of the 2.3.2-2.2.0 release notes; it records dropping Python 3.9 support, which agrees with F1, and contradicts none of the facts."
+  }
+ ]
+}

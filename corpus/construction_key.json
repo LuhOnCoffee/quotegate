@@ -1,0 +1,450 @@
+{
+ "black-d01": {
+  "project": "black",
+  "file": "docs/black-06-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Until version 24.1.0 removed it, long string splitting could also be requested with the deprecated `--experimental-string-processing` flag.",
+  "inserted_fact": "F5"
+ },
+ "black-d02": {
+  "project": "black",
+  "file": "docs/black-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "black-d03": {
+  "project": "black",
+  "file": "docs/black-03-planted.txt",
+  "kind": "planted",
+  "inserted": "If you only want the long string splitting, pass the `--experimental-string-processing` flag instead.",
+  "inserted_fact": "F5"
+ },
+ "black-d04": {
+  "project": "black",
+  "file": "docs/black-05-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Release 21.12b0, published in December 2021, was the last version of _Black_ able to format Python 2 code.",
+  "inserted_fact": "F2"
+ },
+ "black-d05": {
+  "project": "black",
+  "file": "docs/black-07-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "black-d06": {
+  "project": "black",
+  "file": "docs/black-02-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "black-d07": {
+  "project": "black",
+  "file": "docs/black-01-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "black-d08": {
+  "project": "black",
+  "file": "docs/black-04-planted.txt",
+  "kind": "planted",
+  "inserted": "_Black_ runs on Python 3.8 and newer.",
+  "inserted_fact": "F1"
+ },
+ "click-d01": {
+  "project": "click",
+  "file": "docs/click-04-planted.txt",
+  "kind": "planted",
+  "inserted": "On Windows, Click installs colorama as a dependency and uses it to translate these codes into console API calls.",
+  "inserted_fact": "F4"
+ },
+ "click-d02": {
+  "project": "click",
+  "file": "docs/click-06-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Click 8.1.8, released in December 2024, was the last release to support Python 3.7, 3.8, and 3.9.",
+  "inserted_fact": "F1"
+ },
+ "click-d03": {
+  "project": "click",
+  "file": "docs/click-01-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "click-d04": {
+  "project": "click",
+  "file": "docs/click-05-distractor.txt",
+  "kind": "distractor",
+  "inserted": "PowerShell support was added in Click 8.5.0, released in August 2026; earlier releases supported only Bash, Zsh, and Fish.",
+  "inserted_fact": "F2"
+ },
+ "click-d05": {
+  "project": "click",
+  "file": "docs/click-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "click-d06": {
+  "project": "click",
+  "file": "docs/click-02-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "click-d07": {
+  "project": "click",
+  "file": "docs/click-03-planted.txt",
+  "kind": "planted",
+  "inserted": "Internally, {class}`Group` is a subclass of {class}`MultiCommand`, which is the base class for all group commands.",
+  "inserted_fact": "F5"
+ },
+ "click-d08": {
+  "project": "click",
+  "file": "docs/click-07-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "flask-d01": {
+  "project": "flask",
+  "file": "docs/flask-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "flask-d02": {
+  "project": "flask",
+  "file": "docs/flask-03-planted.txt",
+  "kind": "planted",
+  "inserted": "Debug mode can also be enabled by setting the ``FLASK_ENV`` environment variable to ``development`` before running ``flask run``.",
+  "inserted_fact": "F3"
+ },
+ "flask-d03": {
+  "project": "flask",
+  "file": "docs/flask-07-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "flask-d04": {
+  "project": "flask",
+  "file": "docs/flask-02-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "flask-d05": {
+  "project": "flask",
+  "file": "docs/flask-04-planted.txt",
+  "kind": "planted",
+  "inserted": "Blinker is not installed along with Flask, so add it to your project's dependencies first.",
+  "inserted_fact": "F5"
+ },
+ "flask-d06": {
+  "project": "flask",
+  "file": "docs/flask-01-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "flask-d07": {
+  "project": "flask",
+  "file": "docs/flask-06-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Flask 2.3, released in April 2023, dropped support for Python 3.7.",
+  "inserted_fact": "F1"
+ },
+ "flask-d08": {
+  "project": "flask",
+  "file": "docs/flask-05-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Before Flask 2.3, debug mode could also be enabled by setting the ``FLASK_ENV`` environment variable to ``development``, but that variable was removed in the 2.3 release.",
+  "inserted_fact": "F3"
+ },
+ "httpx-d01": {
+  "project": "httpx",
+  "file": "docs/httpx-06-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Before the 0.20 release in October 2021, HTTPX did follow redirects by default and used an `allow_redirects` argument, which that release replaced with `follow_redirects`.",
+  "inserted_fact": "F2"
+ },
+ "httpx-d02": {
+  "project": "httpx",
+  "file": "docs/httpx-05-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Before the 0.28 release in November 2024, the documentation showed passing a CA bundle path to `verify` as a plain string, a style which that release deprecated.",
+  "inserted_fact": "F5"
+ },
+ "httpx-d03": {
+  "project": "httpx",
+  "file": "docs/httpx-01-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "httpx-d04": {
+  "project": "httpx",
+  "file": "docs/httpx-02-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "httpx-d05": {
+  "project": "httpx",
+  "file": "docs/httpx-04-planted.txt",
+  "kind": "planted",
+  "inserted": "For simple cases you can skip creating the transport and pass the application straight to the client instead, using `httpx.Client(app=app, base_url=\"http://testserver\")`.",
+  "inserted_fact": "F4"
+ },
+ "httpx-d06": {
+  "project": "httpx",
+  "file": "docs/httpx-03-planted.txt",
+  "kind": "planted",
+  "inserted": "You can also pass a `proxies` dictionary directly to the client, for example `httpx.Client(proxies={\"http://\": \"http://localhost:8030\", \"https://\": \"http://localhost:8031\"})`, which maps each URL scheme onto its own proxy.",
+  "inserted_fact": "F3"
+ },
+ "httpx-d07": {
+  "project": "httpx",
+  "file": "docs/httpx-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "httpx-d08": {
+  "project": "httpx",
+  "file": "docs/httpx-07-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pip-d01": {
+  "project": "pip",
+  "file": "docs/pip-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pip-d02": {
+  "project": "pip",
+  "file": "docs/pip-06-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Pip first shipped this backtracking resolver as its default in version 20.3, released in November 2020.",
+  "inserted_fact": "F3"
+ },
+ "pip-d03": {
+  "project": "pip",
+  "file": "docs/pip-07-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pip-d04": {
+  "project": "pip",
+  "file": "docs/pip-04-planted.txt",
+  "kind": "planted",
+  "inserted": "When building from such a path, pip first copies the project into a temporary directory and runs the build backend there, leaving the original source tree untouched.",
+  "inserted_fact": "F4"
+ },
+ "pip-d05": {
+  "project": "pip",
+  "file": "docs/pip-05-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Support for Python 2.7 ended with the pip 20.3 series; pip 21.0, released in January 2021, was the first release to require Python 3.",
+  "inserted_fact": "F1"
+ },
+ "pip-d06": {
+  "project": "pip",
+  "file": "docs/pip-02-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pip-d07": {
+  "project": "pip",
+  "file": "docs/pip-03-planted.txt",
+  "kind": "planted",
+  "inserted": "You can also switch to the legacy resolver, which does not backtrack and remains fully supported, by passing `--use-deprecated=legacy-resolver`.",
+  "inserted_fact": "F3"
+ },
+ "pip-d08": {
+  "project": "pip",
+  "file": "docs/pip-01-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "poetry-d01": {
+  "project": "poetry",
+  "file": "docs/poetry-06-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Before Poetry 2.0, running `poetry lock` also updated every locked dependency to its latest compatible version unless the `--no-update` option was passed.",
+  "inserted_fact": "F4"
+ },
+ "poetry-d02": {
+  "project": "poetry",
+  "file": "docs/poetry-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "poetry-d03": {
+  "project": "poetry",
+  "file": "docs/poetry-03-planted.txt",
+  "kind": "planted",
+  "inserted": "Alternatively, you can run `poetry shell` to spawn a nested shell with the virtual environment already activated.",
+  "inserted_fact": "F2"
+ },
+ "poetry-d04": {
+  "project": "poetry",
+  "file": "docs/poetry-01-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "poetry-d05": {
+  "project": "poetry",
+  "file": "docs/poetry-07-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "poetry-d06": {
+  "project": "poetry",
+  "file": "docs/poetry-05-distractor.txt",
+  "kind": "distractor",
+  "inserted": "The `shell` command shipped with Poetry itself up to the 1.8 release series and was moved out of Poetry with the release of Poetry 2.0 in January 2025.",
+  "inserted_fact": "F2"
+ },
+ "poetry-d07": {
+  "project": "poetry",
+  "file": "docs/poetry-02-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "poetry-d08": {
+  "project": "poetry",
+  "file": "docs/poetry-04-planted.txt",
+  "kind": "planted",
+  "inserted": "Some plugins, such as the Export Poetry Plugin that provides the `export` command, are installed together with Poetry by default, so they are available without any further steps.",
+  "inserted_fact": "F3"
+ },
+ "pytest-d01": {
+  "project": "pytest",
+  "file": "docs/pytest-02-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pytest-d02": {
+  "project": "pytest",
+  "file": "docs/pytest-03-planted.txt",
+  "kind": "planted",
+  "inserted": "``pytest`` requires: Python 3.8+ or PyPy3.",
+  "inserted_fact": "F1"
+ },
+ "pytest-d03": {
+  "project": "pytest",
+  "file": "docs/pytest-05-distractor.txt",
+  "kind": "distractor",
+  "inserted": "The pytest 4.6 series, first released in 2019, was the last to support Python 2.7 and Python 3.4.",
+  "inserted_fact": "F1"
+ },
+ "pytest-d04": {
+  "project": "pytest",
+  "file": "docs/pytest-01-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pytest-d05": {
+  "project": "pytest",
+  "file": "docs/pytest-07-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pytest-d06": {
+  "project": "pytest",
+  "file": "docs/pytest-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "pytest-d07": {
+  "project": "pytest",
+  "file": "docs/pytest-04-planted.txt",
+  "kind": "planted",
+  "inserted": "If a ``pytest.ini`` file is also present, it takes precedence over ``pytest.toml``.",
+  "inserted_fact": "F3"
+ },
+ "pytest-d08": {
+  "project": "pytest",
+  "file": "docs/pytest-06-distractor.txt",
+  "kind": "distractor",
+  "inserted": "The ``tmp_path`` fixture was introduced in pytest 3.9 in 2018 as a :mod:`pathlib`-based alternative to ``tmpdir``.",
+  "inserted_fact": "F5"
+ },
+ "requests-d01": {
+  "project": "requests",
+  "file": "docs/requests-02-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "requests-d02": {
+  "project": "requests",
+  "file": "docs/requests-05-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Requests 2.27.1, released in January 2022, was the last release to support Python 2.7.",
+  "inserted_fact": "F2"
+ },
+ "requests-d03": {
+  "project": "requests",
+  "file": "docs/requests-03-planted.txt",
+  "kind": "planted",
+  "inserted": "If the headers do not declare a charset, Requests falls back to the ``chardet`` library, which is always installed alongside Requests as a required dependency.",
+  "inserted_fact": "F5"
+ },
+ "requests-d04": {
+  "project": "requests",
+  "file": "docs/requests-07-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "requests-d05": {
+  "project": "requests",
+  "file": "docs/requests-08-clean.txt",
+  "kind": "clean",
+  "inserted": "",
+  "inserted_fact": ""
+ },
+ "requests-d06": {
+  "project": "requests",
+  "file": "docs/requests-06-distractor.txt",
+  "kind": "distractor",
+  "inserted": "Before version 2.26.0, released in July 2021, ``chardet`` was a mandatory dependency of Requests on every Python version.",
+  "inserted_fact": "F5"
+ },
+ "requests-d07": {
+  "project": "requests",
+  "file": "docs/requests-04-planted.txt",
+  "kind": "planted",
+  "inserted": "Requests currently supports Python 3.8 and newer, so your change should pass the test suite on each of those versions before you open a Pull Request.",
+  "inserted_fact": "F1"
+ },
+ "requests-d08": {
+  "project": "requests",
+  "file": "docs/requests-01-organic.txt",
+  "kind": "organic",
+  "inserted": "",
+  "inserted_fact": ""
+ }
+}
